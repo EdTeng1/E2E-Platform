@@ -106,7 +106,7 @@ const App: React.FC = () => {
     card_list.push(<Card
       hoverable
       style={{ width: 240, marginBottom: 16 , marginInline: mt }}
-      cover={<img alt="example" height={350} src="https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2022%2F0520%2F17e832c1j00rc67qo005lc000xc015nm.jpg&thumbnail=660x2147483647&quality=80&type=jpg" />}
+      cover={<img alt="example" height={350} src="https://media.istockphoto.com/photos/portrait-of-confident-young-man-picture-id641272408?k=6&m=641272408&s=170667a&w=0&h=tOWpY7hIKGh-ZYHR7MTgawCxYzD-7pyX2kIzJgrKVQA=" />}
       key={3}
     >
         <Meta title="Tom Whyntie" description="Dentistry" />

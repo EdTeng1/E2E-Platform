@@ -9,9 +9,9 @@ const { Option } = Select;
 const { Search } = Input;
 
 // 示例数据，您需要根据实际情况来替换
-const specializationOptions = ['Option 1', 'Option 2', 'Option 3'];
-const regionOptions = ['Option 1', 'Option 2', 'Option 3'];
-const ratingsOptions = ['Option 1', 'Option 2', 'Option 3'];
+const specializationOptions = ['Clinical', 'Care', 'Administrative','Auxiliary'];
+const regionOptions = ['Asia', 'Europe', 'America','Australia'];
+const ratingsOptions = ['A', 'B', 'C','D'];
 
 
 const items: MenuProps['items'] = [
@@ -33,28 +33,28 @@ const items: MenuProps['items'] = [
     children: [
       {
         type: 'group',
-        label: 'Item 1',
+        label: 'About Us',
         children: [
           {
-            label: 'Option 1',
+            label: 'Our Mission and Vision',
             key: 'setting:1',
           },
           {
-            label: 'Option 2',
+            label: 'Our Team',
             key: 'setting:2',
           },
         ],
       },
       {
         type: 'group',
-        label: 'Item 2',
+        label: 'Health Information',
         children: [
           {
-            label: 'Option 3',
+            label: 'Disease and Conditions',
             key: 'setting:3',
           },
           {
-            label: 'Option 4',
+            label: 'Health Tips and Wellness',
             key: 'setting:4',
           },
         ],
