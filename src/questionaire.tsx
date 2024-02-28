@@ -4,7 +4,7 @@ import { Typography, Input, Button, Row, Col, Form } from 'antd';
 const { Title } = Typography;
 const { TextArea } = Input;
 
-export const Questionnaire = () => {
+export const App: React.FC = () => {
     const [form] = Form.useForm();
 
     const isFormFilled = () => {
@@ -133,3 +133,5 @@ export const Questionnaire = () => {
         </main>
     );
 }
+
+export default App;
