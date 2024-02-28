@@ -5,15 +5,17 @@ import App from './App';
 import Home from './Home';
 import SearchResult from './SearchResult';
 import reportWebVitals from './reportWebVitals';
+import { Questionnaire } from './questionaire';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
+    <App />
     {/* <Home /> */}
     <SearchResult />
+    {/* <Questionnaire /> */}
   </React.StrictMode>
 );
 
