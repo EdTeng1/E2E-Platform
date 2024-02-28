@@ -156,6 +156,7 @@ const App: React.FC = () => {
         <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         {/* Routes */}
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/SearchResult" element={<SearchResult />} />
           <Route path="/questionaire" element={<Questionaire />} />
