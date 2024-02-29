@@ -14,43 +14,35 @@ const regionOptions = ['Option 1', 'Option 2', 'Option 3'];
 const ratingsOptions = ['Option 1', 'Option 2', 'Option 3'];
 
 
-const items: MenuProps['items'] = [
-  {
-    label: 'Contact',
-    key: 'mail',
-    icon: <MailOutlined />,
-  },
-  {
-    label: (
-      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-        Questionnaire
-      </a>
-    ),
-    key: 'alipay',
-  },
-  {
-    label: 'Profile',
-    key: 'SubMenu',
-    icon: <UserOutlined />,
-    children: [
-      {
-        type: 'group',
-        label: 'Item 1',
-        children: [
-          {
-            label: 'Option 1',
-            key: 'setting:1',
-          },
-          {
-            label: 'Option 2',
-            key: 'setting:2',
-          },
-        ],
-      },
-    ],
-  },
+// const items: MenuProps['items'] = [
+//   {
+//     label: 'Contact',
+//     key: 'mail',
+//     icon: <MailOutlined />,
+//   },
+//   {
+//     label: 'Profile',
+//     key: 'SubMenu',
+//     icon: <UserOutlined />,
+//     children: [
+//       {
+//         type: 'group',
+//         label: 'Item 1',
+//         children: [
+//           {
+//             label: 'Option 1',
+//             key: 'setting:1',
+//           },
+//           {
+//             label: 'Option 2',
+//             key: 'setting:2',
+//           },
+//         ],
+//       },
+//     ],
+//   },
 
-];
+// ];
 
 // Filtet组件
 const FilterBar = () => (
@@ -90,7 +82,7 @@ const App: React.FC = () => {
   return (
     <div>
       {/* 菜单部分 */}
-      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/>
+      {/* <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/> */}
 
       {/* 搜索框和过滤器部分 */}
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>

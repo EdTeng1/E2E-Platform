@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu, Row, Col, Input,Select } from 'antd';
 import type { SearchProps } from 'antd/es/input/Search';
@@ -45,6 +45,32 @@ const items: MenuProps['items'] = [
     ), // Use Link in label for navigation
     key: 'questionaire',
     icon: <AppstoreOutlined />,
+  },
+  {
+    label: 'Contact',
+    key: 'mail',
+    icon: <MailOutlined />,
+  },
+  {
+    label: 'Profile',
+    key: 'SubMenu',
+    icon: <UserOutlined />,
+    children: [
+      {
+        type: 'group',
+        label: 'Item 1',
+        children: [
+          {
+            label: 'Option 1',
+            key: 'setting:1',
+          },
+          {
+            label: 'Option 2',
+            key: 'setting:2',
+          },
+        ],
+      },
+    ],
   },
   // {
   //   label: 'Navigation Three - Submenu',
@@ -153,7 +179,7 @@ const App: React.FC = () => {
     <Router>
       <div>
         {/* Menu part */}
-        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }} />
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
