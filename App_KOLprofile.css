@@ -1,0 +1,53 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #aaf0d1; /* Mint green background color */
+}
+
+.title {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1800px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff; /* White background color */
+}
+
+.profile-picture {
+  margin-right: 20px;
+}
+
+.profile-details {
+  margin-right: 50px;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.engagement-history {
+  flex: 1;
+  margin-right: 50px;
+  text-align: center;
+}
+
+.dimension-score {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.rating {
+  flex: 1;
+}
+
+.profile > div {
+  margin-bottom: 20px;
+}
