@@ -1,5 +1,6 @@
 import React from 'react';
-import { Typography, Input, Button, Row, Col, Form } from 'antd';
+import { Typography, Input, Button, Row, Col, Form, Card } from 'antd';
+import './questionaire.css';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -13,7 +14,7 @@ export const App: React.FC = () => {
     };
     return (
         <main className="main-content">
-            <div className="kol-records">
+            <Card className="form-card" bordered={false}>
                 <Title level={2}>KOL Records</Title>
                 <Form
                     layout="vertical"
@@ -129,7 +130,7 @@ export const App: React.FC = () => {
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
-            </div>
+            </Card>
         </main>
     );
 }
