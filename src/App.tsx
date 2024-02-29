@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home';
 import SearchResult from './SearchResult';
 import Questionaire from './questionaire';
+import App_KOLprofile from './App_KOLprofile';
 
 // Select组件需要的选项
 const { Option } = Select;
@@ -44,6 +45,15 @@ const items: MenuProps['items'] = [
       </a>
     ), // Use Link in label for navigation
     key: 'questionaire',
+    icon: <AppstoreOutlined />,
+  },
+  {
+    label: (
+      <a href="./App_KOLprofile" target="_blank" rel="noopener noreferrer">
+        KOL Profile
+      </a>
+    ), // Use Link in label for navigation
+    key: 'kolProfile',
     icon: <AppstoreOutlined />,
   },
   {
@@ -186,6 +196,7 @@ const App: React.FC = () => {
           <Route path="/Home" element={<Home />} />
           <Route path="/SearchResult" element={<SearchResult />} />
           <Route path="/questionaire" element={<Questionaire />} />
+          <Route path="/App_KOLprofile" element={<App_KOLprofile />} />
           {/* Define other routes and components as needed */}
         </Routes>
       </div>

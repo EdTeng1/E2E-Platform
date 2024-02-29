@@ -75,7 +75,7 @@ const App: React.FC = () => {
           <EngagementHistory history={profile.history} />
         </div>
         <div className="dimension-score">
-          <DemoRadar scores={profile.scores} />
+          {/* <DemoRadar scores={profile.scores} /> */}
         </div>
         <div className="rating">
           <Rating ratings={profile.ratings} />
