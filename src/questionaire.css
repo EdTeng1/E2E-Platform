@@ -1,0 +1,19 @@
+.main-content {
+    background-color: #f0f2f5; /* The background color for the entire page */
+    padding: 20px; /* Add some padding around the card */
+}
+
+.form-card {
+    background-color: #ffffff; /* Card background color */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add some shadow to lift the card off the page */
+    padding: 24px; /* Spacing inside the card */
+}
+
+/* Adjust the width of the form fields and the button alignment as per your design */
+.ant-row .ant-form-item {
+    margin-bottom: 16px; /* Space between form items */
+}
+
+.submit-button {
+    float: right; /* Align the submit button to the right */
+}
