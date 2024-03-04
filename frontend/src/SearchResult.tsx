@@ -153,7 +153,7 @@ const App: React.FC = () => {
     <Layout>
       <Header>
       {/* 菜单部分 */}
-      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/>
+      {/* <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/> */}
       </Header>
       <Content style={{ padding: '0 48px' }}>
         <Layout
