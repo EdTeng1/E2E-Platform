@@ -23,21 +23,6 @@ def index():
     # insert_all()
     return render_template('index.html')
 
-@main.route('/findRoute', methods=['GET'])
-def find_route():
-    point1 = request.args.get('point1')
-    point2 = request.args.get('point2')      
-    response,status_code = get_token()
-    # If the request is successful, return the token
-    if status_code == 200:
-        api_token = response
-        coordinates,status = get_route(point1, point2, api_token)
-        if status == 200:
-            return jsonify({'information': coordinates})
-        else:
-            return jsonify({'message': coordinates})
-    else:
-        return jsonify({'message': response})
 
 
 @main.route('/postData', methods=['POST'])
