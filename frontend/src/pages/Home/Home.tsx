@@ -78,7 +78,7 @@ const Home: React.FC = () => {
 
 				<Search
 					style={{ marginBottom: "20px" }}
-					placeholder='请输入搜索内容'
+					placeholder='Search KOL Profile'
 					className='home-search'
 					enterButton={
 						<Button size='large' type='primary' className='text-kol'>
