@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { AppstoreOutlined, MailOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu, Row, Col, Input, Select } from "antd";
-import type { SearchProps } from "antd/es/input/Search";
+import { Col, Input, Row, Select } from "antd";
+import React from "react";
 
 // Select组件需要的选项
 const { Option } = Select;
@@ -12,63 +9,6 @@ const { Search } = Input;
 const specializationOptions = ["Clinical", "Care", "Administrative", "Auxiliary"];
 const regionOptions = ["Asia", "Europe", "America", "Australia"];
 const ratingsOptions = ["A", "B", "C", "D"];
-
-const items: MenuProps["items"] = [
-	{
-		label: "Navigation One",
-		key: "mail",
-		icon: <MailOutlined />,
-	},
-	{
-		label: "Navigation Two",
-		key: "app",
-		icon: <AppstoreOutlined />,
-		disabled: true,
-	},
-	{
-		label: "Navigation Three - Submenu",
-		key: "SubMenu",
-		icon: <SettingOutlined />,
-		children: [
-			{
-				type: "group",
-				label: "About Us",
-				children: [
-					{
-						label: "Our Mission and Vision",
-						key: "setting:1",
-					},
-					{
-						label: "Our Team",
-						key: "setting:2",
-					},
-				],
-			},
-			{
-				type: "group",
-				label: "Health Information",
-				children: [
-					{
-						label: "Disease and Conditions",
-						key: "setting:3",
-					},
-					{
-						label: "Health Tips and Wellness",
-						key: "setting:4",
-					},
-				],
-			},
-		],
-	},
-	{
-		label: (
-			<a href='https://ant.design' target='_blank' rel='noopener noreferrer'>
-				Navigation Four - Link
-			</a>
-		),
-		key: "alipay",
-	},
-];
 
 // Filtet组件
 const FilterBar = () => (
@@ -104,18 +44,8 @@ const FilterBar = () => (
 );
 
 const App: React.FC = () => {
-	const [current, setCurrent] = useState("");
-
-	const onClick: MenuProps["onClick"] = (e) => {
-		console.log("click ", e);
-		setCurrent(e.key);
-	};
-
 	return (
 		<div>
-			{/* 菜单部分 */}
-			{/* <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/> */}
-
 			{/* 搜索框和过滤器部分 */}
 			<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
 				<div style={{ textAlign: "center", marginBottom: "20px" }}>
