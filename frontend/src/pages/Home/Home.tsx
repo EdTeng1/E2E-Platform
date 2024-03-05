@@ -45,7 +45,7 @@ const FilterBar = () => (
 	</Row>
 );
 
-const App: React.FC = () => {
+const Home: React.FC = () => {
 	const navigate = useNavigate();
 
 	const clickSearch = (value: string) => {
@@ -102,4 +102,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+export default Home;
