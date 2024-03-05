@@ -27,16 +27,29 @@ class KOL(db.Model):
 
 
 
-# 定义 Meeting 模型来存储会议信息
-class Meeting(db.Model):
+class KOLProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    first_meeting_contact = db.Column(db.String(100))
-    first_meeting_topic = db.Column(db.String(100))
-    second_meeting_contact = db.Column(db.String(100))
-    second_meeting_topic = db.Column(db.String(100))
-    third_meeting_contact = db.Column(db.String(100))
-    third_meeting_topic = db.Column(db.String(100))
+    title = db.Column(db.String(50), nullable=False)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    pronouns = db.Column(db.String(50))
+    institute = db.Column(db.String(100))
+    state = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    zip_code = db.Column(db.String(20))
+    phone_number = db.Column(db.String(20))
+    email = db.Column(db.String(100), nullable=False)
+
+class Engagement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    kol_id = db.Column(db.Integer, db.ForeignKey('kol_profile.id'), nullable=False)
+    engagement_type = db.Column(db.String(50), nullable=False)  # In-Person Meeting, Virtual Meeting, etc.
+    function = db.Column(db.String(50), nullable=False)  # R&D, Medical, etc.
+    notes = db.Column(db.Text)
+    follow_up_requested = db.Column(db.Boolean, default=False)
+    information_requested = db.Column(db.Text)
+    #使用了relationship来定义这种关系，这允许我们通过KOLProfile模型访问与之关联的Engagement记录。
+    kol_profile = db.relationship('KOLProfile', backref=db.backref('engagements', lazy=True))
 
 
 
