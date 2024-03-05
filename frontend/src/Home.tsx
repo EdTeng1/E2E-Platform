@@ -93,7 +93,7 @@ const App: React.FC = () => {
 
         <Search
           style={{ marginBottom: '20px' }}
-          placeholder="请输入搜索内容"
+          placeholder="Search KOL Profile"
           enterButton="Search"
           size="large"
           onSearch={value => console.log(value)}
