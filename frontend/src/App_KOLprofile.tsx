@@ -52,7 +52,7 @@ const App: React.FC = () => {
       { dimension: 'Medical', rating: 4 },
       { dimension: 'Commercial', rating: 3 },
       { dimension: 'Clinical', rating: 5 },
-      { dimension: 'Other Area', rating: 4 },
+      { dimension: 'Other Area', rating: 3 },
       { dimension: 'Other Area', rating: 3 },
     ],
   };
@@ -75,7 +75,8 @@ const App: React.FC = () => {
           <EngagementHistory history={profile.history} />
         </div>
         <div className="dimension-score">
-          {/* <DemoRadar scores={profile.scores} /> */}
+          <h1 id='dscore' style={{ fontSize: '20px' }}>Dimension Scores</h1>
+          { <DemoRadar /> }
         </div>
         <div className="rating">
           <Rating ratings={profile.ratings} />

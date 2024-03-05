@@ -1,0 +1,18 @@
+[
+    { "item": "Congress", "user": "a", "score": 80 },
+ 
+    { "item": "Trials", "user": "a", "score": 70 },
+
+    { "item": "Patients", "user": "a", "score": 90 },
+
+    { "item": "Digital Posts", "user": "a", "score": 20 },
+
+    { "item": "Guidelines", "user": "a", "score": 5 },
+
+    { "item": "Claims", "user": "a", "score": 15 },
+
+    { "item": "Grants", "user": "a", "score": 60 }
+
+
+
+  ]
