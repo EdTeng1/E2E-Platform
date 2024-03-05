@@ -1,0 +1,21 @@
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.button-container button {
+  margin: 10px 0;
+}
+
+.to-questionaire-match,
+.to-questionaire-greate {
+  /* flex: 1; */
+  width: 45%;
+
+}
+
+.text-kol {
+  /* flex: 2; */
+  width: 100%;
+}

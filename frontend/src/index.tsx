@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import Home from "./Home";
+import Home from "./pages/Home/Home";
 import SearchResult from "./SearchResult";
 import reportWebVitals from "./reportWebVitals";
 import Questionaire from "./questionaire";

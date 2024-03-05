@@ -1,5 +1,7 @@
-import { Col, Input, Row, Select } from "antd";
+import { Button, Col, Input, Row, Select } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./index.css";
 
 // Select组件需要的选项
 const { Option } = Select;
@@ -44,6 +46,24 @@ const FilterBar = () => (
 );
 
 const App: React.FC = () => {
+	const navigate = useNavigate();
+
+	const clickSearch = (value: string) => {
+		navigate("/SearchResult", {
+			// transform the value to new page
+			// we can get the state from new page by `useLocation`
+			state: {
+				searchValue: value,
+			},
+		});
+	};
+
+	const clickMatchButton = () => {
+		navigate("/questionaire");
+	};
+	const clickGreateButton = () => {
+		navigate("/questionaire");
+	};
 	return (
 		<div>
 			{/* 搜索框和过滤器部分 */}
@@ -61,11 +81,22 @@ const App: React.FC = () => {
 					placeholder='请输入搜索内容'
 					enterButton='Search'
 					size='large'
-					onSearch={(value) => console.log(value)}
+					onSearch={clickSearch}
 				/>
-
 				{/* Filter部分 */}
 				<FilterBar />
+
+				<div className='button-container'>
+					<Button size='large' disabled className='text-kol'>
+						KOL name, email
+					</Button>
+					<Button type='primary' size='large' className='to-questionaire-match' onClick={clickMatchButton}>
+						Match
+					</Button>
+					<Button type='primary' size='large' className='to-questionaire-greate' onClick={clickGreateButton}>
+						Greate
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

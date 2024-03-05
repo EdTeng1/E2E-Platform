@@ -4,7 +4,7 @@ import type { MenuProps } from "antd";
 import { Menu, Row, Col, Input, Select } from "antd";
 import type { SearchProps } from "antd/es/input/Search";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./Home";
+import Home from "./pages/Home/Home";
 import SearchResult from "./SearchResult";
 import Questionaire from "./questionaire";
 import App_KOLprofile from "./App_KOLprofile";
