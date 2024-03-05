@@ -79,7 +79,12 @@ const Home: React.FC = () => {
 				<Search
 					style={{ marginBottom: "20px" }}
 					placeholder='请输入搜索内容'
-					enterButton='Search'
+					className='home-search'
+					enterButton={
+						<Button size='large' type='primary' className='text-kol'>
+							Search
+						</Button>
+					}
 					size='large'
 					onSearch={clickSearch}
 				/>
