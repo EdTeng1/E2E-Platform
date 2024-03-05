@@ -1,22 +1,12 @@
-import React, { useState } from "react";
-import { AppstoreOutlined, MailOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Menu, Row, Col, Input, Select } from "antd";
-import type { SearchProps } from "antd/es/input/Search";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import SearchResult from "./SearchResult";
-import Questionaire from "./questionaire";
+import { Menu } from "antd";
+import React, { useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import App_KOLprofile from "./App_KOLprofile";
-
-// Select组件需要的选项
-const { Option } = Select;
-const { Search } = Input;
-
-// 示例数据，您需要根据实际情况来替换
-const specializationOptions = ["Option 1", "Option 2", "Option 3"];
-const regionOptions = ["Option 1", "Option 2", "Option 3"];
-const ratingsOptions = ["Option 1", "Option 2", "Option 3"];
+import SearchResult from "./SearchResult";
+import Home from "./pages/Home/Home";
+import Questionaire from "./questionaire";
 
 const items: MenuProps["items"] = [
 	{
@@ -82,39 +72,6 @@ const items: MenuProps["items"] = [
 		],
 	},
 ];
-
-// Filtet组件
-const FilterBar = () => (
-	<Row gutter={16}>
-		<Col span={8}>
-			<Select defaultValue={specializationOptions[0]} style={{ width: "100%" }}>
-				{specializationOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-		<Col span={8}>
-			<Select defaultValue={regionOptions[0]} style={{ width: "100%" }}>
-				{regionOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-		<Col span={8}>
-			<Select defaultValue={ratingsOptions[0]} style={{ width: "100%" }}>
-				{ratingsOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-	</Row>
-);
 
 const App: React.FC = () => {
 	const [current, setCurrent] = useState("mail");
