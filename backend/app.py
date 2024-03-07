@@ -2,6 +2,7 @@ from datetime import datetime
 from turtle import title
 from flask import Flask, request, json, jsonify, render_template
 from flask_cors import CORS, cross_origin
+from sqlalchemy import null
 from sqlalchemy.exc import IntegrityError
 import click
 
@@ -19,6 +20,7 @@ from models import KOLProfile, db
 import queryKOLProfile
 
 app = Flask(__name__)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
     app.root_path, "meetings.db"
 )
@@ -49,14 +51,18 @@ def index():
     return "Hello , This is falsk"
 
 
-@app.route("/queryall/<table>")
+@app.route("/queryAll/<table>")
 def queryall(table):
     if table == "kol-profile":
         return queryKOLProfile.queryAll()
 
 
-@app.route("/queryKOLProfileByName/<name>")
-def queryKOLProfileByName(name):
+@app.route("/queryKOLProfileByName")
+def queryKOLProfileByName():
+    name = request.args.get("name")
+    if name == None:
+        return []
+
     return queryKOLProfile.queryByName(name)
 
 
