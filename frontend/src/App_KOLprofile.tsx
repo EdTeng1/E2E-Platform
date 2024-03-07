@@ -1,10 +1,12 @@
-import React from 'react';
+// App.tsx
+import React, { useState } from 'react';
 import './App.css';
 import ProfilePicture from './ProfilePicture';
 import ProfileInfo from './ProfileInfo';
 import EngagementHistory from './EngagementHistory';
 import DemoRadar from './DimensionScore';
 import Rating from './Rating';
+import EditableText from './EditableText';
 
 // Define TypeScript interfaces for your data structures
 interface Score {
@@ -30,7 +32,7 @@ interface Profile {
 }
 
 const App: React.FC = () => {
-  const profile: Profile = {
+  const [profile, setProfile] = useState<Profile>({
     imageUrl: 'https://pic1.zhimg.com/80/v2-5267ed226b0e31ea05cbb7b53eaab494_1440w.webp',
     name: 'John Doe',
     location: 'New Jersey, USA',
@@ -55,34 +57,91 @@ const App: React.FC = () => {
       { dimension: 'Other Area', rating: 3 },
       { dimension: 'Other Area', rating: 3 },
     ],
+  });
+
+  //處理個人profile的變化
+  const handleProfileChange = (field: keyof Profile, value: string | string[]) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [field]: value,
+    }));
+  };
+
+  //處理engagement hisory的變化
+  const handleHistoryChange = (index: number, newText: string) => {
+    const updatedHistory = [...profile.history];
+    updatedHistory[index] = newText;
+    setProfile(prevProfile => ({
+      ...prevProfile,
+      history: updatedHistory,
+    }));
   };
 
   return (
     <div className="app">
-      <h1 className="title">KOL Profile</h1>
-      <div className="profile">
-        <div className="profile-picture">
-          <ProfilePicture imageUrl={profile.imageUrl} />
-        </div>
-        <div className="profile-details">
-          <ProfileInfo
-            name={profile.name}
-            location={profile.location}
-            occupation={profile.occupation}
-            institution={profile.institution}
-            overview={profile.overview}
+    <h1 className="title">KOL Profile</h1>
+    <div className="profile">
+      <div className="profile-picture">
+        <ProfilePicture imageUrl={profile.imageUrl} />
+      </div>
+      <div className="profile-details">
+        <div className="editable-field">
+          <label>Name: </label>
+          <EditableText
+            text={profile.name}
+            onTextChange={(newText) => handleProfileChange('name', newText)}
           />
-          <EngagementHistory history={profile.history} />
         </div>
-        <div className="dimension-score">
-          <h1 id='dscore' style={{ fontSize: '20px' }}>Dimension Scores</h1>
-          { <DemoRadar /> }
+        <div className="editable-field">
+          <label>Location: </label>
+          <EditableText
+            text={profile.location}
+            onTextChange={(newText) => handleProfileChange('location', newText)}
+          />
         </div>
-        <div className="rating">
-          <Rating ratings={profile.ratings} />
+        <div className="editable-field">
+          <label>Occupation: </label>
+          <EditableText
+            text={profile.occupation}
+            onTextChange={(newText) => handleProfileChange('occupation', newText)}
+          />
+        </div>
+        <div className="editable-field">
+          <label>Institution: </label>
+          <EditableText
+            text={profile.institution}
+            onTextChange={(newText) => handleProfileChange('institution', newText)}
+          />
+        </div>
+        <div className="editable-field">
+          <label>Overview: </label>
+          <EditableText
+            text={profile.overview}
+            onTextChange={(newText) => handleProfileChange('overview', newText)}
+          />
+        </div>
+        <div className="editable-field">
+          <h3>Engagement History</h3>
+          {profile.history.map((item, index) => (
+            <div key={index} className="editable-field">
+              <EditableText
+                text={item}
+                onTextChange={(newText) => handleHistoryChange(index, newText)}
+              />
+            </div>
+          ))}
         </div>
       </div>
+      <div className="dimension-score">
+        <h1 id='dscore' style={{ fontSize: '20px' }}>Dimension Scores</h1>
+        <DemoRadar />
+      </div>
+      <div className="rating">
+        <Rating ratings={profile.ratings} />
+      </div>
     </div>
+  </div>
+  
   );
 };
 
