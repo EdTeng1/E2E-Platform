@@ -90,18 +90,6 @@ const Home: React.FC = () => {
 				/>
 				{/* Filter部分 */}
 				<FilterBar />
-
-				<div className='button-container'>
-					<Button size='large' disabled className='text-kol'>
-						KOL name, email
-					</Button>
-					<Button type='primary' size='large' className='to-questionaire-match' onClick={clickMatchButton}>
-						Match
-					</Button>
-					<Button type='primary' size='large' className='to-questionaire-greate' onClick={clickGreateButton}>
-						Greate
-					</Button>
-				</div>
 			</div>
 		</div>
 	);
