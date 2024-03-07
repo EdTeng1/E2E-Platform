@@ -1,7 +1,8 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Card, Layout, Menu, Pagination } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -31,6 +32,11 @@ const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
 });
 
 const SearchData: React.FC = () => {
+	const location = useLocation();
+
+	const searchResult = location.state;
+	console.log("searchResult: ", searchResult);
+
 	let mt = 0;
 	const card_list = new Array();
 	card_list.push(
