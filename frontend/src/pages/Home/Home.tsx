@@ -1,6 +1,7 @@
-import { Button, Col, Input, Row, Select } from "antd";
+import { Button, Col, Input, Row, Select, message } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { queryKOLProfileByName } from "../../service/KOLProfile";
 import "./index.css";
 
 // Select组件需要的选项
@@ -47,25 +48,29 @@ const FilterBar = () => (
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
 
-	const clickSearch = (value: string) => {
+	const clickSearch = async (value: string) => {
+		const res = await queryKOLProfileByName(value);
+
+		if (!res || res.length === 0) {
+			messageApi.info("No Data!");
+			return;
+		}
+
 		navigate("/SearchResult", {
 			// transform the value to new page
 			// we can get the state from new page by `useLocation`
 			state: {
 				searchValue: value,
+				searchResult: res,
 			},
 		});
 	};
 
-	const clickMatchButton = () => {
-		navigate("/questionaire");
-	};
-	const clickGreateButton = () => {
-		navigate("/questionaire");
-	};
 	return (
 		<div>
+			{contextHolder}
 			{/* 搜索框和过滤器部分 */}
 			<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
 				<div style={{ textAlign: "center", marginBottom: "20px" }}>
