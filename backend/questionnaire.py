@@ -28,7 +28,7 @@ def submit_form():
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         cursor.execute(query, (
         data['title'], data['firstName'], data['lastName'], data['institutionName'], data['state'], data['city'],
-        data['phoneNumber'], data['email']))
+        data['phoneNumber'], data['email'], q1['question1'], q2['question2'], q3['question3']))
 
         conn.commit()
         return jsonify({'message': 'Form submitted successfully'}), 200
@@ -41,4 +41,4 @@ def submit_form():
             conn.close()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='localhost', port='3000', debug=True)
