@@ -51,10 +51,15 @@ const Home: React.FC = () => {
 	const [messageApi, contextHolder] = message.useMessage();
 
 	const clickSearch = async (value: string) => {
+		if (!value.trim()) return;
+
 		const res = await queryKOLProfileByName(value);
 
 		if (!res || res.length === 0) {
-			messageApi.info("No Data!");
+			// direct after 1s
+			messageApi.info("No Data!", 1).then(() => {
+				navigate("/questionaire");
+			});
 			return;
 		}
 
