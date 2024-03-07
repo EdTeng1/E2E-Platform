@@ -21,6 +21,9 @@ import queryKOLProfile
 
 app = Flask(__name__)
 
+# for cors
+CORS(app)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
     app.root_path, "meetings.db"
 )
