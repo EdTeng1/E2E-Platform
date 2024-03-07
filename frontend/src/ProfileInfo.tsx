@@ -3,24 +3,32 @@ import { Descriptions } from 'antd';
 
 // Step 1: Define an interface for the component's props
 interface ProfileInfoProps {
-  name: string;
-  location: string;
-  occupation: string;
+  // name: string;
+  title: string;
+  first_name: string;
+  last_name: string;
+  state: string;
+  city: string;
+  zip: string;
+  phone: string;
+  email: string;
+  // occupation: string;
   institution: string;
-  overview: string;
+  // overview: string;
 }
 
 // Step 2: Apply the interface to the component
-const ProfileInfo: React.FC<ProfileInfoProps> = ({ name, location, occupation, institution, overview }) => {
+const ProfileInfo: React.FC<ProfileInfoProps> = ({ first_name, last_name, city, state, zip, title, institution, phone, email }) => {
   return (
     <div style={{ marginBottom: 20 }}>
         <h3> Profile Information</h3>
       <Descriptions bordered>
-        <Descriptions.Item label="Name" span={2}>{name}</Descriptions.Item>
-        <Descriptions.Item label="Location" span={2}>{location}</Descriptions.Item>
-        <Descriptions.Item label="Occupation" span={2}>{occupation}</Descriptions.Item>
+        <Descriptions.Item label="Name" span={2}>{first_name} {last_name}</Descriptions.Item>
+        <Descriptions.Item label="Title" span={2}>{title}</Descriptions.Item>
+        <Descriptions.Item label="Location" span={2}>{city}, {state}, {zip}</Descriptions.Item>
         <Descriptions.Item label="Institution" span={2}>{institution}</Descriptions.Item>
-        <Descriptions.Item label="Overview" span={3}>{overview}</Descriptions.Item>
+        <Descriptions.Item label="Overview" span={3}>{phone}</Descriptions.Item>
+        <Descriptions.Item label="Overview" span={3}>{email}</Descriptions.Item>
       </Descriptions>
     </div>
   );
