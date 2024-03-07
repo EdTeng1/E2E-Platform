@@ -24,18 +24,24 @@ app = Flask(__name__)
 # for cors
 CORS(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
-    app.root_path, "meetings.db"
+# sqlite
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
+#     app.root_path, "meetings.db"
+# )
+
+# mysql+pymysql//username:passwor@host:port/database
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    "mysql+pymysql://root:123456@127.0.0.1:3306/flaskdatabase?charset=utf8mb4"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
 
 # genetate database in local
 @app.cli.command()
 @click.option("--drop", is_flag=True, help="create data base after drop")
-def createdb(drop):
+def createtable(drop):
     if drop:
         db.drop_all()
     db.create_all()
@@ -44,7 +50,7 @@ def createdb(drop):
 
 # initial fake data to table
 @app.cli.command()
-def initialdb():
+def initialtable():
     queryKOLProfile.generateData()
     click.echo("success")
 
