@@ -14,9 +14,10 @@ db_config = {
 }
 
 
-@app.route('/', methods=['POST'])
+@app.route('/questionaire', methods=['POST'])
 def submit_form():
     data = request.json
+    print(data)
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()

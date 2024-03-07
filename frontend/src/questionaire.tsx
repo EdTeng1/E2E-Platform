@@ -5,13 +5,52 @@ import './questionaire.css';
 const { Title } = Typography;
 const { TextArea } = Input;
 
+interface FormValues {
+    title: string;
+    firstName: string;
+    lastName: string;
+    institutionName?: string;
+    state?: string;
+    city?: string;
+    phoneNumber?: string;
+    email?: string;
+    question1?: string;
+    question2?: string;
+    question3?: string;
+  }
+  
+
 export const App: React.FC = () => {
     const [form] = Form.useForm();
 
-    const isFormFilled = () => {
-        // Checks whether the fields have been touched and there are no errors.
-        return form.isFieldsTouched(true) && form.getFieldsError().filter(({ errors }) => errors.length).length === 0;
+    // const isFormFilled = () => {
+    //     return form.isFieldsTouched(true) && form.getFieldsError().filter(({ errors }) => errors.length).length === 0;
+    // };
+
+    const onFinish = async (values : FormValues) => {
+        console.log('Received values of form: ', values);
+        try {
+            const response = await fetch('/questionaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const responseData = await response.json();
+            console.log('Submission successful', responseData);
+            // Here, you can add any follow-up actions upon successful submission
+        } catch (error) {
+            console.error('Failed to submit form:', error);
+            // Handle submission error (e.g., show a notification to the user)
+        }
     };
+
 
 
     return (
@@ -19,28 +58,10 @@ export const App: React.FC = () => {
             <Card className="form-card" bordered={false}>
                 <Title level={2}>KOL Records</Title>
                 <Form
+                    form={form}
                     layout="vertical"
-                    onFinish={async (values) => {
-                        try {
-                            const response = await fetch('/api/submit-form', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(values),
-                            });
-                            if (response.ok) {
-                                console.log('Form submitted successfully');
-                                // Handle success response
-                            } else {
-                                console.error('Form submission failed');
-                                // Handle server error
-                            }
-                        } catch (error) {
-                            console.error('An error occurred:', error);
-                            // Handle network error
-                        }
-                    }}
+                    onFinish={onFinish}
+                    onFinishFailed={errorInfo => console.log('Failed:', errorInfo)}
                 >
                     <Row gutter={16}>
                         <Col span={8}>
@@ -134,7 +155,6 @@ export const App: React.FC = () => {
                             </Form.Item>
                         </Col> */}
                     </Row>
-                </Form>
                 <div className="questions">
                     <Title level={3}>Questions</Title>
                     <Form.Item label="Question 1" name="question1">
@@ -150,6 +170,7 @@ export const App: React.FC = () => {
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
+                </Form>
             </Card>
         </main>
     );
