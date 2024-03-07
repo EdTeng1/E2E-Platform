@@ -30,7 +30,7 @@ const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
 	};
 });
 
-const App: React.FC = () => {
+const SearchData: React.FC = () => {
 	let mt = 0;
 	const card_list = new Array();
 	card_list.push(
@@ -217,4 +217,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+export default SearchData;
