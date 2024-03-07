@@ -22,13 +22,16 @@ def submit_form():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Assuming you have a table named 'form_responses' with columns matching form fields
+        # Update your query to include new fields
         query = (
-            "INSERT INTO form_responses (title, firstName, lastName, institutionName, state, city, phoneNumber, email) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            "INSERT INTO [table_name] (title, firstName, lastName, pronouns, institute, state, city, zip, phoneNumber, email, engagementA, functionA, notes, followUpRequested, functionB, informationRequested) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         cursor.execute(query, (
-        data['title'], data['firstName'], data['lastName'], data['institutionName'], data['state'], data['city'],
-        data['phoneNumber'], data['email'], q1['question1'], q2['question2'], q3['question3']))
+            data['title'], data['firstName'], data['lastName'], data['pronouns'], data['institute'],
+            data['state'], data['city'], data['zip'], data['phoneNumber'], data['email'],
+            data['engagementA'], data['functionA'], data['notes'],
+            data['followUpRequested'], data['functionB'], data['informationRequested']
+        ))
 
         conn.commit()
         return jsonify({'message': 'Form submitted successfully'}), 200
