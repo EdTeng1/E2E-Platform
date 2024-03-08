@@ -1,5 +1,6 @@
 // App.tsx
 import React, { useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import ProfilePicture from './ProfilePicture';
 import ProfileInfo from './ProfileInfo';
@@ -77,6 +78,21 @@ const App: React.FC = () => {
     }));
   };
 
+
+  const saveProfile = async () => {
+    try {
+      // 假设您的 Flask 后端运行在 localhost:5000，并且有一个名为 /updateProfile 的端点
+      const response = await axios.post('http://localhost:5000/updateProfile', profile);
+      console.log('Profile saved successfully', response.data);
+      // 处理成功的反馈（如显示通知）
+    } catch (error) {
+      console.error('Failed to save profile', error);
+      // 处理失败的反馈（如显示错误消息）
+    }
+  };
+
+
+
   return (
     <div className="app">
     <h1 className="title">KOL Profile</h1>
@@ -120,6 +136,10 @@ const App: React.FC = () => {
             onTextChange={(newText) => handleProfileChange('overview', newText)}
           />
         </div>
+        {/* 在 App 组件的 return 方法中添加保存按钮 */}
+        <div className="profile-save-button">
+          <button onClick={saveProfile}>Save Profile</button>
+        </div>
         <div className="editable-field">
           <h3>Engagement History</h3>
           {profile.history.map((item, index) => (
@@ -131,6 +151,10 @@ const App: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+      {/* 在 App 组件的 return 方法中添加保存按钮 */}
+      <div className="profile-save-button">
+        <button onClick={saveProfile}>Save Profile</button>
       </div>
       <div className="dimension-score">
         <h1 id='dscore' style={{ fontSize: '20px' }}>Dimension Scores</h1>
