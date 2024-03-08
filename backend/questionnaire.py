@@ -3,7 +3,7 @@ from flask_cors import CORS
 import mysql.connector
 import os
 
-app = Flask(__name__, static_folder='../frontend/src', static_url_path='')
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
 
 # MySQL database connection details
@@ -44,13 +44,13 @@ def submit_form():
             cursor.close()
             conn.close()
 
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def serve(path):
-#     if path != "" and os.path.exists(app.static_folder + '/' + path):
-#         return send_from_directory(app.static_folder, path)
-#     else:
-#         return send_from_directory(app.static_folder, 'index.html')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)
