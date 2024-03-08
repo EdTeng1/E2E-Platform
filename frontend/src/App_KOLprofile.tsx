@@ -20,12 +20,19 @@ interface Rating {
 }
 
 interface Profile {
+  // name: string;
+  title: string;
+  first_name: string;
+  last_name: string;
+  state: string;
+  city: string;
+  zip: string;
+  phone: string;
+  email: string;
   imageUrl: string;
-  name: string;
   location: string;
-  occupation: string;
   institution: string;
-  overview: string;
+  // overview: string;
   history: string[];
   scores: Score[];
   ratings: Rating[];
@@ -34,12 +41,17 @@ interface Profile {
 const App: React.FC = () => {
   const [profile, setProfile] = useState<Profile>({
     imageUrl: 'https://pic1.zhimg.com/80/v2-5267ed226b0e31ea05cbb7b53eaab494_1440w.webp',
-    name: 'John Doe',
-    location: 'New Jersey, USA',
-    occupation: 'Patient Advocacy',
-    institution: 'Genmab',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+
+    first_name: 'John',
+    last_name: 'Doe',
+    // location: 'New Jersey, USA',
+    city: 'Seattle',
+    state: 'WA,
+    zip: '98105',
+    title: 'Patient Advocacy',
+    institution: 'University of Washington',
+    phone: '206-111-2345',
+    email: 'email123@hotmail.com',
     history: ['Research Scientists Meeting on Nov 10 2023', 'Move to Phase 2', 'Responsible physicians come in conducting research'],
     scores: [
       { dimension: 'Congress', score: 80 },
