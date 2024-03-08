@@ -64,85 +64,68 @@ export const App: React.FC = () => {
                     onFinish={onFinish}
                     onFinishFailed={errorInfo => console.log('Failed:', errorInfo)}
                 >
-                    <Row gutter={16}>
-                        <Col span={8}>
-                            <Form.Item
-                                label="Title"
-                                name="title"
-                                rules={[{ required: true, message: 'Please select your title!' }]}
-                            >
-                                <Select placeholder="Select a title">
-                                    <Option value="mr">Mr</Option>
-                                    <Option value="mrs">Mrs</Option>
-                                    <Option value="ms">Ms</Option>
-                                    <Option value="dr">Dr</Option>
-                                    {/* Add more options as needed */}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item
-                                label="First Name"
-                                name="firstName"
-                                rules={[{ required: true, message: 'Please input your first name!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item
-                                label="Last Name"
-                                name="lastName"
-                                rules={[{ required: true, message: 'Please input your last name!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                    </Row>
+                    <Form.Item
+                        label="Title"
+                        name="title"
+                        rules={[{ required: true, message: 'Please select your title!' }]}
+                    >
+                        <Select placeholder="Select a title">
+                            <Option value="mr">Mr</Option>
+                            <Option value="mrs">Mrs</Option>
+                            <Option value="ms">Ms</Option>
+                            <Option value="dr">Dr</Option>
+                            {/* Add more options as needed */}
+                        </Select>
+                    </Form.Item>
 
-                    <Row gutter={16}>
-                        <Col span={8}>
-                            <Form.Item
-                                label="Pronouns"
-                                name="pronouns"
-                                rules={[{ required: true, message: 'Please select your pronouns!' }]}
-                            >
-                                <Select placeholder="Select pronouns">
-                                    <Option value="he/him">He/Him</Option>
-                                    <Option value="she/her">She/Her</Option>
-                                    <Option value="they/them">They/Them</Option>
-                                    <Option value="other">Other</Option>
-                                </Select>
-                            </Form.Item>
-                        </Col>
+                    <Form.Item
+                        label="First Name"
+                        name="firstName"
+                        rules={[{ required: true, message: 'Please input your first name!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-                        <Col span={8}>
-                            <Form.Item
-                                label="Institute"
-                                name="institute"
-                                rules={[{ required: true, message: 'Please input your institute!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
+                    <Form.Item
+                        label="Last Name"
+                        name="lastName"
+                        rules={[{ required: true, message: 'Please input your last name!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Pronouns"
+                        name="pronouns"
+                        rules={[{ required: true, message: 'Please select your pronouns!' }]}
+                    >
+                        <Select placeholder="Select pronouns">
+                            <Option value="he/him">He/Him</Option>
+                            <Option value="she/her">She/Her</Option>
+                            <Option value="they/them">They/Them</Option>
+                            <Option value="other">Other</Option>
+                        </Select>
+                    </Form.Item>
 
-                        <Col span={8}>
-                            <Form.Item
-                                label="State"
-                                name="state"
-                                rules={[{ required: true, message: 'Please select your state!' }]}
-                            >
-                                <Select placeholder="Select a state">
-                                    {/* Replace the options below with actual states */}
-                                    <Option value="state1">State 1</Option>
-                                    <Option value="state2">State 2</Option>
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
+                    <Form.Item
+                        label="Institute"
+                        name="institute"
+                        rules={[{ required: true, message: 'Please input your institute!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-                    <Row gutter={16}>
-                        <Col span={12}>
+                    <Form.Item
+                        label="State"
+                        name="state"
+                        rules={[{ required: true, message: 'Please select your state!' }]}
+                    >
+                        <Select placeholder="Select a state">
+                            {/* Replace the options below with actual states */}
+                            <Option value="state1">State 1</Option>
+                            <Option value="state2">State 2</Option>
+                        </Select>
+                    </Form.Item>
+
                     <Form.Item
                         label="City"
                         name="city"
@@ -150,9 +133,7 @@ export const App: React.FC = () => {
                     >
                         <Input />
                     </Form.Item>
-                    </Col>
 
-                    <Col span={12}>
                     <Form.Item
                         label="Zip"
                         name="zip"
@@ -160,8 +141,6 @@ export const App: React.FC = () => {
                     >
                         <Input placeholder="Zip code" />
                     </Form.Item>
-                    </Col>
-                    </Row>
 
                     <Form.Item
                         label="Phone Number"
@@ -255,7 +234,7 @@ export const App: React.FC = () => {
                     </Button>
                 </Form>
             </Card>
-        </main >
+        </main>
     );
 }
 
