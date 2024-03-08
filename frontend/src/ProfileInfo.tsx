@@ -3,18 +3,17 @@ import { Descriptions } from 'antd';
 
 // Step 1: Define an interface for the component's props
 interface ProfileInfoProps {
-  // name: string;
-  title: string;
-  first_name: string;
+  title?: string;
+  first_name?: string;
   last_name: string;
-  state: string;
+  state?: string;
   city: string;
   zip: string;
-  phone: string;
+  phone?: string;
   email: string;
-  // occupation: string;
+  occupation?: string;
   institution: string;
-  // overview: string;
+  overview?: string;
 }
 
 // Step 2: Apply the interface to the component
