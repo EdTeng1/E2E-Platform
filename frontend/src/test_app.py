@@ -13,8 +13,8 @@ def update_profile():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Jisoonyb1@",
-        database="testapp"
+        password="yourpassword",
+        database="youpdatabasename"
     )
     cursor = conn.cursor()
     
