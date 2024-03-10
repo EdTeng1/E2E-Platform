@@ -5,6 +5,14 @@ import './questionaire.css';
 const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
+const US_STATES = [
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
+    'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+    'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
+    'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
+    'West Virginia', 'Wisconsin', 'Wyoming', 'Washington D.C.'
+];
 
 interface FormValues {
     title: string;
@@ -120,9 +128,9 @@ export const App: React.FC = () => {
                         rules={[{ required: true, message: 'Please select your state!' }]}
                     >
                         <Select placeholder="Select a state">
-                            {/* Replace the options below with actual states */}
-                            <Option value="state1">State 1</Option>
-                            <Option value="state2">State 2</Option>
+                            {US_STATES.map((state, index) => (
+                                <Option key={index} value={state.toLowerCase().replace(/\s/g, '')}>{state}</Option>
+                            ))}
                         </Select>
                     </Form.Item>
 
