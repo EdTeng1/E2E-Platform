@@ -41,3 +41,8 @@
   margin-right: 10px;
   font-weight: bold;
 }
+
+
+.profile-save-button {
+  margin-top: 20px; /* 增加上边距 */
+}
