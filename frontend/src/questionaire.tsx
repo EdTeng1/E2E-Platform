@@ -62,12 +62,12 @@ export const App: React.FC = () => {
                     form={form}
                     layout="vertical"
                     onFinish={onFinish}
-                    // onFinishFailed={errorInfo => console.log('Failed:', errorInfo)}
+                    onFinishFailed={errorInfo => console.log('Failed:', errorInfo)}
                 >
                     <Form.Item
                         label="Title"
                         name="title"
-                        rules={[{ required: false, message: 'Please select your title!' }]}
+                        rules={[{ required: true, message: 'Please select your title!' }]}
                     >
                         <Select placeholder="Select a title">
                             <Option value="mr">Mr</Option>
@@ -81,7 +81,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="First Name"
                         name="firstName"
-                        rules={[{ required: false, message: 'Please input your first name!' }]}
+                        rules={[{ required: true, message: 'Please input your first name!' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -89,14 +89,14 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="Last Name"
                         name="lastName"
-                        rules={[{ required: false, message: 'Please input your last name!' }]}
+                        rules={[{ required: true, message: 'Please input your last name!' }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         label="Pronouns"
                         name="pronouns"
-                        rules={[{ required: false, message: 'Please select your pronouns!' }]}
+                        rules={[{ required: true, message: 'Please select your pronouns!' }]}
                     >
                         <Select placeholder="Select pronouns">
                             <Option value="he/him">He/Him</Option>
@@ -109,7 +109,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="Institute"
                         name="institute"
-                        rules={[{ required: false, message: 'Please input your institute!' }]}
+                        rules={[{ required: true, message: 'Please input your institute!' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -117,7 +117,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="State"
                         name="state"
-                        rules={[{ required: false, message: 'Please select your state!' }]}
+                        rules={[{ required: true, message: 'Please select your state!' }]}
                     >
                         <Select placeholder="Select a state">
                             {/* Replace the options below with actual states */}
@@ -129,7 +129,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="City"
                         name="city"
-                        rules={[{ required: false, message: 'Please input your city!' }]}
+                        rules={[{ required: true, message: 'Please input your city!' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -137,7 +137,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="Zip"
                         name="zip"
-                        rules={[{ required: false, message: 'Please input your zip code!' }]}
+                        rules={[{ required: true, message: 'Please input your zip code!' }]}
                     >
                         <Input placeholder="Zip code" />
                     </Form.Item>
@@ -145,7 +145,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="Phone Number"
                         name="phoneNumber"
-                        rules={[{ required: false, message: 'Please input your phone number!' }]}
+                        rules={[{ required: true, message: 'Please input your phone number!' }]}
                     >
                         <Input placeholder="Phone number" />
                     </Form.Item>
@@ -154,7 +154,7 @@ export const App: React.FC = () => {
                         label="Email"
                         name="email"
                         rules={[
-                            { required: false, message: 'Please input your email!' },
+                            { required: true, message: 'Please input your email!' },
                             { type: 'email', message: 'Please enter a valid email!' },
                         ]}
                     >
@@ -166,7 +166,7 @@ export const App: React.FC = () => {
                         <Form.Item
                             label="Engagement (A)"
                             name="engagementA"
-                            rules={[{ required: false, message: 'Please select your engagement type!' }]}
+                            rules={[{ required: true, message: 'Please select your engagement type!' }]}
                         >
                             <Select placeholder="Select an engagement type">
                                 <Option value="inPersonMeeting">In-Person Meeting</Option>
@@ -180,7 +180,7 @@ export const App: React.FC = () => {
                         <Form.Item
                             label="Function"
                             name="functionA"
-                            rules={[{ required: false, message: 'Please select a function!' }]}
+                            rules={[{ required: true, message: 'Please select a function!' }]}
                         >
                             <Select placeholder="Select a function">
                                 <Option value="r&d">R&D</Option>
@@ -200,7 +200,7 @@ export const App: React.FC = () => {
                         <Form.Item
                             label="Follow-up Requested (B)"
                             name="followUpRequested"
-                            rules={[{ required: false, message: 'Please select your follow-up engagement type!' }]}
+                            rules={[{ required: true, message: 'Please select your follow-up engagement type!' }]}
                         >
                             <Select placeholder="Select a follow-up engagement type">
                                 <Option value="inPersonMeeting">In-Person Meeting</Option>
@@ -212,7 +212,7 @@ export const App: React.FC = () => {
                         <Form.Item
                             label="Function"
                             name="functionB"
-                            rules={[{ required: false, message: 'Please select a function!' }]}
+                            rules={[{ required: true, message: 'Please select a function!' }]}
                         >
                             <Select placeholder="Select a function">
                                 <Option value="r&d">R&D</Option>
