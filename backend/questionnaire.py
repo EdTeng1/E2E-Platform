@@ -6,6 +6,15 @@ import os
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
 
+# MySQL database connection details
+db_config = {
+    'host': '10.154.77.250',
+    'user': 'root',
+    'password': '123456',
+    'database': 'genmab_e2e'
+}
+
+
 def submit_form():
     data = request.json
     try:
