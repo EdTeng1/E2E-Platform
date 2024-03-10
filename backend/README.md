@@ -1,8 +1,10 @@
+在命令行执行以下命令：
 
 ## 创建虚拟环境
 
 1. python3 -m venv backend-env
 2. . backend-env/bin/activate
+
 > for window in git bash env: . ./backend-env/Scripts/activate
 
 ## 安装依赖
@@ -21,5 +23,9 @@
 ## 创建本地表
 
 1. flask createtable
+
+## 插入数据
+
+2. flask initialtable
 
 
