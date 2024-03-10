@@ -6,33 +6,32 @@ import os
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
 
-# MySQL database connection details
-db_config = {
-    'host': '',
-    'user': '',
-    'password': '',
-    'database': ''
-}
-
-
-@app.route('/questionaire', methods=['POST'])
 def submit_form():
     data = request.json
-    print(data)
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Update your query to include new fields
-        query = (
-            "INSERT INTO form_responses (title, firstName, lastName, pronouns, institute, state, city, zip, phoneNumber, email, engagementA, functionA, notes, followUpRequested, functionB, informationRequested) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        cursor.execute(query, (
+        # First, insert into KOL_PROFILE
+        profile_query = (
+            "INSERT INTO KOL_PROFILE (Title, FirstName, LastName, Pronouns, Institute, State, City, Zip, PhoneNumber, Email) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        profile_data = (
             data['title'], data['firstName'], data['lastName'], data['pronouns'], data['institute'],
-            data['state'], data['city'], data['zip'], data['phoneNumber'], data['email'],
-            data['engagementA'], data['functionA'], data['notes'],
+            data['state'], data['city'], data['zip'], data['phoneNumber'], data['email']
+        )
+        cursor.execute(profile_query, profile_data)
+        profile_id = cursor.lastrowid  # Retrieve the id of the newly inserted profile
+
+        # Then, insert into KOL_PROFILE_ENGAGEMENT with the obtained profile_id
+        engagement_query = (
+            "INSERT INTO KOL_PROFILE_ENGAGEMENT (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        engagement_data = (
+            profile_id, data['engagementA'], data['functionA'], data['notes'],
             data['followUpRequested'], data['functionB'], data['informationRequested']
-        ))
+        )
+        cursor.execute(engagement_query, engagement_data)
 
         conn.commit()
         return jsonify({'message': 'Form submitted successfully'}), 200
