@@ -53,7 +53,7 @@ const Home: React.FC = () => {
 	const clickSearch = async (value: string) => {
 		if (!value.trim()) return;
 
-		const res = await queryKOLProfileByName(value);
+		const res = await queryKOLProfileByName(value.trim());
 
 		if (!res || res.length === 0) {
 			// direct after 1s
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
 					onSearch={clickSearch}
 				/>
 				{/* Filter部分 */}
-				<FilterBar />
+				{/* <FilterBar /> */}
 			</div>
 		</div>
 	);
