@@ -14,7 +14,7 @@ db_config = {
     'database': 'genmab_e2e'
 }
 
-
+@app.route('/questionaire', methods=['POST'])
 def submit_form():
     data = request.json
     try:
@@ -31,6 +31,7 @@ def submit_form():
         )
         cursor.execute(profile_query, profile_data)
         profile_id = cursor.lastrowid  # Retrieve the id of the newly inserted profile
+
 
         # Then, insert into KOL_PROFILE_ENGAGEMENT with the obtained profile_id
         engagement_query = (

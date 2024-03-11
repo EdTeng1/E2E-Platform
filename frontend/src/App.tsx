@@ -6,7 +6,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import App_KOLprofile from "./App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import Home from "./pages/Home/Home";
-import Questionaire from "./questionaire";
+import Questionaire from "./pages/Questionaire/questionaire";
 
 const items: MenuProps["items"] = [
 	{

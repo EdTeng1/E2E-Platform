@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Input, Button, Row, Col, Form, Card, Select } from 'antd';
+import { postData } from '../../service/http';
 import './questionaire.css';
 
 const { Title } = Typography;
@@ -39,20 +40,16 @@ export const App: React.FC = () => {
     const onFinish = async (values: FormValues) => {
         console.log('Received values of form: ', values);
         try {
-            const response = await fetch('/questionaire', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
+            // const response = await fetch('/questionaire', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(values),
+            // });
+            const response = await postData('/questionaire', values);
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const responseData = await response.json();
-            console.log('Submission successful', responseData);
+            console.log('Submission successful', response);
             // Here, you can add any follow-up actions upon successful submission
         } catch (error) {
             console.error('Failed to submit form:', error);

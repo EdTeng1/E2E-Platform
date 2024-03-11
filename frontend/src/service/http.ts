@@ -13,9 +13,16 @@ async function postData(url = "", data = {}, headers = {}) {
 			},
 			body: JSON.stringify(data),
 		});
-		return response.json();
+
+		if (!response.ok) {
+            // This will catch any response with a status code outside the range 200–299
+            throw new Error('Network response was not ok. Status: ' + response.status);
+        }
+
+		return response;
 	} catch (error) {
-		return null;
+		console.error('Error in postData:', error);
+        throw error; // Rethrow to be caught by the caller
 	}
 }
 
