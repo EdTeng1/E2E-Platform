@@ -55,10 +55,10 @@ export const App: React.FC = () => {
     const handleClose = () => {
         setIsModalVisible(false);
         if (modalContent.success) {
-            navigate('/');
-            console.log('Redirecting to main page...');
+            // navigate('/');
+            // console.log('Redirecting to main page...');
         } else {
-            form.resetFields();
+            // form.resetFields();
         }
     };
 
@@ -66,8 +66,16 @@ export const App: React.FC = () => {
         console.log('Received values of form: ', values);
         try {
             const response = await postData('/questionaire', values);
-            console.log('Submission successful', response);
-            showModal('Success', 'Your information was submitted successfully!', true);
+            const data = await response.json(); // Assuming the response is in JSON format
+            if (response.status === 200) {
+                showModal('Success', 'Your information was submitted successfully!', true);
+            } else if (response.status === 409) {
+                // Handle the special status indicating a duplicate entry
+                showModal('Duplicate Entry', data.message, false);
+            } else {
+                // Handle other errors with a generic message or based on the 'data.message'
+                showModal('Error', data.message || 'An error occurred. Please try again.', false);
+            }
         } catch (error) {
             console.error('Failed to submit form:', error);
             showModal('Error', 'Failed to submit your information. Please try again.', false);

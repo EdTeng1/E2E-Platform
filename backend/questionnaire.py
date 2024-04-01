@@ -21,7 +21,17 @@ def submit_form():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # First, insert into KOL_PROFILE
+        # Check for existing entry
+        check_query = (
+            "SELECT * FROM KOL_PROFILE WHERE FirstName = %s AND LastName = %s AND Email = %s")
+        check_data = (data['firstName'], data['lastName'], data['email'])
+        cursor.execute(check_query, check_data)
+        existing_entry = cursor.fetchone()
+
+        if existing_entry:
+            return jsonify({'message': 'An entry with the same First Name, Last Name, and Email already exists.'}), 409
+
+        # Insert into KOL_PROFILE
         profile_query = (
             "INSERT INTO KOL_PROFILE (Title, FirstName, LastName, Pronouns, Institute, State, City, Zip, PhoneNumber, Email) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
