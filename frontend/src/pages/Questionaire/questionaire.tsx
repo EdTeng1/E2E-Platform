@@ -1,5 +1,6 @@
-import React from 'react';
-import { Typography, Input, Button, Row, Col, Form, Card, Select } from 'antd';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useHistory
+import { Typography, Input, Button, Row, Col, Form, Card, Select, Modal, Spin } from 'antd';
 import { postData } from '../../service/http';
 import './questionaire.css';
 
@@ -29,31 +30,47 @@ interface FormValues {
     question3?: string;
 }
 
+interface ModalContent {
+    title: string;
+    content: string;
+    success: boolean;
+}
+
 
 export const App: React.FC = () => {
     const [form] = Form.useForm();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Loading state for form submission
+    const [modalContent, setModalContent] = useState<ModalContent>({ title: '', content: '', success: false });
+    const navigate = useNavigate();
 
-    // const isFormFilled = () => {
-    //     return form.isFieldsTouched(true) && form.getFieldsError().filter(({ errors }) => errors.length).length === 0;
-    // };
+    const showModal = (title: string, content: string, success: boolean) => {
+        setIsModalVisible(true);
+        setIsLoading(isLoading);
+        if (!isLoading) {
+            setModalContent({ title, content, success });
+        }
+    };
+
+    const handleClose = () => {
+        setIsModalVisible(false);
+        if (modalContent.success) {
+            navigate('/');
+            console.log('Redirecting to main page...');
+        } else {
+            form.resetFields();
+        }
+    };
 
     const onFinish = async (values: FormValues) => {
         console.log('Received values of form: ', values);
         try {
-            // const response = await fetch('/questionaire', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(values),
-            // });
             const response = await postData('/questionaire', values);
-
             console.log('Submission successful', response);
-            // Here, you can add any follow-up actions upon successful submission
+            showModal('Success', 'Your information was submitted successfully!', true);
         } catch (error) {
             console.error('Failed to submit form:', error);
-            // Handle submission error (e.g., show a notification to the user)
+            showModal('Error', 'Failed to submit your information. Please try again.', false);
         }
     };
 
@@ -239,6 +256,18 @@ export const App: React.FC = () => {
                     </Button>
                 </Form>
             </Card>
+            <Modal title={modalContent.title || 'Processing'} open={isModalVisible} onOk={handleClose} onCancel={handleClose} footer={null}>
+                {isLoading ? (
+                    <Spin size="large" />
+                ) : (
+                    <>
+                        <p>{modalContent.content}</p>
+                        {modalContent.success && (
+                            <Button type="primary" onClick={() => navigate('/')}>Return to Main Page</Button>
+                        )}
+                    </>
+                )}
+            </Modal>
         </main>
     );
 }
