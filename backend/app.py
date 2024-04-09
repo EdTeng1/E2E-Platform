@@ -1,52 +1,41 @@
-from datetime import datetime
-from turtle import title
-from flask import Flask, request, json, jsonify, render_template
-from flask_cors import CORS, cross_origin
-from sqlalchemy import null
-from sqlalchemy.exc import IntegrityError
-import click
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 # from config import Config
 # from . import main
-from flask_jwt_extended import (
-    JWTManager,
-    jwt_required,
-    create_access_token,
-    get_jwt_identity,
-)
-import os
-from flask import Flask
 from models import KOLProfile, db
-import queryKOLProfile
 
 app = Flask(__name__)
 
 # for cors
 CORS(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
-    app.root_path, "meetings.db"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
+#     app.root_path, "meetings.db"
+# )
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    "mysql+pymysql://root:Peter12345@localhost/kolData"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 
 
-# genetate database in local
-@app.cli.command()
-@click.option("--drop", is_flag=True, help="create data base after drop")
-def createdb(drop):
-    if drop:
-        db.drop_all()
-    db.create_all()
-    click.echo("initialized database")
+# # genetate database in local
+# @app.cli.command()
+# @click.option("--drop", is_flag=True, help="create data base after drop")
+# def createdb(drop):
+#     if drop:
+#         db.drop_all()
+#     db.create_all()
+#     click.echo("initialized database")
 
 
-# initial fake data to table
-@app.cli.command()
-def initialdb():
-    queryKOLProfile.generateData()
-    click.echo("success")
+# # initial fake data to table
+# @app.cli.command()
+# def initialdb():
+#     queryKOLProfile.generateData()
+#     click.echo("success")
 
 
 @app.route("/")
@@ -54,19 +43,25 @@ def index():
     return "Hello , This is falsk"
 
 
-@app.route("/queryAll/<table>")
-def queryall(table):
-    if table == "kol-profile":
-        return queryKOLProfile.queryAll()
+# @app.route("/queryAll/<table>")
+# def queryall(table):
+#     if table == "kol-profile":
+#         return queryKOLProfile.queryAll()
 
 
-@app.route("/queryKOLProfileByName")
-def queryKOLProfileByName():
-    name = request.args.get("name")
-    if name == None:
-        return []
+# @app.route("/queryKOLProfileByName")
+# def queryKOLProfileByName():
+#     name = request.args.get("name")
+#     if not name:
+#         return []
 
-    return queryKOLProfile.queryByName(name)
+
+#     return queryKOLProfile.queryByName(name)
+@app.route("/search", methods=["GET"])
+def search():
+    query = request.args.get("query")
+    results = KOLProfile.query.filter(KOLProfile.name.like(f"%{query}%")).all()
+    return jsonify([user.to_dict() for user in results])
 
 
 # @app.route("/testGetPost", methods=["GET", "POST"])
