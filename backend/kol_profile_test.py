@@ -27,9 +27,6 @@ def search_kol_profile(profileId):
         cursor.execute(search_query, (profileId,))
         profile = cursor.fetchone()
 
-        cursor.close()
-        conn.close()
-
         if profile:
             # Convert the profile to a dictionary or a similar structure if needed
             # Assuming profile columns follow the order in the INSERT query below
@@ -44,14 +41,37 @@ def search_kol_profile(profileId):
                 "zip": profile[7],
                 "phoneNumber": profile[8],
                 "email": profile[9],
+                "engagements": []
                 # Add more fields as necessary
             }
-            return jsonify(profile_dict), 200
+
+            # Fetch related engagements from kol_profile_engagement
+            engagement_query = "SELECT engagementA, functionA, notes, followUpRequested, functionB, informationRequested FROM kol_profile_engagement WHERE profileID = %s"
+            cursor.execute(engagement_query, (profileId,))
+            engagements = cursor.fetchall()  # Fetch all matching rows
+
+            # Append each engagement to the profile_dict
+            for engagement in engagements:
+                profile_dict["engagements"].append({
+                    "engagementA": engagement[0],
+                    "functionA": engagement[1],
+                    "notes": engagement[2],
+                    "followUpRequested": engagement[3],
+                    "functionB": engagement[4],
+                    "informationRequested": engagement[5],
+                })
         else:
             return jsonify({"message": "Profile not found"}), 404
 
     except mysql.connector.Error as e:
-        return jsonify({"message": e.msg}), 500
+        return jsonify({"message": str(e)}), 500
+
+    finally:
+        # Ensure that cursor and connection are closed properly in a finally block
+        cursor.close()
+        conn.close()
+
+    return jsonify(profile_dict), 200
     
 
 @app.route("/", defaults={"path": ""})
