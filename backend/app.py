@@ -5,7 +5,12 @@ from flask_cors import CORS
 # from . import main
 from models import KOLProfile, db
 
-app = Flask(__name__)
+from questionnaire import questionnaire_blueprint
+from kol_profile_test import kol_profile_blueprint
+
+app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
+app.register_blueprint(questionnaire_blueprint)
+app.register_blueprint(kol_profile_blueprint)
 
 # for cors
 CORS(app)
@@ -128,3 +133,15 @@ def search():
 #         return jsonify(access_token=access_token, message="Sign In Successful")
 #     else:
 #         return jsonify({"message": "Wrong Username or Password"}), 401
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
+
+
+if __name__ == "__main__":
+    app.run(host="localhost", port="5000", debug=True)

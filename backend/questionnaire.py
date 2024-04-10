@@ -1,13 +1,12 @@
 import os
-
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from flask import Blueprint
 
-import kol_profile_test
+questionnaire_blueprint = Blueprint("questionnaire", __name__)
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
-CORS(app)
 
 # MySQL database connection details
 db_config = {
@@ -17,8 +16,14 @@ db_config = {
     "database": "genmab_e2e",
 }
 
-
 @app.route("/questionaire", methods=["POST"])
+def submit_form_app():
+    return submit_form()
+
+@questionnaire_blueprint.route("/questionaire", methods=["POST"])
+def submit_form_blueprint():
+    return submit_form()
+
 def submit_form():
     data = request.json
     try:
@@ -98,4 +103,5 @@ def serve(path):
 
 
 if __name__ == "__main__":
+    CORS(app)
     app.run(host="localhost", port="5000", debug=True)

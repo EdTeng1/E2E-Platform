@@ -2,9 +2,11 @@ import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from flask import Blueprint
+
+kol_profile_blueprint = Blueprint("kol_profile", __name__) 
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
-CORS(app)
 
 # MySQL database connection details
 db_config = {
@@ -14,8 +16,14 @@ db_config = {
     "database": "genmab_e2e",
 }
 
-
 @app.route("/getProfile/<profileId>", methods=["POST"])
+def search_kol_profile_app(profileId):
+    return search_kol_profile(profileId)
+
+@kol_profile_blueprint.route("/getProfile/<profileId>", methods=["POST"])
+def search_kol_profile_blueprint(profileId):
+    return search_kol_profile(profileId)
+
 def search_kol_profile(profileId):
     data = request.json
     try:
@@ -84,4 +92,5 @@ def serve(path):
 
 
 if __name__ == "__main__":
+    CORS(app)
     app.run(host="localhost", port="5000", debug=True)
