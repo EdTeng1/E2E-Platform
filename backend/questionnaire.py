@@ -4,14 +4,16 @@ import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+import kol_profile_test
+
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 CORS(app)
 
 # MySQL database connection details
 db_config = {
-    "host": "10.154.77.250",
-    "user": "root",
-    "password": "123456",
+    "host": "genmab-e2e.cpkissg02fmv.us-west-2.rds.amazonaws.com",
+    "user": "admin",
+    "password": "e2e_platform",
     "database": "genmab_e2e",
 }
 

@@ -38,7 +38,7 @@ const SearchData: React.FC = () => {
 	console.log("searchResult: ", searchResult);
 
 	let mt = 0;
-	// const card_list = new Array();
+	const card_list = new Array();
 	// card_list.push(
 	// 	<Card
 	// 		hoverable
