@@ -45,7 +45,7 @@ const Home: React.FC = () => {
             return;
         }
         try {
-            const response = await axios.post("http://localhost:5000/search", { query }, {
+            const response = await axios.post("/search", { query }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

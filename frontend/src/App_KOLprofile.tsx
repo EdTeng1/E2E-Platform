@@ -119,7 +119,7 @@ const App: React.FC = () => {
   const saveProfile = async () => {
     try {
       console.log('Profile:', profile);
-      const response = await axios.post('http://localhost:5000/updateProfile', profile);
+      const response = await axios.post('/updateProfile', profile);
       console.log('Profile saved successfully', response.data);
       // Optionally, display a success notification to the user
     } catch (error) {
@@ -131,7 +131,7 @@ const App: React.FC = () => {
   const saveHistory = async () => {
     try {
       console.log('History:', profile.history);
-      const response = await axios.post('http://localhost:5000/updateHistory', { history: profile.history });
+      const response = await axios.post('/updateHistory', { history: profile.history });
       console.log('History saved successfully', response.data);
       // Optionally, display a success notification to the user
     } catch (error) {
