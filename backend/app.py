@@ -62,14 +62,25 @@ def index():
 
 
 #     return queryKOLProfile.queryByName(name)
-@app.route("/search", methods=["POST"])
+@app.route('/search', methods=['POST'])
 def search():
-    print(request)
-    # query = request.args.get()
-    # print("query", query)
-    # results = KOLProfile.query.filter(KOLProfile.name.like(f"%{query}%")).all()
-    # return jsonify([user.to_dict() for user in results])
-    return jsonify({"message": "search successful"})
+    if not request.json or 'query' not in request.json:
+        return jsonify({"error": "Bad request, no query provided"}), 400
+
+    query = request.json['query']
+
+    print(f"Received query: {query}")
+    if query:
+        # Simulate a database search. Here, you'd typically query your database.
+        search_results = [
+            {"name": "John Doe", "profession": "Blogger", "location": "USA"},
+            {"name": "Jane Smith", "profession": "Photographer", "location": "Canada"}
+        ]
+        # Filter results based on the query, checking if the query is part of the name.
+        filtered_results = [result for result in search_results if query.lower() in result['name'].lower()]
+        return jsonify(filtered_results)
+    else:
+        return jsonify({"error": "Empty query"}), 400
 
 
 # @app.route("/testGetPost", methods=["GET", "POST"])
