@@ -131,10 +131,10 @@ const App: React.FC = () => {
   return (
     <Layout className="layout">
       <Header>
-        <div className="logo">
+        {/* <div className="logo">
           <img src={logo} alt="KOL Profile" style={{ maxWidth: '100%', maxHeight: '64px' }} />
-        </div>
-        <Typography.Title level={3} style={{ color: 'Black', lineHeight: '56px', marginLeft: '20px' }}>KOL Profile</Typography.Title>
+        </div> */}
+        <Typography.Title level={1} style={{ color: "teal", lineHeight: '32px', marginLeft: '20px' }}>KOL Profile</Typography.Title>
       </Header>
       <Content style={{ padding: '0 50px' }}>
         <div className="site-layout-content">

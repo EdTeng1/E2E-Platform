@@ -1,48 +1,19 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.menu-bar-container {
+  position: sticky;
+  /* Keep the menu bar fixed at the top of the viewport */
+  top: 0;
+  /* Align the top edge of the menu bar with the top of the viewport */
+  left: 0;
+  /* Align the left edge of the menu bar with the left of the viewport */
+  width: 99%;
+  /* Ensure the menu bar stretches across the full viewport width */
+  z-index: 1000;
+  /* Ensure the menu bar sits above other content */
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.editable-field label {
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-
-.profile-save-button {
-  margin-top: 20px; /* 增加上边距 */
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 0 20px;
 }
