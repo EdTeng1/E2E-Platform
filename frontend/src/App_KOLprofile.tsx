@@ -13,6 +13,7 @@ import { postData } from './service/http';
 import logo from './assets/Genmab_Logo_Color_RGB.jpg';
 
 const { Header, Content, Footer } = Layout;
+const { Title } = Typography;
 
 // Define TypeScript interfaces for your data structures
 interface Score {
@@ -142,9 +143,9 @@ const App: React.FC = () => {
               <ProfilePicture imageUrl={profile.imageUrl} />
             </Col>
             <Col span={12}>
-              <Card className="Profile-Details" title="Profile Details" bordered={false}>
+              <Card className="Profile-Details" title={<Title level={4} style={{ marginBottom: 0 }}>Profile Details</Title>} bordered={false}>
                 <div className="editable-field">
-                  <label>Name: </label>
+                  <label className="profile-detail-label">Name: </label>
                   <Typography.Text
                     editable={{
                       onChange: (newText) => handleProfileChange('name', newText),
@@ -154,7 +155,7 @@ const App: React.FC = () => {
                   </Typography.Text>
                 </div>
                 <div className="editable-field">
-                  <label>Location: </label>
+                  <label className="profile-detail-label">Location: </label>
                   <Typography.Text
                     editable={{
                       onChange: (newText) => handleProfileChange('location', newText),
@@ -164,7 +165,7 @@ const App: React.FC = () => {
                   </Typography.Text>
                 </div>
                 <div className="editable-field">
-                  <label>Occupation: </label>
+                  <label className="profile-detail-label">Occupation: </label>
                   <Typography.Text
                     editable={{
                       onChange: (newText) => handleProfileChange('occupation', newText),
@@ -174,7 +175,7 @@ const App: React.FC = () => {
                   </Typography.Text>
                 </div>
                 <div className="editable-field">
-                  <label>Institution: </label>
+                  <label className="profile-detail-label">Institution: </label>
                   <Typography.Text
                     editable={{
                       onChange: (newText) => handleProfileChange('institution', newText),
@@ -184,7 +185,7 @@ const App: React.FC = () => {
                   </Typography.Text>
                 </div>
                 <div className="editable-field">
-                  <label>Overview: </label>
+                  <label className="profile-detail-label">Overview: </label>
                   <Typography.Text
                     editable={{
                       onChange: (newText) => handleProfileChange('overview', newText),
@@ -200,26 +201,48 @@ const App: React.FC = () => {
               </Card>
             </Col>
             <Col span={12}>
-              <Card className="Engagement-History" title="Engagement History" bordered={false}>
+              <Card className="Engagement-History" title={<Title level={4} style={{ marginBottom: 0 }}>Engagement History</Title>} bordered={false}>
                 {profile.history.map((engagement, index) => (
                   <Card key={index} className="engagement-card" bordered={false}>
-                    <Typography.Text strong>Engagement A:</Typography.Text> {engagement.engagementA}<br />
-                    {engagement.functionA && <>
-                      <Typography.Text strong>Function A:</Typography.Text> {engagement.functionA}<br />
-                    </>}
-                    <Typography.Text editable={{ onChange: (newText) => handleHistoryChange(index, 'notes', newText) }}>
-                      {engagement.notes || ''}
-                    </Typography.Text><br />
-                    {engagement.followUpRequested && <>
-                      <Typography.Text strong>Follow Up Requested:</Typography.Text> {engagement.followUpRequested}<br />
-                    </>}
-                    {engagement.functionB && <>
-                      <Typography.Text strong>Function B:</Typography.Text> {engagement.functionB}<br />
-                    </>}
-                    {engagement.informationRequested && <>
-                      <Typography.Text strong>Information Requested:</Typography.Text> {engagement.informationRequested}<br />
-                    </>}
+                    <Typography.Title level={5} className="engagement-title">Engagement {index + 1}</Typography.Title>
+                    <ul className="engagement-details">
+                      <li>
+                        <Typography.Text strong>Engagement A: </Typography.Text>
+                        {engagement.engagementA}
+                      </li>
+                      {engagement.functionA && (
+                        <li>
+                          <Typography.Text strong>Function A: </Typography.Text>
+                          {engagement.functionA}
+                        </li>
+                      )}
+                      <li>
+                        <Typography.Text strong>Notes: </Typography.Text>
+                        <Typography.Text editable={{ onChange: (newText) => handleHistoryChange(index, 'notes', newText) }}>
+                          {engagement.notes || 'N/A'}
+                        </Typography.Text>
+                      </li>
+                      {engagement.followUpRequested && (
+                        <li>
+                          <Typography.Text strong>Follow Up Requested: </Typography.Text>
+                          {engagement.followUpRequested}
+                        </li>
+                      )}
+                      {engagement.functionB && (
+                        <li>
+                          <Typography.Text strong>Function B: </Typography.Text>
+                          {engagement.functionB}
+                        </li>
+                      )}
+                      {engagement.informationRequested && (
+                        <li>
+                          <Typography.Text strong>Information Requested: </Typography.Text>
+                          {engagement.informationRequested}
+                        </li>
+                      )}
+                    </ul>
                   </Card>
+
                 ))}
 
                 {/* 在 App 组件的 return 方法中添加保存按钮 */}
@@ -229,12 +252,12 @@ const App: React.FC = () => {
               </Card>
             </Col>
             <Col span={12}>
-              <Card className="Dimension-Scores" title="Dimension Scores" bordered={false}>
+              <Card className="Dimension-Scores" title={<Title level={4} style={{ marginBottom: 0 }}>Dimension Scores</Title>} bordered={false}>
                 <DemoRadar />
               </Card>
             </Col>
             <Col span={12}>
-              <Card className="Ratings" title="Ratings" bordered={false}>
+              <Card className="Ratings" title={<Title level={4} style={{ marginBottom: 0 }}>Ratings</Title>} bordered={false}>
                 {/* Ratings content here... */}
               </Card>
             </Col>

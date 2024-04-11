@@ -56,4 +56,47 @@
   background-color: #ffffff !important; /* Set your desired color */
 }
 
-/* Additional styles as needed */
+/* Style for labels in the Profile Details section */
+.profile-detail-label {
+  font-weight: bold; /* Makes text bold */
+  font-size: 16px; /* Increase font size */
+  color: #004d99; /* Change font color */
+  margin-bottom: 8px; /* Add some space below the label */
+  display: block; /* Ensures the label takes its own line */
+}
+
+/* Additional styling for editable fields for consistency */
+.editable-field {
+  margin-bottom: 20px; /* Adds more space between fields */
+}
+
+/* Enhancements for the Engagement History section */
+.engagement-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.engagement-title {
+  color: #004d99; /* Adjust the color as per your theme */
+}
+
+.engagement-details {
+  list-style-type: none;
+  padding: 0;
+}
+
+.engagement-details li {
+  margin-bottom: 10px;
+}
+
+.engagement-details li:last-child {
+  margin-bottom: 0;
+}
+
+/* Additional styling for editable fields for consistency */
+.editable-field {
+  margin-bottom: 20px; /* Adds more space between fields */
+}
+
