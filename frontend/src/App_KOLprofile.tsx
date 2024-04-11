@@ -1,7 +1,8 @@
-// App.tsx
 import React, { useEffect, useState } from 'react';
+import { Typography, Card, Layout, Row, Col } from 'antd';
+
 import axios from 'axios';
-import './App.css';
+import './App_KOLprofile.css';
 import ProfilePicture from './ProfilePicture';
 import ProfileInfo from './ProfileInfo';
 import EngagementHistory from './EngagementHistory';
@@ -9,6 +10,9 @@ import DemoRadar from './DimensionScore';
 import Rating from './Rating';
 import EditableText from './EditableText';
 import { postData } from './service/http';
+import logo from './assets/Genmab_Logo_Color_RGB.jpg';
+
+const { Header, Content, Footer } = Layout;
 
 // Define TypeScript interfaces for your data structures
 interface Score {
@@ -67,8 +71,8 @@ const App: React.FC = () => {
 
         const mappedProfile: Profile = {
           imageUrl: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg&_gl=1*13kff3c*_ga*MTcyODI3MDk5My4xNzEyNzQxODk0*_ga_8JE65Q40S6*MTcxMjc0MTg5My4xLjEuMTcxMjc0MTg5OC4wLjAuMA..', // Placeholder value for now
-          name: `${profileData.firstName} ${profileData.lastName}`, // Example of combining two fields
-          location: `${profileData.city}, ${profileData.state}`, // Providing default values if needed
+          name: `${profileData.firstName} ${profileData.lastName}`,
+          location: `${profileData.city}, ${profileData.state}`,
           occupation: 'placeholder', // Placeholder value for now
           institution: profileData.institute,
           overview: 'placeholder', // Placeholder value for now
@@ -105,7 +109,7 @@ const App: React.FC = () => {
       history: updatedHistory,
     }));
   };
-  
+
 
 
 
@@ -124,84 +128,121 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="app">
-      <h1 className="title">KOL Profile</h1>
-      <div className="profile">
-        <div className="profile-picture">
-          <ProfilePicture imageUrl={profile.imageUrl} />
+    <Layout className="layout">
+      <Header>
+        <div className="logo">
+          <img src={logo} alt="KOL Profile" style={{ maxWidth: '100%', maxHeight: '64px' }} />
         </div>
-        <div className="profile-details">
-          <div className="editable-field">
-            <label>Name: </label>
-            <EditableText
-              text={profile.name}
-              onTextChange={(newText) => handleProfileChange('name', newText)}
-            />
-          </div>
-          <div className="editable-field">
-            <label>Location: </label>
-            <EditableText
-              text={profile.location}
-              onTextChange={(newText) => handleProfileChange('location', newText)}
-            />
-          </div>
-          <div className="editable-field">
-            <label>Occupation: </label>
-            <EditableText
-              text={profile.occupation}
-              onTextChange={(newText) => handleProfileChange('occupation', newText)}
-            />
-          </div>
-          <div className="editable-field">
-            <label>Institution: </label>
-            <EditableText
-              text={profile.institution}
-              onTextChange={(newText) => handleProfileChange('institution', newText)}
-            />
-          </div>
-          <div className="editable-field">
-            <label>Overview: </label>
-            <EditableText
-              text={profile.overview}
-              onTextChange={(newText) => handleProfileChange('overview', newText)}
-            />
-          </div>
-          {/* 在 App 组件的 return 方法中添加保存按钮 */}
-          <div className="profile-save-button">
-            <button onClick={saveProfile}>Save Profile</button>
-          </div>
-          <div className="editable-field">
-            <h3>Engagement History</h3>
-            {profile.history.map((engagement, index) => (
-              <div key={index} className="editable-field">
-                <div><strong>Engagement A:</strong> {engagement.engagementA}</div>
-                {engagement.functionA && <div><strong>Function A:</strong> {engagement.functionA}</div>}
-                {/* Repeat the above line for other fields as needed */}
-                <EditableText
-                  text={engagement.notes || ''} // Display and allow editing for notes
-                  onTextChange={(newText) => handleHistoryChange(index, 'notes', newText)}
-                />
-                {engagement.followUpRequested && <div><strong>Follow Up Requested:</strong> {engagement.followUpRequested}</div>}
-                {engagement.functionB && <div><strong>Function B:</strong> {engagement.functionB}</div>}
-                {engagement.informationRequested && <div><strong>Information Requested:</strong> {engagement.informationRequested}</div>}
-                {/* Add EditableText components for other fields if you want them to be editable */}
-              </div>
-            ))}
-          </div>
+        <Typography.Title level={3} style={{ color: 'Black', lineHeight: '56px', marginLeft: '20px' }}>KOL Profile</Typography.Title>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <div className="site-layout-content">
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <ProfilePicture imageUrl={profile.imageUrl} />
+            </Col>
+            <Col span={12}>
+              <Card className="Profile-Details" title="Profile Details" bordered={false}>
+                <div className="editable-field">
+                  <label>Name: </label>
+                  <Typography.Text
+                    editable={{
+                      onChange: (newText) => handleProfileChange('name', newText),
+                    }}
+                  >
+                    {profile.name}
+                  </Typography.Text>
+                </div>
+                <div className="editable-field">
+                  <label>Location: </label>
+                  <Typography.Text
+                    editable={{
+                      onChange: (newText) => handleProfileChange('location', newText),
+                    }}
+                  >
+                    {profile.location}
+                  </Typography.Text>
+                </div>
+                <div className="editable-field">
+                  <label>Occupation: </label>
+                  <Typography.Text
+                    editable={{
+                      onChange: (newText) => handleProfileChange('occupation', newText),
+                    }}
+                  >
+                    {profile.occupation}
+                  </Typography.Text>
+                </div>
+                <div className="editable-field">
+                  <label>Institution: </label>
+                  <Typography.Text
+                    editable={{
+                      onChange: (newText) => handleProfileChange('institution', newText),
+                    }}
+                  >
+                    {profile.institution}
+                  </Typography.Text>
+                </div>
+                <div className="editable-field">
+                  <label>Overview: </label>
+                  <Typography.Text
+                    editable={{
+                      onChange: (newText) => handleProfileChange('overview', newText),
+                    }}
+                  >
+                    {profile.overview}
+                  </Typography.Text>
+                </div>
+                {/* 在 App 组件的 return 方法中添加保存按钮 */}
+                <div className="profile-save-button">
+                  <button onClick={saveProfile}>Save Profile</button>
+                </div>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card className="Engagement-History" title="Engagement History" bordered={false}>
+                {profile.history.map((engagement, index) => (
+                  <Card key={index} className="engagement-card" bordered={false}>
+                    <Typography.Text strong>Engagement A:</Typography.Text> {engagement.engagementA}<br />
+                    {engagement.functionA && <>
+                      <Typography.Text strong>Function A:</Typography.Text> {engagement.functionA}<br />
+                    </>}
+                    <Typography.Text editable={{ onChange: (newText) => handleHistoryChange(index, 'notes', newText) }}>
+                      {engagement.notes || ''}
+                    </Typography.Text><br />
+                    {engagement.followUpRequested && <>
+                      <Typography.Text strong>Follow Up Requested:</Typography.Text> {engagement.followUpRequested}<br />
+                    </>}
+                    {engagement.functionB && <>
+                      <Typography.Text strong>Function B:</Typography.Text> {engagement.functionB}<br />
+                    </>}
+                    {engagement.informationRequested && <>
+                      <Typography.Text strong>Information Requested:</Typography.Text> {engagement.informationRequested}<br />
+                    </>}
+                  </Card>
+                ))}
+
+                {/* 在 App 组件的 return 方法中添加保存按钮 */}
+                <div className="profile-save-button">
+                  <button onClick={saveProfile}>Save Profile</button>
+                </div>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card className="Dimension-Scores" title="Dimension Scores" bordered={false}>
+                <DemoRadar />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card className="Ratings" title="Ratings" bordered={false}>
+                {/* Ratings content here... */}
+              </Card>
+            </Col>
+          </Row>
         </div>
-        {/* 在 App 组件的 return 方法中添加保存按钮 */}
-        <div className="profile-save-button">
-          <button onClick={saveProfile}>Save Profile</button>
-        </div>
-        <div className="dimension-score">
-          <h1 id='dscore' style={{ fontSize: '20px' }}>Dimension Scores</h1>
-          <DemoRadar />
-        </div>
-        <div className="rating">
-          {/* <Rating ratings={profile.ratings} /> */}
-        </div>
-      </div>
-    </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>KOL Profile ©2024 Created by YourName</Footer>
+    </Layout>
 
   );
 };

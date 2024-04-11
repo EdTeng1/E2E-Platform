@@ -1,53 +1,59 @@
-.app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #aaf0d1; /* Mint green background color */
+.layout {
+  min-height: 100vh;
 }
 
-.title {
-  text-align: left;
-  margin-bottom: 20px;
+.site-layout-content {
+  margin: 24px auto;
+  padding: 24px;
+  background: #ffffff;
 }
 
-.profile {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  max-width: 1800px;
+.logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: #09ab90;
+}
+
+.profile-picture img {
   width: 100%;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #fff; /* White background color */
+  max-width: 300px;
+  border-radius: 50%;
 }
 
-.profile-picture {
-  margin-right: 20px;
+.Engagement-History, .Profile-Details {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
 }
 
-.profile-details {
-  margin-right: 50px;
-  justify-content: space-between;
-  flex: 1;
+.Engagement-History:hover, .Profile-Details:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
 }
 
-.engagement-history {
-  flex: 1;
-  margin-right: 50px;
-  text-align: center;
+.Ratings {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
 }
 
-.dimension-score {
-  flex: 1;
-  margin-right: 20px;
+.Ratings:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
 }
 
-.rating {
-  flex: 1;
+.Dimension-Scores {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
 }
 
-.profile > div {
-  margin-bottom: 20px;
+.Dimension-Scores:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
 }
+
+/* Customizing the Header bar height and background color */
+.ant-layout-header {
+  height: 80px; /* Set the height as needed */
+  line-height: 80px; /* Adjust line-height for vertical centering of inner content */
+  background-color: #ffffff !important; /* Set your desired color */
+}
+
+/* Additional styles as needed */

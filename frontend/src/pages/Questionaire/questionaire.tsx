@@ -137,7 +137,7 @@ export const App: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="Institute"
+                        label="Institution"
                         name="institute"
                         rules={[{ required: true, message: 'Please input your institute!' }]}
                     >
