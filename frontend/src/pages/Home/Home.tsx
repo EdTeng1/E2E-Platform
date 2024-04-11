@@ -1,6 +1,7 @@
 import { Button, Col, Input, Row, Select, message } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { queryKOLProfileByName } from "../../service/KOLProfile";
 import "./index.css";
 
@@ -8,75 +9,54 @@ import "./index.css";
 const { Option } = Select;
 const { Search } = Input;
 
-// 示例数据，您需要根据实际情况来替换
-const specializationOptions = ["Clinical", "Care", "Administrative", "Auxiliary"];
-const regionOptions = ["Asia", "Europe", "America", "Australia"];
-const ratingsOptions = ["A", "B", "C", "D"];
-
-// Filtet组件
-const FilterBar = () => (
-	<Row gutter={16}>
-		<Col span={8}>
-			<Select defaultValue={specializationOptions[0]} style={{ width: "100%" }}>
-				{specializationOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-		<Col span={8}>
-			<Select defaultValue={regionOptions[0]} style={{ width: "100%" }}>
-				{regionOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-		<Col span={8}>
-			<Select defaultValue={ratingsOptions[0]} style={{ width: "100%" }}>
-				{ratingsOptions.map((option) => (
-					<Option key={option} value={option}>
-						{option}
-					</Option>
-				))}
-			</Select>
-		</Col>
-	</Row>
-);
-
 const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const [messageApi, contextHolder] = message.useMessage();
+	const [query, setQuery] = React.useState('');
+	// const clickSearch = async (value: string) => {
+	// 	if (!value.trim()) return;
 
-	const clickSearch = async (value: string) => {
-		if (!value.trim()) return;
+	// 	const res = await queryKOLProfileByName(value);
 
-		const res = await queryKOLProfileByName(value);
+	// 	if (!res || res.length === 0) {
+	// 		// direct after 1s
+	// 		messageApi.info("No Data!", 1).then(() => {
+	// 			navigate("/questionaire");
+	// 		});
+	// 		return;
+	// 	}
 
-		if (!res || res.length === 0) {
-			// direct after 1s
-			messageApi.info("No Data!", 1).then(() => {
-				navigate("/questionaire");
-			});
-			return;
-		}
-
-		navigate("/SearchResult", {
+	// 	navigate("/SearchResult", {
+	// 		// transform the value to new page
+	// 		// we can get the state from new page by `useLocation`
+	// 		state: {
+	// 			searchValue: value,
+	// 			searchResult: res,
+	// 		},
+	// 	});
+	// };
+	const clickSearch = async () => {
+		try {
+		  const response = await axios.post("http://localhost:5000/search", query);
+		  console.log('query:', query);
+		  console.log('response:', response);
+		  navigate("/SearchResult", {
 			// transform the value to new page
 			// we can get the state from new page by `useLocation`
 			state: {
-				searchValue: value,
-				searchResult: res,
+			  searchValue: query,
+			  searchResult: response.data,
 			},
-		});
-	};
+		  });
+		} catch (error) {
+		  console.error('Error fetching search results:', error);
+		}
+	  };
 
 	return (
 		<div>
 			{contextHolder}
-			{/* 搜索框和过滤器部分 */}
+			{/* 搜索框 */}
 			<div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
 				<div style={{ textAlign: "center", marginBottom: "20px" }}>
 					<img
@@ -86,7 +66,7 @@ const Home: React.FC = () => {
 					/>
 				</div>
 
-				<Search
+				{/* <Search
 					style={{ marginBottom: "20px" }}
 					placeholder='Search KOL Profile'
 					className='home-search'
@@ -97,9 +77,17 @@ const Home: React.FC = () => {
 					}
 					size='large'
 					onSearch={clickSearch}
+				/> */}
+				<div style={{ padding: '20px' }}>
+				<Input
+					type="text"
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					placeholder="Search for users..."
+					style={{ width: 200, marginRight: '10px' }}
 				/>
-				{/* Filter部分 */}
-				<FilterBar />
+				<Button onClick={clickSearch} type="primary">Search</Button>
+				</div>
 			</div>
 		</div>
 	);

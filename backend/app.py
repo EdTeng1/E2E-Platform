@@ -62,11 +62,14 @@ def index():
 
 
 #     return queryKOLProfile.queryByName(name)
-@app.route("/search", methods=["GET"])
+@app.route("/search", methods=["POST"])
 def search():
-    query = request.args.get("query")
-    results = KOLProfile.query.filter(KOLProfile.name.like(f"%{query}%")).all()
-    return jsonify([user.to_dict() for user in results])
+    print(request)
+    # query = request.args.get()
+    # print("query", query)
+    # results = KOLProfile.query.filter(KOLProfile.name.like(f"%{query}%")).all()
+    # return jsonify([user.to_dict() for user in results])
+    return jsonify({"message": "search successful"})
 
 
 # @app.route("/testGetPost", methods=["GET", "POST"])
