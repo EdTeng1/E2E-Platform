@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, Layout, Row, Col } from 'antd';
+import { Typography, Card, Layout, Row, Col, Button } from 'antd';
 
 import axios from 'axios';
 import './App_KOLprofile.css';
@@ -27,6 +27,8 @@ interface Rating {
 }
 
 interface Engagement {
+  profileID: string;
+  engagementID: string;
   engagementA: string;
   functionA: string;
   notes: string;
@@ -36,12 +38,13 @@ interface Engagement {
 }
 
 interface Profile {
+  id: string,
   imageUrl: string;
   name: string;
   location: string;
   occupation: string;
   institution: string;
-  overview: string;
+  email: string;
   history: Engagement[];
   scores: Score[];
   ratings: Rating[];
@@ -50,12 +53,13 @@ interface Profile {
 const App: React.FC = () => {
   const [profile, setProfile] = useState<Profile>({
     // Initialize with empty or placeholder values
+    id: '-1',
     imageUrl: '',
     name: '',
     location: '',
     occupation: '',
     institution: '',
-    overview: '',
+    email: '',
     history: [],
     scores: [],
     ratings: [],
@@ -71,12 +75,13 @@ const App: React.FC = () => {
         console.log('Profile Data:', profileData);
 
         const mappedProfile: Profile = {
+          id: profileId,
           imageUrl: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg&_gl=1*13kff3c*_ga*MTcyODI3MDk5My4xNzEyNzQxODk0*_ga_8JE65Q40S6*MTcxMjc0MTg5My4xLjEuMTcxMjc0MTg5OC4wLjAuMA..', // Placeholder value for now
           name: `${profileData.firstName} ${profileData.lastName}`,
           location: `${profileData.city}, ${profileData.state}`,
           occupation: 'placeholder', // Placeholder value for now
           institution: profileData.institute,
-          overview: 'placeholder', // Placeholder value for now
+          email: profileData.email, // Placeholder value for now
           history: profileData.engagements || [],
           scores: [],
           ratings: []
@@ -111,22 +116,29 @@ const App: React.FC = () => {
     }));
   };
 
-
-
-
   const saveProfile = async () => {
     try {
-      // 假设您的 Flask 后端运行在 localhost:5000，并且有一个名为 /updateProfile 的端点
+      console.log('Profile:', profile);
       const response = await axios.post('http://localhost:5000/updateProfile', profile);
       console.log('Profile saved successfully', response.data);
-      // 处理成功的反馈（如显示通知）
+      // Optionally, display a success notification to the user
     } catch (error) {
       console.error('Failed to save profile', error);
-      // 处理失败的反馈（如显示错误消息）
+      // Optionally, display an error notification to the user
     }
   };
 
-
+  const saveHistory = async () => {
+    try {
+      console.log('History:', profile.history);
+      const response = await axios.post('http://localhost:5000/updateHistory', { history: profile.history });
+      console.log('History saved successfully', response.data);
+      // Optionally, display a success notification to the user
+    } catch (error) {
+      console.error('Failed to save history', error);
+      // Optionally, display an error notification to the user
+    }
+  };
 
   return (
     <Layout className="layout">
@@ -185,18 +197,18 @@ const App: React.FC = () => {
                   </Typography.Text>
                 </div>
                 <div className="editable-field">
-                  <label className="profile-detail-label">Overview: </label>
+                  <label className="profile-detail-label">Email: </label>
                   <Typography.Text
                     editable={{
-                      onChange: (newText) => handleProfileChange('overview', newText),
+                      onChange: (newText) => handleProfileChange('email', newText),
                     }}
                   >
-                    {profile.overview}
+                    {profile.email}
                   </Typography.Text>
                 </div>
                 {/* 在 App 组件的 return 方法中添加保存按钮 */}
                 <div className="profile-save-button">
-                  <button onClick={saveProfile}>Save Profile</button>
+                  <Button type="primary" onClick={saveProfile}>Save Profile</Button>
                 </div>
               </Card>
             </Col>
@@ -246,8 +258,8 @@ const App: React.FC = () => {
                 ))}
 
                 {/* 在 App 组件的 return 方法中添加保存按钮 */}
-                <div className="profile-save-button">
-                  <button onClick={saveProfile}>Save Profile</button>
+                <div className="history-save-button">
+                  <Button type="primary" onClick={saveHistory}>Save History</Button>
                 </div>
               </Card>
             </Col>

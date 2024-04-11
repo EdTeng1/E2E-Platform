@@ -63,3 +63,30 @@ class Engagement(db.Model):
     kol_profile = db.relationship(
         "KOLProfile", backref=db.backref("engagements", lazy=True)
     )
+
+
+class KolProfile(db.Model):
+    __tablename__ = 'kol_profile'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    Title = db.Column(db.String(50))
+    FirstName = db.Column(db.String(100))
+    LastName = db.Column(db.String(100))
+    Pronouns = db.Column(db.String(50))
+    Institute = db.Column(db.String(255))
+    State = db.Column(db.String(100))
+    City = db.Column(db.String(100))
+    Zip = db.Column(db.String(20))
+    PhoneNumber = db.Column(db.String(20))
+    Email = db.Column(db.String(255))
+    engagements = db.relationship('KolProfileEngagement', backref='kol_profile', lazy=True)
+
+class KolProfileEngagement(db.Model):
+    __tablename__ = 'kol_profile_engagement'
+    engagementID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    profileID = db.Column(db.Integer, db.ForeignKey('kol_profile.id'), nullable=False)  # Ensure this matches the table name and primary key
+    engagementA = db.Column(db.String(255))
+    functionA = db.Column(db.String(255))
+    notes = db.Column(db.Text)
+    followUpRequested = db.Column(db.String(255))
+    functionB = db.Column(db.String(255))
+    informationRequested = db.Column(db.Text)

@@ -3,6 +3,8 @@ import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask import Blueprint
+from flask_cors import cross_origin
+from models import KolProfile, KolProfileEngagement, db
 
 kol_profile_blueprint = Blueprint("kol_profile", __name__) 
 
@@ -54,19 +56,21 @@ def search_kol_profile(profileId):
             }
 
             # Fetch related engagements from kol_profile_engagement
-            engagement_query = "SELECT engagementA, functionA, notes, followUpRequested, functionB, informationRequested FROM kol_profile_engagement WHERE profileID = %s"
+            engagement_query = "SELECT profileID, engagementID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested FROM kol_profile_engagement WHERE profileID = %s"
             cursor.execute(engagement_query, (profileId,))
             engagements = cursor.fetchall()  # Fetch all matching rows
 
             # Append each engagement to the profile_dict
             for engagement in engagements:
                 profile_dict["engagements"].append({
-                    "engagementA": engagement[0],
-                    "functionA": engagement[1],
-                    "notes": engagement[2],
-                    "followUpRequested": engagement[3],
-                    "functionB": engagement[4],
-                    "informationRequested": engagement[5],
+                    "profileID": engagement[0],
+                    "engagementID": engagement[1],
+                    "engagementA": engagement[2],
+                    "functionA": engagement[3],
+                    "notes": engagement[4],
+                    "followUpRequested": engagement[5],
+                    "functionB": engagement[6],
+                    "informationRequested": engagement[7],
                 })
         else:
             return jsonify({"message": "Profile not found"}), 404
@@ -80,7 +84,110 @@ def search_kol_profile(profileId):
         conn.close()
 
     return jsonify(profile_dict), 200
-    
+
+@app.route('/updateProfile', methods=['POST'])
+def update_profile_app():
+    return update_profile()
+
+@kol_profile_blueprint.route('/updateProfile', methods=['POST'])
+def update_profile_blueprint():
+    return update_profile()
+
+def update_profile():
+    data = request.json
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Check if the profile exists
+        cursor.execute("SELECT COUNT(*) FROM kol_profile WHERE id = %s", (data.get('id'),))
+        profile_exists = cursor.fetchone()[0] > 0
+
+        if not profile_exists:
+            return jsonify({"message": "Profile not found"}), 404
+        
+        # Splitting name into first and last names. Assuming the first word is the first name and the rest is the last name.
+        full_name = data.get('name', '').split(' ', 1)
+        first_name = full_name[0] if len(full_name) > 0 else ''
+        last_name = full_name[1] if len(full_name) > 1 else ''
+        
+        # Splitting location into city and state. Assuming the format is "City, State".
+        location = data.get('location', '').split(', ')
+        city = location[0] if len(location) > 0 else ''
+        state = location[1] if len(location) > 1 else ''
+
+        sql = """
+        UPDATE kol_profile
+        SET FirstName=%s, LastName=%s,
+            Institute=%s, State=%s, City=%s, Email=%s
+        WHERE id=%s
+        """
+        params = (
+            first_name, last_name,
+            data.get('institution'), state, city,
+            data.get('email'), data.get('id')
+        )
+        cursor.execute(sql, params)
+        conn.commit()
+
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+
+@app.route('/updateHistory', methods=['POST'])
+def update_history_app():
+    return update_history()
+
+@kol_profile_blueprint.route('/updateHistory', methods=['POST'])
+def update_history_blueprint():
+    return update_history()
+
+def update_history():
+    data = request.json
+    profile_id = data.get('profileID')
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        for engagement in data.get('history', []):
+            if 'engagementID' in engagement:
+                sql = """
+                UPDATE kol_profile_engagement
+                SET engagementA=%s, functionA=%s, notes=%s, followUpRequested=%s,
+                    functionB=%s, informationRequested=%s
+                WHERE engagementID=%s AND profileID=%s
+                """
+                params = (
+                    engagement.get('engagementA'), engagement.get('functionA'), engagement.get('notes'),
+                    engagement.get('followUpRequested'), engagement.get('functionB'), engagement.get('informationRequested'),
+                    engagement.get('engagementID'), engagement.get('profileID')
+                )
+            else:
+                sql = """
+                INSERT INTO kol_profile_engagement (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """
+                params = (
+                    engagement.get("profileID"), engagement.get('engagementA'), engagement.get('functionA'), engagement.get('notes'),
+                    engagement.get('followUpRequested'), engagement.get('functionB'), engagement.get('informationRequested')
+                )
+            cursor.execute(sql, params)
+            conn.commit()
+
+        return jsonify({"message": "History updated successfully"}), 200
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()   
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
