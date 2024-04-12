@@ -8,12 +8,12 @@ from flask_cors import CORS
 from models import KOLProfile, db
 from sqlalchemy import or_
 
-# from kol_profile_test import kol_profile_blueprint
-
+from kol_profile_test import kol_profile_blueprint
+from questionnaire import questionnaire_blueprint
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
-# app.register_blueprint(questionnaire_blueprint)
-# app.register_blueprint(kol_profile_blueprint)
+app.register_blueprint(questionnaire_blueprint)
+app.register_blueprint(kol_profile_blueprint)
 
 # for cors
 CORS(app)
