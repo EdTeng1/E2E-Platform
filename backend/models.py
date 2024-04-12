@@ -30,63 +30,58 @@ class KOLProfile(db.Model):
     title = db.Column(db.String(50), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    pronouns = db.Column(db.String(50))
-    institute = db.Column(db.String(100))
-    state = db.Column(db.String(100))
-    city = db.Column(db.String(100))
-    zip_code = db.Column(db.String(20))
-    phone_number = db.Column(db.String(20))
-    email = db.Column(db.String(100), nullable=False)
+    occupation = db.Column(db.String(100))
+    location = db.Column(db.String(100))
 
     def to_dict(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "name": self.first_name + " " + self.last_name,
             "title": self.title,
             "occupation": self.occupation,
             "location": self.location,
         }
 
 
-class Engagement(db.Model):
-    __tablename__ = "Engagement"
-    id = db.Column(db.Integer, primary_key=True)
-    kol_id = db.Column(db.Integer, db.ForeignKey("kol_profile.id"), nullable=False)
-    engagement_type = db.Column(
-        db.String(50), nullable=False
-    )  # In-Person Meeting, Virtual Meeting, etc.
-    function = db.Column(db.String(50), nullable=False)  # R&D, Medical, etc.
-    notes = db.Column(db.Text)
-    follow_up_requested = db.Column(db.Boolean, default=False)
-    information_requested = db.Column(db.Text)
-    # 使用了relationship来定义这种关系，这允许我们通过KOLProfile模型访问与之关联的Engagement记录。
-    kol_profile = db.relationship(
-        "KOLProfile", backref=db.backref("engagements", lazy=True)
-    )
+# class Engagement(db.Model):
+#     __tablename__ = "Engagement"
+#     id = db.Column(db.Integer, primary_key=True)
+#     kol_id = db.Column(db.Integer, db.ForeignKey("kol_profile.id"), nullable=False)
+#     engagement_type = db.Column(
+#         db.String(50), nullable=False
+#     )  # In-Person Meeting, Virtual Meeting, etc.
+#     function = db.Column(db.String(50), nullable=False)  # R&D, Medical, etc.
+#     notes = db.Column(db.Text)
+#     follow_up_requested = db.Column(db.Boolean, default=False)
+#     information_requested = db.Column(db.Text)
+#     # 使用了relationship来定义这种关系，这允许我们通过KOLProfile模型访问与之关联的Engagement记录。
+#     kol_profile = db.relationship(
+#         "KOLProfile", backref=db.backref("engagements", lazy=True)
+#     )
 
 
-class KolProfile(db.Model):
-    __tablename__ = 'kol_profile'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Title = db.Column(db.String(50))
-    FirstName = db.Column(db.String(100))
-    LastName = db.Column(db.String(100))
-    Pronouns = db.Column(db.String(50))
-    Institute = db.Column(db.String(255))
-    State = db.Column(db.String(100))
-    City = db.Column(db.String(100))
-    Zip = db.Column(db.String(20))
-    PhoneNumber = db.Column(db.String(20))
-    Email = db.Column(db.String(255))
-    engagements = db.relationship('KolProfileEngagement', backref='kol_profile', lazy=True)
+# class KolProfile(db.Model):
+#     __tablename__ = 'kol_profile'
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     Title = db.Column(db.String(50))
+#     FirstName = db.Column(db.String(100))
+#     LastName = db.Column(db.String(100))
+#     Pronouns = db.Column(db.String(50))
+#     Institute = db.Column(db.String(255))
+#     State = db.Column(db.String(100))
+#     City = db.Column(db.String(100))
+#     Zip = db.Column(db.String(20))
+#     PhoneNumber = db.Column(db.String(20))
+#     Email = db.Column(db.String(255))
+#     engagements = db.relationship('KolProfileEngagement', backref='kol_profile', lazy=True)
 
-class KolProfileEngagement(db.Model):
-    __tablename__ = 'kol_profile_engagement'
-    engagementID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    profileID = db.Column(db.Integer, db.ForeignKey('kol_profile.id'), nullable=False)  # Ensure this matches the table name and primary key
-    engagementA = db.Column(db.String(255))
-    functionA = db.Column(db.String(255))
-    notes = db.Column(db.Text)
-    followUpRequested = db.Column(db.String(255))
-    functionB = db.Column(db.String(255))
-    informationRequested = db.Column(db.Text)
+# class KolProfileEngagement(db.Model):
+#     __tablename__ = 'kol_profile_engagement'
+#     engagementID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     profileID = db.Column(db.Integer, db.ForeignKey('kol_profile.id'), nullable=False)  # Ensure this matches the table name and primary key
+#     engagementA = db.Column(db.String(255))
+#     functionA = db.Column(db.String(255))
+#     notes = db.Column(db.Text)
+#     followUpRequested = db.Column(db.String(255))
+#     functionB = db.Column(db.String(255))
+#     informationRequested = db.Column(db.Text)
