@@ -1,58 +1,46 @@
-from datetime import datetime
-from turtle import title
-from flask import Flask, request, json, jsonify, render_template
-from flask_cors import CORS, cross_origin
-from sqlalchemy import null
-from sqlalchemy.exc import IntegrityError
-import click
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 # from config import Config
 # from . import main
-from flask_jwt_extended import (
-    JWTManager,
-    jwt_required,
-    create_access_token,
-    get_jwt_identity,
-)
-import os
-from flask import Flask
 from models import KOLProfile, db
-import queryKOLProfile
 
-app = Flask(__name__)
+from questionnaire import questionnaire_blueprint
+from kol_profile_test import kol_profile_blueprint
+
+app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
+app.register_blueprint(questionnaire_blueprint)
+app.register_blueprint(kol_profile_blueprint)
 
 # for cors
 CORS(app)
 
-# sqlite
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + os.path.join(
 #     app.root_path, "meetings.db"
 # )
-
-# mysql+pymysql//username:passwor@host:port/database
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "mysql+pymysql://root:123456@127.0.0.1:3306/flaskdata?charset=utf8mb4"
+    "mysql+pymysql://root:Peter12345@localhost/kolData"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
 
-# genetate database in local
-@app.cli.command()
-@click.option("--drop", is_flag=True, help="create data base after drop")
-def createtable(drop):
-    if drop:
-        db.drop_all()
-    db.create_all()
-    click.echo("initialized database")
+# # genetate database in local
+# @app.cli.command()
+# @click.option("--drop", is_flag=True, help="create data base after drop")
+# def createdb(drop):
+#     if drop:
+#         db.drop_all()
+#     db.create_all()
+#     click.echo("initialized database")
 
 
-# initial fake data to table
-@app.cli.command()
-def initialtable():
-    queryKOLProfile.generateData()
-    click.echo("success")
+# # initial fake data to table
+# @app.cli.command()
+# def initialdb():
+#     queryKOLProfile.generateData()
+#     click.echo("success")
 
 
 @app.route("/")
@@ -60,19 +48,43 @@ def index():
     return "Hello , This is falsk"
 
 
-@app.route("/queryAll/<table>")
-def queryall(table):
-    if table == "kol-profile":
-        return queryKOLProfile.queryAll()
+# @app.route("/queryAll/<table>")
+# def queryall(table):
+#     if table == "kol-profile":
+#         return queryKOLProfile.queryAll()
 
 
-@app.route("/queryKOLProfileByName")
-def queryKOLProfileByName():
-    name = request.args.get("name")
-    if name == None:
-        return []
+# @app.route("/queryKOLProfileByName")
+# def queryKOLProfileByName():
+#     name = request.args.get("name")
+#     if not name:
+#         return []
 
-    return queryKOLProfile.queryByName(name)
+
+#     return queryKOLProfile.queryByName(name)
+@app.route("/search", methods=["POST"])
+def search():
+    if not request.json or "query" not in request.json:
+        return jsonify({"error": "Bad request, no query provided"}), 400
+
+    query = request.json["query"]
+
+    print(f"Received query: {query}")
+    if query:
+        # Simulate a database search. Here, you'd typically query your database.
+        search_results = [
+            {"name": "John Doe", "profession": "Blogger", "location": "USA"},
+            {"name": "Jane Smith", "profession": "Photographer", "location": "Canada"},
+        ]
+        # Filter results based on the query, checking if the query is part of the name.
+        filtered_results = [
+            result
+            for result in search_results
+            if query.lower() in result["name"].lower()
+        ]
+        return jsonify(filtered_results)
+    else:
+        return jsonify({"error": "Empty query"}), 400
 
 
 # @app.route("/testGetPost", methods=["GET", "POST"])
@@ -139,3 +151,16 @@ def queryKOLProfileByName():
 #         return jsonify(access_token=access_token, message="Sign In Successful")
 #     else:
 #         return jsonify({"message": "Wrong Username or Password"}), 401
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port="5000", debug=True)

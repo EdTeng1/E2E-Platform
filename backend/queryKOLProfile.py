@@ -1,5 +1,5 @@
 from flask import jsonify
-from models import db, KOLProfile
+from models import KOLProfile, db
 from sqlalchemy import or_
 
 

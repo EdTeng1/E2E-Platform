@@ -1,5 +1,4 @@
 // Code for the EditableText component
-//讓使用者可以編輯文字的元件
 
 import React, { useState } from 'react';
 
