@@ -3,8 +3,6 @@ import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask import Blueprint
-from flask_cors import cross_origin
-from models import KolProfile, KolProfileEngagement, db
 
 kol_profile_blueprint = Blueprint("kol_profile", __name__) 
 
@@ -200,4 +198,4 @@ def serve(path):
 
 if __name__ == "__main__":
     CORS(app)
-    app.run(host="localhost", port="5000", debug=True)
+    app.run(host="127.0.0.1", port="5000", debug=True)
