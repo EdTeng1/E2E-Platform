@@ -1,16 +1,19 @@
-from flask import Flask, jsonify, request
+import os
+
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 # from config import Config
 # from . import main
 from models import KOLProfile, db
+from sqlalchemy import or_
 
-from questionnaire import questionnaire_blueprint
-from kol_profile_test import kol_profile_blueprint
+# from kol_profile_test import kol_profile_blueprint
+
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
-app.register_blueprint(questionnaire_blueprint)
-app.register_blueprint(kol_profile_blueprint)
+# app.register_blueprint(questionnaire_blueprint)
+# app.register_blueprint(kol_profile_blueprint)
 
 # for cors
 CORS(app)
@@ -62,23 +65,24 @@ def index():
 
 
 #     return queryKOLProfile.queryByName(name)
-@app.route('/search', methods=['POST'])
+@app.route("/search", methods=["POST"])
 def search():
-    if not request.json or 'query' not in request.json:
+    if not request.json or "query" not in request.json:
         return jsonify({"error": "Bad request, no query provided"}), 400
 
-    query = request.json['query']
+    query = request.json["query"]
 
     print(f"Received query: {query}")
     if query:
+        results = KOLProfile.query.filter(
+            or_(
+                KOLProfile.first_name.ilike(f"%{query}%"),
+                KOLProfile.last_name.ilike(f"%{query}%"),
+            )
+        ).all()
+        print(f"Found {len(results)} results")
+        return jsonify([user.to_dict() for user in results])
         # Simulate a database search. Here, you'd typically query your database.
-        search_results = [
-            {"name": "John Doe", "profession": "Blogger", "location": "USA"},
-            {"name": "Jane Smith", "profession": "Photographer", "location": "Canada"}
-        ]
-        # Filter results based on the query, checking if the query is part of the name.
-        filtered_results = [result for result in search_results if query.lower() in result['name'].lower()]
-        return jsonify(filtered_results)
     else:
         return jsonify({"error": "Empty query"}), 400
 
@@ -147,6 +151,7 @@ def search():
 #         return jsonify(access_token=access_token, message="Sign In Successful")
 #     else:
 #         return jsonify({"message": "Wrong Username or Password"}), 401
+
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
