@@ -22,7 +22,7 @@ def kol_info():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
         query = (
-            "SELECt * FROM kol_profile"
+            "SELECT * FROM kol_profile"
         )
         cursor.execute(query)
         res = cursor.fetchall()
