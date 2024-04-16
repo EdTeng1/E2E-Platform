@@ -105,19 +105,6 @@ const App: React.FC = () => {
         console.error('Failed to fetch profile:', error);
       }
     };
-    // const fetchDimensionScore = async () => {
-    //   try {
-    //     //這個有點問題
-    //     const profileId = '80'
-    //     //存疑
-    //     const res = await postData(\`/getProfile/${profileId}`);
-    //     const dimensionData = await res.json();
-    //     console.log('Dimension Data:', dimensionData);
-    //     const mappedDimension: Dimension = {
-    //       name: `${dimensionData.first} ${dimensionData.last}`,
-    //     }
-    //   }
-    // }
     fetchProfile();
   }, []); // Empty dependency array means this effect runs once on mount
 
