@@ -144,26 +144,38 @@ const App: React.FC = () => {
   const saveProfile = async () => {
     try {
       console.log('Profile:', profile);
-      const response = await axios.post('/updateProfile', profile);
-      console.log('Profile saved successfully', response.data);
-      // Optionally, display a success notification to the user
+      const response = await postData('/updateProfile', profile);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Profile saved successfully', data);
+        // Optionally, display a success notification to the user
+      } else {
+        throw new Error('Failed to save profile. Status: ' + response.status);
+      }
     } catch (error) {
       console.error('Failed to save profile', error);
       // Optionally, display an error notification to the user
     }
   };
+  
 
   const saveHistory = async () => {
     try {
       console.log('History:', profile.history);
-      const response = await axios.post('/updateHistory', { history: profile.history });
-      console.log('History saved successfully', response.data);
-      // Optionally, display a success notification to the user
+      const response = await postData('/updateHistory', { history: profile.history });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('History saved successfully', data);
+        // Optionally, display a success notification to the user
+      } else {
+        throw new Error('Failed to save history. Status: ' + response.status);
+      }
     } catch (error) {
       console.error('Failed to save history', error);
       // Optionally, display an error notification to the user
     }
   };
+  
 
   return (
     <Layout className="layout">
