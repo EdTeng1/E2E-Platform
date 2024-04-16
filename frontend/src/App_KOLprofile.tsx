@@ -105,7 +105,7 @@ const App: React.FC = () => {
     }));
   };
 
-  //處理engagement hisory的變化
+  //處理engagement history的變化
   const handleHistoryChange = (index: number, field: keyof Engagement, newValue: string) => {
     const updatedHistory = profile.history.map((engagement, idx) =>
       idx === index ? { ...engagement, [field]: newValue } : engagement
