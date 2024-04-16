@@ -1,33 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Radar } from '@ant-design/plots';
+import { postData } from './service/http';
 
 const DemoRadar = () => {
   const [data, setData] = useState([]);
 
 
   useEffect(() => {
-    asyncFetch();
+    const fetchScores = async () => {
+      const profileId = '80';
+      const response = await postData(`/getProfile/${profileId}`); // 你的后端API路径
+      const jsonData = await response.json();
+      if (jsonData && jsonData.scores) {
+        setData(jsonData.scores);
+      }
+    };
+
+    fetchScores();
   }, []);
 
-  const asyncFetch = () => {
-    fetch('/radar.json')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
+
+
   const config = {
     data,
-    xField: 'item',
-    yField: 'score',
+    xField: 'aspect',
+    yField: 'value',
     seriesField: 'user',
     meta: {
       score: {
         alias: '分数',
         min: 0,
-        max: 80,
+        max: 100,
       },
     },
     xAxis: {
