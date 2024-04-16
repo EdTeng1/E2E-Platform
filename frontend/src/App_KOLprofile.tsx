@@ -1,6 +1,7 @@
 // App.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import './App.css';
 import ProfilePicture from './ProfilePicture';
 import ProfileInfo from './ProfileInfo';
@@ -32,62 +33,76 @@ interface Profile {
   ratings: Rating[];
 }
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 const App: React.FC = () => {
-  const [profile, setProfile] = useState<Profile>({
-    imageUrl: 'https://pic1.zhimg.com/80/v2-5267ed226b0e31ea05cbb7b53eaab494_1440w.webp',
-    name: 'John Doe',
-    location: 'New Jersey, USA',
-    occupation: 'Patient Advocacy',
-    institution: 'Genmab',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    history: ['Research Scientists Meeting on Nov 10 2023', 'Move to Phase 2', 'Responsible physicians come in conducting research'],
-    scores: [
-      { dimension: 'Congress', score: 80 },
-      { dimension: 'Trials', score: 70 },
-      { dimension: 'Patients', score: 90 },
-      { dimension: 'Digital Posts', score: 20 },
-      { dimension: 'Guidelines', score: 5 },
-      { dimension: 'Claims', score: 15 },
-      { dimension: 'Grants', score: 60 },
-    ],
-    ratings: [
-      { dimension: 'Medical', rating: 4 },
-      { dimension: 'Commercial', rating: 3 },
-      { dimension: 'Clinical', rating: 5 },
-      { dimension: 'Other Area', rating: 3 },
-      { dimension: 'Other Area', rating: 3 },
-    ],
-  });
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const query = useQuery();
+  const name = query.get('name');
 
-  //處理個人profile的變化
+  useEffect(() => {
+    if (name) {
+      axios.get<Profile>(`http://localhost:3001/getProfile?name=${encodeURIComponent(name)}`)
+        .then(response => {
+          setProfile(response.data);
+        })
+        .catch(error => {
+          console.error('Failed to fetch profile', error);
+        });
+    }
+  }, [name]);
+
+  if (!profile) {
+    return <div>Loading profile...</div>;
+  }
+
   const handleProfileChange = (field: keyof Profile, value: string | string[]) => {
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [field]: value,
-    }));
+    setProfile((prevProfile) => {
+      // 如果 prevProfile 是 null，我们不能直接更新它
+      if (prevProfile === null) {
+        // 根据实际情况处理，这里是一个示例
+        // 可能需要根据你的应用逻辑返回一个有效的 Profile 对象
+        return null; // 或者返回一个具有默认值的 Profile 对象
+      }
+      // 如果 prevProfile 不是 null，更新特定字段
+      return {
+        ...prevProfile,
+        [field]: value,
+      };
+    });
   };
 
-  //處理engagement hisory的變化
   const handleHistoryChange = (index: number, newText: string) => {
-    const updatedHistory = [...profile.history];
-    updatedHistory[index] = newText;
-    setProfile(prevProfile => ({
-      ...prevProfile,
-      history: updatedHistory,
-    }));
+    setProfile(prevProfile => {
+      // 如果 prevProfile 是 null，则不进行任何操作
+      if (prevProfile === null) {
+        return null;
+      }
+  
+      // 由于 prevProfile 确定非 null，这里可以放心地更新 history
+      const updatedHistory = [...prevProfile.history];
+      updatedHistory[index] = newText;
+  
+      // 返回更新后的 profile，这里不会有任何属性是 undefined
+      // 因为我们是基于 prevProfile 的现有值进行更新
+      return {
+        ...prevProfile,
+        history: updatedHistory,
+      };
+    });
   };
-
+  
 
   const saveProfile = async () => {
+    if (!profile) return; // Ensure profile is not null
     try {
-      // 假设您的 Flask 后端运行在 localhost:5000，并且有一个名为 /updateProfile 的端点
-      const response = await axios.post('http://localhost:5000/updateProfile', profile);
+      const response = await axios.post('http://localhost:3001/updateProfile', profile);
       console.log('Profile saved successfully', response.data);
-      // 处理成功的反馈（如显示通知）
+      // 处理成功的反馈
     } catch (error) {
       console.error('Failed to save profile', error);
-      // 处理失败的反馈（如显示错误消息）
+      // 处理失败的反馈
     }
   };
 

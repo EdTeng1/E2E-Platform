@@ -89,7 +89,7 @@ const SearchData: React.FC = () => {
                         <p>Score: 80</p>
                     </Card>
                 ))} */
-								card_list.slice(0, 4)
+							//	card_list.slice(0, 4)
 							}
 						</div>
 						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
@@ -105,7 +105,7 @@ const SearchData: React.FC = () => {
                         <p>Score: 80</p>
                     </Card>
                 ))} */
-								card_list.slice(4, 8)
+							//	card_list.slice(4, 8)
 							}
 						</div>
 						{/* 分页 */}
@@ -118,4 +118,4 @@ const SearchData: React.FC = () => {
 	);
 };
 
-export default SearchData;
+ export default SearchData;
