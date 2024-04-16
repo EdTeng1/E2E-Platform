@@ -25,7 +25,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
     "mysql+pymysql://root:Peter12345@localhost/kolData"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
 
