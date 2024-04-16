@@ -1,22 +1,29 @@
 import os
-
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from flask import Blueprint
+
+questionnaire_blueprint = Blueprint("questionnaire", __name__)
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
-CORS(app)
 
 # MySQL database connection details
 db_config = {
-    "host": "10.154.77.250",
-    "user": "root",
-    "password": "123456",
+    "host": "genmab-e2e.cpkissg02fmv.us-west-2.rds.amazonaws.com",
+    "user": "admin",
+    "password": "e2e_platform",
     "database": "genmab_e2e",
 }
 
-
 @app.route("/questionaire", methods=["POST"])
+def submit_form_app():
+    return submit_form()
+
+@questionnaire_blueprint.route("/questionaire", methods=["POST"])
+def submit_form_blueprint():
+    return submit_form()
+
 def submit_form():
     data = request.json
     try:
@@ -96,4 +103,5 @@ def serve(path):
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port="5000", debug=True)
+    CORS(app)
+    app.run(host="127.0.0.1", port="5000", debug=True)

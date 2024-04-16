@@ -34,11 +34,11 @@ const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
 const SearchData: React.FC = () => {
 	const location = useLocation();
 
-	const searchResult = location.state;
-	console.log("searchResult: ", searchResult);
+	const Result = location.state;
+	console.log("searchResult: ", Result);
+	console.log("searchResult: ", Result.searchResult[0]);
 
 	let mt = 0;
-	// const card_list = new Array();
 	// card_list.push(
 	// 	<Card
 	// 		hoverable
@@ -77,37 +77,22 @@ const SearchData: React.FC = () => {
 					<Content style={{ padding: "0 24px", minHeight: 280 }}>
 						{/* 卡片内容 */}
 						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
-							{
-								/* {new Array(9).fill(null).map((_, index) => (
-                    <Card
-                        hoverable
-                        style={{ width: 240, marginBottom: 16 }}
-                        cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                        key={index}
-                    >
-                        <Meta title="User Name" description="User Occupation" />
-                        <p>Score: 80</p>
-                    </Card>
-                ))} */
-							//	card_list.slice(0, 4)
-							}
+						{Result.searchResult.map((user:any, index:any) => (
+                                <Card
+                                    key={index}
+                                    hoverable
+                                    style={{
+                                        width: 240,
+                                        margin: '0 10px 20px 10px'
+                                    }}
+                                >
+                                    <Meta title={`${user.name}`} description={`Title: ${user.title}`} />
+                                    <p>{`Location: ${user.location}`}</p>
+                                    <p>{`Occupation: ${user.occupation}`}</p>
+                                </Card>
+                            ))}
 						</div>
-						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
-							{
-								/* {new Array(9).fill(null).map((_, index) => (
-                    <Card
-                        hoverable
-                        style={{ width: 240, marginBottom: 16 }}
-                        cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                        key={index}
-                    >
-                        <Meta title="User Name" description="User Occupation" />
-                        <p>Score: 80</p>
-                    </Card>
-                ))} */
-							//	card_list.slice(4, 8)
-							}
-						</div>
+
 						{/* 分页 */}
 						<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />
 					</Content>
@@ -118,4 +103,4 @@ const SearchData: React.FC = () => {
 	);
 };
 
- export default SearchData;
+export default SearchData;

@@ -2,46 +2,32 @@ import { AppstoreOutlined, MailOutlined, UserOutlined } from "@ant-design/icons"
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import React, { useState } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes, Link } from "react-router-dom";
 import App_KOLprofile from "./App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import Home from "./pages/Home/Home";
 import Questionaire from "./pages/Questionaire/questionaire";
+import logo from './assets/Genmab_Logo_Color_RGB.jpg';
+import './App.css';
 
 const items: MenuProps["items"] = [
 	{
-		label: (
-			<a href='./Home' target='_blank' rel='noopener noreferrer'>
-				Home
-			</a>
-		), // Use Link in label for navigation
+		label: <Link to="/Home">Home</Link>,
 		key: "home",
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: (
-			<a href='./SearchResult' target='_blank' rel='noopener noreferrer'>
-				Search Result
-			</a>
-		), // Use Link in label for navigation
+		label: <Link to="/SearchResult">Search Result</Link>,
 		key: "searchResult",
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: (
-			<a href='./questionaire' target='_blank' rel='noopener noreferrer'>
-				Questionaire
-			</a>
-		), // Use Link in label for navigation
+		label: <Link to="/questionaire">Questionaire</Link>,
 		key: "questionaire",
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: (
-			<a href='./App_KOLprofile' target='_blank' rel='noopener noreferrer'>
-				KOL Profile
-			</a>
-		), // Use Link in label for navigation
+		label: <Link to="/App_KOLprofile">KOL Profile</Link>,
 		key: "kolProfile",
 		icon: <AppstoreOutlined />,
 	},
@@ -74,7 +60,7 @@ const items: MenuProps["items"] = [
 ];
 
 const App: React.FC = () => {
-	const [current, setCurrent] = useState("mail");
+	const [current, setCurrent] = useState("home");
 
 	const onClick: MenuProps["onClick"] = (e) => {
 		console.log("click ", e);
@@ -85,13 +71,14 @@ const App: React.FC = () => {
 		<Router>
 			<div>
 				{/* Menu part */}
-				<Menu
-					onClick={onClick}
-					selectedKeys={[current]}
-					mode='horizontal'
-					items={items}
-					style={{ display: "flex", justifyContent: "flex-end" }}
-				/>
+				<div className="menu-bar-container">
+					{/* Logo part */}
+					<a href="https://www.genmab.com" target="_blank" rel="noopener noreferrer">
+						<img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
+					</a>
+					{/* Menu part */}
+					<Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+				</div>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/Home' element={<Home />} />

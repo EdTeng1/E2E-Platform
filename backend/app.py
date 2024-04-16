@@ -1,11 +1,19 @@
-from flask import Flask, jsonify, request
+import os
+
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 # from config import Config
 # from . import main
 from models import KOLProfile, db
+from sqlalchemy import or_
 
-app = Flask(__name__)
+from kol_profile_test import kol_profile_blueprint
+from questionnaire import questionnaire_blueprint
+
+app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
+app.register_blueprint(questionnaire_blueprint)
+app.register_blueprint(kol_profile_blueprint)
 
 # for cors
 CORS(app)
@@ -57,11 +65,26 @@ def index():
 
 
 #     return queryKOLProfile.queryByName(name)
-@app.route("/search", methods=["GET"])
+@app.route("/search", methods=["POST"])
 def search():
-    query = request.args.get("query")
-    results = KOLProfile.query.filter(KOLProfile.name.like(f"%{query}%")).all()
-    return jsonify([user.to_dict() for user in results])
+    if not request.json or "query" not in request.json:
+        return jsonify({"error": "Bad request, no query provided"}), 400
+
+    query = request.json["query"]
+
+    print(f"Received query: {query}")
+    if query:
+        results = KOLProfile.query.filter(
+            or_(
+                KOLProfile.first_name.ilike(f"%{query}%"),
+                KOLProfile.last_name.ilike(f"%{query}%"),
+            )
+        ).all()
+        print(f"Found {len(results)} results")
+        return jsonify([user.to_dict() for user in results])
+        # Simulate a database search. Here, you'd typically query your database.
+    else:
+        return jsonify({"error": "Empty query"}), 400
 
 
 # @app.route("/testGetPost", methods=["GET", "POST"])
@@ -128,3 +151,16 @@ def search():
 #         return jsonify(access_token=access_token, message="Sign In Successful")
 #     else:
 #         return jsonify({"message": "Wrong Username or Password"}), 401
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port="5000", debug=True)
