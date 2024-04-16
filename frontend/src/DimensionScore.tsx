@@ -9,9 +9,10 @@ const DemoRadar = () => {
 
   useEffect(() => {
     const fetchScores = async () => {
-      const profileId = '80';
+      const profileId = '79';
       const response = await postData(`/getProfile/${profileId}`); // 你的后端API路径
       const jsonData = await response.json();
+      console.log("Scores Data: ", jsonData.scores)
       if (jsonData && jsonData.scores) {
         setData(jsonData.scores);
       }
