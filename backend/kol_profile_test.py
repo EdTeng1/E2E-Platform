@@ -24,6 +24,7 @@ def search_kol_profile_app(profileId):
 def search_kol_profile_blueprint(profileId):
     return search_kol_profile(profileId)
 
+
 def search_kol_profile(profileId):
     data = request.json
     try:
@@ -49,7 +50,8 @@ def search_kol_profile(profileId):
                 "zip": profile[7],
                 "phoneNumber": profile[8],
                 "email": profile[9],
-                "engagements": []
+                "engagements": [],
+                "dimensions": []
                 # Add more fields as necessary
             }
 
@@ -70,6 +72,34 @@ def search_kol_profile(profileId):
                     "functionB": engagement[6],
                     "informationRequested": engagement[7],
                 })
+
+            # profile_first = profile[1]
+            # profile_last = profile[2]
+            # dimension_query = "SELECT * FROM kol_score WHERE First = %s AND Last = %s "
+            # cursor.execute(dimension_query,(profile_first, profile_last))
+            # dimensions = cursor.fetchall()
+
+            # Append each dimension into the dimension_dixt
+            # for dimension in dimensions:
+            #     profile_dict["dimensions"].append({
+            #         "title": dimension[0],
+            #         "First": dimension[1],
+            #         "Last": dimension[2],
+            #         "Institution": dimension[3],
+            #         "City": dimension[4],
+            #         "State": dimension[5],
+            #         "Claims": dimension[6],
+            #         "Patients": dimension[7],
+            #         "Publications": dimension[8],
+            #         "Guidelines": dimension[9],
+            #         "Trials": dimension[10],
+            #         "Grants": dimension[11],
+            #         "Congress": dimension[12],
+            #         "Digital_Posts": dimension[13],
+            #         "Speaker_Payments": dimension[14],
+            #         "Total": dimension[15],
+            #     })
+
         else:
             return jsonify({"message": "Profile not found"}), 404
 
