@@ -9,36 +9,12 @@ import "./index.css";
 const { Option } = Select;
 const { Search } = Input;
 
-interface query {
-	value: string;
-}
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const [messageApi, contextHolder] = message.useMessage();
 	const [query, setQuery] = React.useState('');
-	// const clickSearch = async (value: string) => {
-	// 	if (!value.trim()) return;
 
-	// 	const res = await queryKOLProfileByName(value);
-
-	// 	if (!res || res.length === 0) {
-	// 		// direct after 1s
-	// 		messageApi.info("No Data!", 1).then(() => {
-	// 			navigate("/questionaire");
-	// 		});
-	// 		return;
-	// 	}
-
-	// 	navigate("/SearchResult", {
-	// 		// transform the value to new page
-	// 		// we can get the state from new page by `useLocation`
-	// 		state: {
-	// 			searchValue: value,
-	// 			searchResult: res,
-	// 		},
-	// 	});
-	// };
 	const clickSearch = async () => {
 		if (!query.trim()) {
 			messageApi.info("Please enter a search term!");

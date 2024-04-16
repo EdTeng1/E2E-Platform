@@ -3,10 +3,8 @@ import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask import Blueprint
-from flask_cors import cross_origin
-from models import KolProfile, KolProfileEngagement, db
 
-kol_profile_blueprint = Blueprint("kol_profile", __name__) 
+kol_profile_blueprint = Blueprint("kol_profile", __name__)
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 
@@ -105,12 +103,12 @@ def update_profile():
 
         if not profile_exists:
             return jsonify({"message": "Profile not found"}), 404
-        
+
         # Splitting name into first and last names. Assuming the first word is the first name and the rest is the last name.
         full_name = data.get('name', '').split(' ', 1)
         first_name = full_name[0] if len(full_name) > 0 else ''
         last_name = full_name[1] if len(full_name) > 1 else ''
-        
+
         # Splitting location into city and state. Assuming the format is "City, State".
         location = data.get('location', '').split(', ')
         city = location[0] if len(location) > 0 else ''
@@ -187,7 +185,7 @@ def update_history():
     finally:
         if conn.is_connected():
             cursor.close()
-            conn.close()   
+            conn.close()
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
@@ -200,4 +198,4 @@ def serve(path):
 
 if __name__ == "__main__":
     CORS(app)
-    app.run(host="localhost", port="5000", debug=True)
+    app.run(host="127.0.0.1", port="5000", debug=True)

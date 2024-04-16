@@ -1,12 +1,15 @@
-from flask import Flask, jsonify, request
+import os
+
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 # from config import Config
 # from . import main
 from models import KOLProfile, db
+from sqlalchemy import or_
 
-from questionnaire import questionnaire_blueprint
 from kol_profile_test import kol_profile_blueprint
+from questionnaire import questionnaire_blueprint
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
@@ -71,18 +74,15 @@ def search():
 
     print(f"Received query: {query}")
     if query:
+        results = KOLProfile.query.filter(
+            or_(
+                KOLProfile.first_name.ilike(f"%{query}%"),
+                KOLProfile.last_name.ilike(f"%{query}%"),
+            )
+        ).all()
+        print(f"Found {len(results)} results")
+        return jsonify([user.to_dict() for user in results])
         # Simulate a database search. Here, you'd typically query your database.
-        search_results = [
-            {"name": "John Doe", "profession": "Blogger", "location": "USA"},
-            {"name": "Jane Smith", "profession": "Photographer", "location": "Canada"},
-        ]
-        # Filter results based on the query, checking if the query is part of the name.
-        filtered_results = [
-            result
-            for result in search_results
-            if query.lower() in result["name"].lower()
-        ]
-        return jsonify(filtered_results)
     else:
         return jsonify({"error": "Empty query"}), 400
 

@@ -12,25 +12,25 @@ import './App.css';
 
 const items: MenuProps["items"] = [
 	{
-        label: <Link to="/Home">Home</Link>,
-        key: "home",
-        icon: <AppstoreOutlined />,
-    },
-    {
-        label: <Link to="/SearchResult">Search Result</Link>,
-        key: "searchResult",
-        icon: <AppstoreOutlined />,
-    },
-    {
-        label: <Link to="/questionaire">Questionaire</Link>,
-        key: "questionaire",
-        icon: <AppstoreOutlined />,
-    },
-    {
-        label: <Link to="/App_KOLprofile">KOL Profile</Link>,
-        key: "kolProfile",
-        icon: <AppstoreOutlined />,
-    },
+		label: <Link to="/Home">Home</Link>,
+		key: "home",
+		icon: <AppstoreOutlined />,
+	},
+	{
+		label: <Link to="/SearchResult">Search Result</Link>,
+		key: "searchResult",
+		icon: <AppstoreOutlined />,
+	},
+	{
+		label: <Link to="/questionaire">Questionaire</Link>,
+		key: "questionaire",
+		icon: <AppstoreOutlined />,
+	},
+	{
+		label: <Link to="/App_KOLprofile">KOL Profile</Link>,
+		key: "kolProfile",
+		icon: <AppstoreOutlined />,
+	},
 	{
 		label: "Contact",
 		key: "mail",
@@ -73,8 +73,9 @@ const App: React.FC = () => {
 				{/* Menu part */}
 				<div className="menu-bar-container">
 					{/* Logo part */}
-					<img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
-
+					<a href="https://www.genmab.com" target="_blank" rel="noopener noreferrer">
+						<img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
+					</a>
 					{/* Menu part */}
 					<Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
 				</div>
