@@ -35,6 +35,7 @@ def search_kol_profile(profileId):
         cursor.execute(search_query, (profileId,))
         profile = cursor.fetchone()
 
+
         if profile:
             # Convert the profile to a dictionary or a similar structure if needed
             # Assuming profile columns follow the order in the INSERT query below
@@ -49,9 +50,27 @@ def search_kol_profile(profileId):
                 "zip": profile[7],
                 "phoneNumber": profile[8],
                 "email": profile[9],
-                "engagements": []
+                "engagements": [],
+                "scores":[]
                 # Add more fields as necessary
             }
+
+            profile_name = profile[1]
+
+            scoreinfo_query = "SELECT Claims, Patients, Publications, Guidelines, Trials, Grants, Congress, Digital_Posts FROM kol_score WHERE first = %s"
+            cursor.execute(scoreinfo_query, (profile_name,))
+            scores = cursor.fetchone()  # 使用 fetchone() 因为我们假设每个 profileId 只有一条得分记录
+
+            if scores:  # 确保有得分信息存在
+                profile_dict["scores"].append({"aspect": "Claims", "value": scores[0]})
+                profile_dict["scores"].append({"aspect": "Patients", "value": scores[1]})
+                profile_dict["scores"].append({"aspect": "Publications", "value": scores[2]})
+                profile_dict["scores"].append({"aspect": "Guidelines", "value": scores[3]})
+                profile_dict["scores"].append({"aspect": "Trials", "value": scores[4]})
+                profile_dict["scores"].append({"aspect": "Grants", "value": scores[5]})
+                profile_dict["scores"].append({"aspect": "Congress", "value": scores[6]})
+                profile_dict["scores"].append({"aspect": "Digital_Posts", "value": scores[7]})
+
 
             # Fetch related engagements from kol_profile_engagement
             engagement_query = "SELECT profileID, engagementID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested FROM kol_profile_engagement WHERE profileID = %s"
