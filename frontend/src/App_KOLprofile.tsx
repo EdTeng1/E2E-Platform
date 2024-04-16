@@ -16,9 +16,22 @@ const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 // Define TypeScript interfaces for your data structures
-interface Score {
-  dimension: string;
-  score: number;
+interface Dimension {
+  title: string;
+  first: string;
+  last: string;
+  institution: string;
+  city: string;
+  state: string;
+  claims: number;
+  patients: number;
+  publications: number;
+  guidelines: number;
+  trials: number;
+  grants: number;
+  congress: number;
+  digital_posts: number;
+  speaker_pay: number;
 }
 
 interface Rating {
@@ -46,7 +59,7 @@ interface Profile {
   institution: string;
   email: string;
   history: Engagement[];
-  scores: Score[];
+  scores: Dimension[];
   ratings: Rating[];
 }
 
@@ -92,7 +105,19 @@ const App: React.FC = () => {
         console.error('Failed to fetch profile:', error);
       }
     };
-
+    const fetchDimensionScore = async (): => {
+      try {
+        //這個有點問題
+        const profileId = '80'
+        //存疑
+        const res = await postData(\`/getProfile/${profileId}`);
+        const dimensionData = await res.json();
+        console.log('Dimension Data:', dimensionData);
+        const mappedDimension: Dimension = {
+          name: `${dimensionData.first} ${dimensionData.last}`,
+        }
+      }
+    }
     fetchProfile();
   }, []); // Empty dependency array means this effect runs once on mount
 
