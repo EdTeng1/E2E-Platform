@@ -22,7 +22,7 @@ CORS(app)
 #     app.root_path, "meetings.db"
 # )
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "mysql+pymysql://root:Peter12345@localhost/kolData"
+    "mysql+pymysql://admin:e2e_platform@genmab-e2e.cpkissg02fmv.us-west-2.rds.amazonaws.com:3306/genmab_e2e"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
@@ -67,6 +67,7 @@ def index():
 #     return queryKOLProfile.queryByName(name)
 @app.route("/search", methods=["POST"])
 def search():
+    print("Received search request")
     if not request.json or "query" not in request.json:
         return jsonify({"error": "Bad request, no query provided"}), 400
 

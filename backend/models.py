@@ -25,13 +25,24 @@ class KOL(db.Model):
 
 
 class KOLProfile(db.Model):
-    __tablename__ = "KOLProfile"
+    __tablename__ = "kol_profile"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    occupation = db.Column(db.String(100))
-    location = db.Column(db.String(100))
+    institution = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(100))
+    claims = db.Column(db.Float)
+    patients = db.Column(db.Float)
+    publications = db.Column(db.Float)
+    guidelines = db.Column(db.Float)
+    trials = db.Column(db.Float)
+    grants = db.Column(db.Float)
+    congress = db.Column(db.Float)
+    digital_posts = db.Column(db.Float)
+    speaker_payments = db.Column(db.Float)
+    total = db.Column(db.Float)
 
     def to_dict(self):
         return {
