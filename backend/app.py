@@ -1,16 +1,19 @@
 import os
 
 from flask import Flask, jsonify, request, send_from_directory
+
 from flask_cors import CORS, cross_origin
+from kol_profile_test import kol_profile_blueprint
+
 
 # from config import Config
 # from . import main
-from models import KOLProfile, db
-from sqlalchemy import or_
-
-from kol_profile_test import kol_profile_blueprint
+from models import KOLProfile, KOLScore, db
 from questionnaire import questionnaire_blueprint
 from register import loginSignup_blueprint
+
+from sqlalchemy import and_, or_
+
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
@@ -73,18 +76,49 @@ def search():
     if not request.json or "query" not in request.json:
         return jsonify({"error": "Bad request, no query provided"}), 400
 
-    query = request.json["query"]
+    query = request.json["query"].strip()
 
     print(f"Received query: {query}")
     if query:
-        results = KOLProfile.query.filter(
-            or_(
-                KOLProfile.first_name.ilike(f"%{query}%"),
-                KOLProfile.last_name.ilike(f"%{query}%"),
+        results = (
+            db.session.query(
+                KOLProfile.id,
+                KOLProfile.Title,
+                KOLProfile.FirstName,
+                KOLProfile.LastName,
+                KOLProfile.State,
+                KOLScore.Total,
             )
-        ).all()
+            .join(
+                KOLScore,
+                and_(
+                    KOLProfile.FirstName == KOLScore.First,
+                    KOLProfile.LastName == KOLScore.Last,
+                ),
+            )
+            .filter(
+                or_(
+                    KOLProfile.FirstName.contains(query),
+                    KOLProfile.LastName.contains(query),
+                )
+            )
+            .all()
+        )
         print(f"Found {len(results)} results")
-        return jsonify([user.to_dict() for user in results])
+
+        # Formatting the results into a list of dicts
+        response = [
+            {
+                "id": result[0],
+                "title": result[1],
+                "name": f"{result[2]} {result[3]}",
+                "location": f"{result[4]}",
+                "score": int(result[5]),
+            }
+            for result in results
+        ]
+        print(response)
+        return jsonify(response)
         # Simulate a database search. Here, you'd typically query your database.
     else:
         return jsonify({"error": "Empty query"}), 400

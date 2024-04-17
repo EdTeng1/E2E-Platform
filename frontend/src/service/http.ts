@@ -4,6 +4,7 @@ const commonUrl = packageJson.proxy;
 
 async function postData(url = "", data = {}, headers = {}) {
 	try {
+		console.log('commonUrl:', commonUrl+url);
 		const response = await fetch(commonUrl + url, {
 			method: "POST",
 			headers: {
