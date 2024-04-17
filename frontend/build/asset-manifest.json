@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.0f27c330.css",
-    "main.js": "/static/js/main.93812935.js",
+    "main.css": "/static/css/main.2e8086af.css",
+    "main.js": "/static/js/main.cbddbaf1.js",
     "static/js/453.5fbd8385.chunk.js": "/static/js/453.5fbd8385.chunk.js",
     "static/media/Genmab_Logo_Color_RGB.jpg": "/static/media/Genmab_Logo_Color_RGB.ac5bfff36dc2bc51a46e.jpg",
     "index.html": "/index.html",
-    "main.0f27c330.css.map": "/static/css/main.0f27c330.css.map",
-    "main.93812935.js.map": "/static/js/main.93812935.js.map",
+    "main.2e8086af.css.map": "/static/css/main.2e8086af.css.map",
+    "main.cbddbaf1.js.map": "/static/js/main.cbddbaf1.js.map",
     "453.5fbd8385.chunk.js.map": "/static/js/453.5fbd8385.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0f27c330.css",
-    "static/js/main.93812935.js"
+    "static/css/main.2e8086af.css",
+    "static/js/main.cbddbaf1.js"
   ]
 }
