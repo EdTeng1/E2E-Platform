@@ -2,7 +2,7 @@ import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/
 import type { MenuProps } from "antd";
 import { Card, Layout, Menu, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -35,10 +35,16 @@ const SearchData: React.FC = () => {
 	const location = useLocation();
 
 	const Result = location.state;
+    const navigate = useNavigate();
 	console.log("searchResult: ", Result);
-	console.log("searchResult: ", Result.searchResult[0]);
+	console.log("First searchResult: ", Result.searchResult[0]);
+    console.log("1st user id", Result.searchResult[0].id);
 
 	let mt = 0;
+    const handleCardClick = (userId: number) => {
+        navigate(`/App_KOLprofile/${userId}`);
+    };
+    
 	// card_list.push(
 	// 	<Card
 	// 		hoverable
@@ -85,10 +91,11 @@ const SearchData: React.FC = () => {
                                         width: 240,
                                         margin: '0 10px 20px 10px'
                                     }}
+                                    onClick={() => handleCardClick(user.id)}
                                 >
-                                    <Meta title={`${user.name}`} description={`Title: ${user.title}`} />
+                                    <Meta title={`${user.name}`} />
                                     <p>{`Location: ${user.location}`}</p>
-                                    <p>{`Occupation: ${user.occupation}`}</p>
+                                    <p>{`Score: ${user.score}`}</p>
                                 </Card>
                             ))}
 						</div>
@@ -98,7 +105,7 @@ const SearchData: React.FC = () => {
 					</Content>
 				</Layout>
 			</Content>
-			<Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+			<Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Our Amazing Team</Footer>
 		</Layout>
 	);
 };
