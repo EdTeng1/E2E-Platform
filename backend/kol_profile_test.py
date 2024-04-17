@@ -56,10 +56,8 @@ def search_kol_profile(profileId):
                 # Add more fields as necessary
             }
 
-            profile_name = profile[1]
-            print(profile_name)
-            scoreinfo_query = "SELECT Claims, Patients, Publications, Guidelines, Trials, Grants, Congress, Digital_Posts FROM kol_score WHERE first = %s"
-            cursor.execute(scoreinfo_query, (profile_name,))
+            scoreinfo_query = "SELECT Claims, Patients, Publications, Guidelines, Trials, Grants, Congress, Digital_Posts FROM kol_score WHERE first = %s and last = %s"
+            cursor.execute(scoreinfo_query, (profile[1], profile[2],))
             scores = cursor.fetchone()  # 使用 fetchone() 因为我们假设每个 profileId 只有一条得分记录
 
 
