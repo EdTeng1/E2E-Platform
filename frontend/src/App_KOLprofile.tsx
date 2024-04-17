@@ -66,8 +66,8 @@ interface Profile {
 
 const App: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const profileId = searchParams.get('profileID');
-  
+  const profileId = searchParams.get('profileID') ?? '100';
+
   const [profile, setProfile] = useState<Profile>({
     // Initialize with empty or placeholder values
     id: '-1',
