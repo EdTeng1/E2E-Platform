@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input } from 'antd';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import './App_KOLprofile.css';
@@ -66,6 +66,7 @@ interface Profile {
 }
 
 const App: React.FC = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const profileId = searchParams.get('profileID') ?? '100';
 
@@ -139,6 +140,7 @@ const App: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Profile saved successfully', data);
+        navigate(`/App_KOLprofile?profileID=${encodeURIComponent(profileId)}`)
         // Optionally, display a success notification to the user
       } else {
         throw new Error('Failed to save profile. Status: ' + response.status);
@@ -157,6 +159,7 @@ const App: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('History saved successfully', data);
+        window.location.reload();
         // Optionally, display a success notification to the user
       } else {
         throw new Error('Failed to save history. Status: ' + response.status);
