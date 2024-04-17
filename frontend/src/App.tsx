@@ -7,6 +7,8 @@ import App_KOLprofile from "./App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import Home from "./pages/Home/Home";
 import Questionaire from "./pages/Questionaire/questionaire";
+import Signup from "./pages/Register/Signup";
+import Login from "./pages/Register/Login";
 import logo from './assets/Genmab_Logo_Color_RGB.jpg';
 import './App.css';
 
@@ -43,15 +45,15 @@ const items: MenuProps["items"] = [
 		children: [
 			{
 				type: "group",
-				label: "Item 1",
+				label: "Account",
 				children: [
 					{
-						label: "Option 1",
-						key: "setting:1",
+						label: <Link to="/signup">Signup</Link>,
+						key: "signup",
 					},
 					{
-						label: "Option 2",
-						key: "setting:2",
+						label: <Link to="/login">Login</Link>,
+						key: "login",
 					},
 				],
 			},
@@ -85,10 +87,12 @@ const App: React.FC = () => {
 					<Route path='/SearchResult' element={<SearchResult />} />
 					<Route path='/questionaire' element={<Questionaire />} />
 					<Route path='/App_KOLprofile' element={<App_KOLprofile />} />
+					<Route path='/signup' element={<Signup />} />
+					<Route path='/login' element={<Login />} />
 				</Routes>
 			</div>
 		</Router>
 	);
 };
 
- export default App;
+export default App;
