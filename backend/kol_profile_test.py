@@ -176,7 +176,7 @@ def update_history():
         cursor = conn.cursor()
 
         for engagement in data.get('history', []):
-            if 'engagementID' in engagement:
+            if engagement.get('engagementID') != '-1':
                 sql = """
                 UPDATE kol_profile_engagement
                 SET engagementA=%s, functionA=%s, notes=%s, followUpRequested=%s,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, Layout, Row, Col, Button } from 'antd';
+import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 
 import axios from 'axios';
@@ -15,6 +15,7 @@ import logo from './assets/Genmab_Logo_Color_RGB.jpg';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
+const { Option } = Select;
 
 // Define TypeScript interfaces for your data structures
 interface Dimension {
@@ -147,7 +148,7 @@ const App: React.FC = () => {
       // Optionally, display an error notification to the user
     }
   };
-  
+
 
   const saveHistory = async () => {
     try {
@@ -165,7 +166,29 @@ const App: React.FC = () => {
       // Optionally, display an error notification to the user
     }
   };
-  
+
+  const [showAddForm, setShowAddForm] = useState(false); // To toggle form visibility
+
+  const handleAddEngagement = (values: any) => {
+    const newEngagement = {
+      profileID: profile.id,
+      engagementID: '-1', // Indicate a new engagement
+      engagementA: values.engagementA,
+      functionA: values.functionA,
+      notes: values.notes,
+      followUpRequested: values.followUpRequested,
+      functionB: values.functionB,
+      informationRequested: values.informationRequested,
+    };
+
+    setProfile(prevProfile => ({
+      ...prevProfile,
+      history: [...prevProfile.history, newEngagement],
+    }));
+
+    setShowAddForm(false); // Hide the form after submission
+  };
+
 
   return (
     <Layout className="layout">
@@ -289,6 +312,87 @@ const App: React.FC = () => {
                   <Button type="primary" onClick={saveHistory}>Save History</Button>
                 </div>
               </Card>
+
+              <Button type="primary" onClick={() => setShowAddForm(!showAddForm)}>
+                {showAddForm ? 'Cancel' : 'Add New Engagement'}
+              </Button>
+
+              {showAddForm && (
+                <Card className="New-Engagement">
+                  <Form onFinish={handleAddEngagement} layout="vertical">
+                    <Form.Item
+                      label="Engagement (A)"
+                      name="engagementA"
+                      rules={[{ required: true, message: 'Please select your engagement type!' }]}
+                    >
+                      <Select placeholder="Select an engagement type">
+                        <Option value="inPersonMeeting">In-Person Meeting</Option>
+                        <Option value="virtualMeeting">Virtual Meeting</Option>
+                        <Option value="phoneCall">Phone Call</Option>
+                        <Option value="conference">Conference</Option>
+                        <Option value="advisoryBoard">Advisory Board</Option>
+                      </Select>
+                    </Form.Item>
+                    <Form.Item
+                            label="Function"
+                            name="functionA"
+                            rules={[{ required: true, message: 'Please select a function!' }]}
+                        >
+                            <Select placeholder="Select a function">
+                                <Option value="r&d">R&D</Option>
+                                <Option value="devOps">Development Operations</Option>
+                                <Option value="medical">Medical</Option>
+                                <Option value="commercial">Commercial</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Notes"
+                            name="notes"
+                        >
+                            <Input.TextArea rows={4} placeholder="Enter notes here" />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Follow-up Requested (B)"
+                            name="followUpRequested"
+                            rules={[{ required: true, message: 'Please select your follow-up engagement type!' }]}
+                        >
+                            <Select placeholder="Select a follow-up engagement type">
+                                <Option value="inPersonMeeting">In-Person Meeting</Option>
+                                <Option value="virtualMeeting">Virtual Meeting</Option>
+                                <Option value="phoneCall">Phone Call</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Function"
+                            name="functionB"
+                            rules={[{ required: true, message: 'Please select a function!' }]}
+                        >
+                            <Select placeholder="Select a function">
+                                <Option value="r&d">R&D</Option>
+                                <Option value="devOps">Development Operations</Option>
+                                <Option value="medical">Medical</Option>
+                                <Option value="commercial">Commercial</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Information Requested"
+                            name="informationRequested"
+                        >
+                            <Input.TextArea rows={4} placeholder="Enter information requested here" />
+                        </Form.Item>
+                    {/* Additional form items */}
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit">
+                        Add Engagement
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Card>
+              )}
             </Col>
             <Col span={12}>
               <Card className="Dimension-Scores" title={<Title level={4} style={{ marginBottom: 0 }}>Dimension Scores</Title>} bordered={false}>
