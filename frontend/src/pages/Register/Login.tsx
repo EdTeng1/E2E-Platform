@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { postData } from '../../service/http';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -7,18 +7,26 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            const res = await axios.post('http://ec2-54-89-164-62.compute-1.amazonaws.com:5000/SignIn', { email, password });
-            localStorage.setItem('token', res.data.access_token); // Assuming the token is stored in res.data.access_token
-            alert(res.data.message);
-            // Optionally redirect the user or update global state here
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                alert(error.response.data.message);
-            } else {
-                alert("An unexpected error occurred");
+            const response = await postData('/SignIn', { email, password });
+    
+            if (!response.ok) {
+                // Handle non-2xx responses here
+                const errorData = await response.json();
+                alert(errorData.message);
+                return; // Stop further execution in case of error response
             }
+    
+            const result = await response.json();
+            localStorage.setItem('token', result.access_token); // Assuming the token is stored in result.access_token
+            alert(result.message);
+            // Optionally redirect the user or update global state here
+    
+        } catch (error) {
+            console.error('Login error:', error);
+            alert("An unexpected error occurred");
         }
     };
+    
 
     return (
         <div>

@@ -1,8 +1,9 @@
+import logging
 import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS, cross_origin
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint
 import jwt
 import datetime
@@ -55,7 +56,7 @@ def register():
         cursor.close()
         conn.close()
 
-@loginSignup_blueprint.route("/SignIn", methods=["POST", "OPTIONS"])
+@loginSignup_blueprint.route("/SignIn", methods=["POST"])
 @cross_origin()
 def login():
     data = request.json
@@ -67,9 +68,10 @@ def login():
     conn.close()
     if user and check_password_hash(user['password_hash'], data['password']):
         access_token = jwt.encode({'id': user['id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, 'YOUR_SECRET_KEY', algorithm='HS256')
-        return jsonify(access_token=access_token.decode('UTF-8'), message="Sign In Successful")
+        return jsonify(access_token=access_token, message="Sign In Successful")  # Directly return the token string
     else:
         return jsonify({"message": "Wrong Username or Password"}), 401
+
     
 
 @app.route("/", defaults={"path": ""})
