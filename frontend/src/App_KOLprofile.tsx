@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Card, Layout, Row, Col, Button } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import axios from 'axios';
 import './App_KOLprofile.css';
@@ -64,6 +65,9 @@ interface Profile {
 }
 
 const App: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const profileId = searchParams.get('profileID');
+  
   const [profile, setProfile] = useState<Profile>({
     // Initialize with empty or placeholder values
     id: '-1',
@@ -82,19 +86,18 @@ const App: React.FC = () => {
     const fetchProfile = async () => {
       try {
         // Replace 'profileId' with actual logic to retrieve or define the ID
-        const profileId = '79';
         const response = await postData(`/getProfile/${profileId}`);
         const profileData = await response.json();
         console.log('Profile Data:', profileData);
 
         const mappedProfile: Profile = {
-          id: profileId,
+          id: profileId ?? '',
           imageUrl: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg&_gl=1*13kff3c*_ga*MTcyODI3MDk5My4xNzEyNzQxODk0*_ga_8JE65Q40S6*MTcxMjc0MTg5My4xLjEuMTcxMjc0MTg5OC4wLjAuMA..', // Placeholder value for now
           name: `${profileData.firstName} ${profileData.lastName}`,
           location: `${profileData.city}, ${profileData.state}`,
           occupation: 'placeholder', // Placeholder value for now
           institution: profileData.institute,
-          email: profileData.email, // Placeholder value for now
+          email: profileData.email ?? '', // Placeholder value for now
           history: profileData.engagements || [],
           scores: [],
           ratings: []

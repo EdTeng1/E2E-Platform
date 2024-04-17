@@ -88,7 +88,7 @@ const App: React.FC = () => {
 					<Route path='/questionaire' element={<Questionaire />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path='/login' element={<Login />} />
-					<Route path='/App_KOLprofile/:userId' element={<App_KOLprofile />} />
+					<Route path='/App_KOLprofile' element={<App_KOLprofile />} />
 				</Routes>
 			</div>
 		</Router>

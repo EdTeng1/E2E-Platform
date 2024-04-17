@@ -42,7 +42,7 @@ const SearchData: React.FC = () => {
 
 	let mt = 0;
     const handleCardClick = (userId: number) => {
-        navigate(`/App_KOLprofile/${userId}`);
+        navigate(`/App_KOLprofile?profileID=${encodeURIComponent(userId)}`);
     };
     
 	// card_list.push(
