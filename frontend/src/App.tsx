@@ -1,8 +1,8 @@
 import { AppstoreOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
-import React, { useState } from "react";
-import { Route, BrowserRouter as Router, Routes, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, BrowserRouter as Routes, Link, useLocation } from "react-router-dom";
 import App_KOLprofile from "./App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import Home from "./pages/Home/Home";
@@ -12,15 +12,22 @@ import Login from "./pages/Register/Login";
 import logo from './assets/Genmab_Logo_Color_RGB.jpg';
 import './App.css';
 
-const items: MenuProps["items"] = [
+interface MenuItem {
+	label: JSX.Element;
+	key: string;
+	icon?: JSX.Element;
+	children?: MenuItem[];
+}
+
+const items: MenuItem[] = [
 	{
 		label: <Link to="/Home">Home</Link>,
-		key: "home",
+		key: "Home",
 		icon: <AppstoreOutlined />,
 	},
 	{
 		label: <Link to="/SearchResult">Search Result</Link>,
-		key: "searchResult",
+		key: "SearchResult",
 		icon: <AppstoreOutlined />,
 	},
 	{
@@ -30,22 +37,22 @@ const items: MenuProps["items"] = [
 	},
 	{
 		label: <Link to="/App_KOLprofile">KOL Profile</Link>,
-		key: "kolProfile",
+		key: "App_KOLprofile",
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: "Contact",
+		label: <span>Contact</span>,
 		key: "mail",
 		icon: <MailOutlined />,
 	},
 	{
-		label: "Profile",
+		label: <span>Profile</span>,
 		key: "SubMenu",
 		icon: <UserOutlined />,
 		children: [
 			{
-				type: "group",
-				label: "Account",
+				label: <span>Account</span>,
+				key: "group-account",
 				children: [
 					{
 						label: <Link to="/signup">Signup</Link>,
@@ -58,11 +65,21 @@ const items: MenuProps["items"] = [
 				],
 			},
 		],
-	},
+	}
+
 ];
 
 const App: React.FC = () => {
-	const [current, setCurrent] = useState("home");
+	const location = useLocation(); 
+	const [current, setCurrent] = useState<string>('home');
+
+	useEffect(() => {
+		const path = location.pathname.substring(1) || 'home'; // handle root path
+		const matchingItem = items.find(item => item.key === path);
+		const key: string = matchingItem ? matchingItem.key as string : 'home'; // Ensure the key is always valid and a string, cast as string for safety
+		setCurrent(key);
+	}, [location]);
+
 
 	const onClick: MenuProps["onClick"] = (e) => {
 		console.log("click ", e);
@@ -70,28 +87,28 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<Router>
-			<div>
+
+		<div>
+			{/* Menu part */}
+			<div className="menu-bar-container">
+				{/* Logo part */}
+				<a href="https://www.genmab.com" target="_blank" rel="noopener noreferrer">
+					<img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
+				</a>
 				{/* Menu part */}
-				<div className="menu-bar-container">
-					{/* Logo part */}
-					<a href="https://www.genmab.com" target="_blank" rel="noopener noreferrer">
-						<img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
-					</a>
-					{/* Menu part */}
-					<Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
-				</div>
-				<Routes>
-					<Route path='/' element={<Home />} />
-					<Route path='/Home' element={<Home />} />
-					<Route path='/SearchResult' element={<SearchResult />} />
-					<Route path='/questionaire' element={<Questionaire />} />
-					<Route path='/signup' element={<Signup />} />
-					<Route path='/login' element={<Login />} />
-					<Route path='/App_KOLprofile' element={<App_KOLprofile />} />
-				</Routes>
+				<Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
 			</div>
-		</Router>
+			<Routes>
+				<Route path='/' element={<Home />} />
+				<Route path='/Home' element={<Home />} />
+				<Route path='/SearchResult' element={<SearchResult />} />
+				<Route path='/questionaire' element={<Questionaire />} />
+				<Route path='/signup' element={<Signup />} />
+				<Route path='/login' element={<Login />} />
+				<Route path='/App_KOLprofile' element={<App_KOLprofile />} />
+			</Routes>
+		</div>
+
 	);
 };
 
