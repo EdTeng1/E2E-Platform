@@ -2,7 +2,7 @@ import { AppstoreOutlined, MailOutlined, UserOutlined } from "@ant-design/icons"
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import React, { useState, useEffect } from "react";
-import { Route, BrowserRouter as Routes, Link, useLocation } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes, Link, useLocation } from "react-router-dom";
 import App_KOLprofile from "./App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import Home from "./pages/Home/Home";
