@@ -55,12 +55,12 @@ const items: MenuItem[] = [
 				key: "group-account",
 				children: [
 					{
-						label: <Link to='/signup'>Signup</Link>,
-						key: "signup",
-					},
-					{
 						label: <Link to='/login'>Login</Link>,
 						key: "login",
+					},
+					{
+						label: <Link to='/signup'>Signup</Link>,
+						key: "signup",
 					},
 				],
 			},

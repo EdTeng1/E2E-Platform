@@ -13,3 +13,9 @@
   max-height: 400px;
   margin-bottom: 20px;
 }
+
+.text-info {
+  color: #4d8686;
+  font-size: 12px;
+  display: block;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { postData } from "../../service/http";
-import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import { Button, Checkbox, Col, Form, FormProps, Input, Row } from "antd";
 import logo from "../../assets/Genmab_Logo_Color_RGB.jpg";
 import "./index.css";
 
@@ -70,6 +70,13 @@ const Login: React.FC = () => {
 						Sign In
 					</Button>
 				</Form.Item>
+				<Row>
+					<Col offset={4}>
+						<a className='text-info' href='/signup'>
+							Sign Up
+						</a>
+					</Col>
+				</Row>
 			</Form>
 		</div>
 	);
