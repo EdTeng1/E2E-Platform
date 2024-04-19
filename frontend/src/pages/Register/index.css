@@ -1,0 +1,15 @@
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
+
+.login-logo {
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  max-height: 400px;
+  margin-bottom: 20px;
+}

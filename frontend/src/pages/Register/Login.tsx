@@ -1,40 +1,78 @@
-import React, { useState } from 'react';
-import { postData } from '../../service/http';
+import React, { useState } from "react";
+import { postData } from "../../service/http";
+import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import logo from "../../assets/Genmab_Logo_Color_RGB.jpg";
+import "./index.css";
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+	const handleLogin = async (email: string, password: string) => {
+		try {
+			const response = await postData("/SignIn", { email, password });
 
-    const handleLogin = async () => {
-        try {
-            const response = await postData('/SignIn', { email, password });
-    
-            if (!response.ok) {
-                // Handle non-2xx responses here
-                const errorData = await response.json();
-                alert(errorData.message);
-                return; // Stop further execution in case of error response
-            }
-    
-            const result = await response.json();
-            localStorage.setItem('token', result.access_token); // Assuming the token is stored in result.access_token
-            alert(result.message);
-            // Optionally redirect the user or update global state here
-    
-        } catch (error) {
-            console.error('Login error:', error);
-            alert("An unexpected error occurred");
-        }
-    };
-    
+			if (!response.ok) {
+				// Handle non-2xx responses here
+				const errorData = await response.json();
+				alert(errorData.message);
+				return; // Stop further execution in case of error response
+			}
 
-    return (
-        <div>
-            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin}>Sign In</button>
-        </div>
-    );
+			const result = await response.json();
+			localStorage.setItem("token", result.access_token); // Assuming the token is stored in result.access_token
+			alert(result.message);
+			// Optionally redirect the user or update global state here
+		} catch (error) {
+			console.error("Login error:", error);
+			alert("An unexpected error occurred");
+		}
+	};
+
+	type FieldType = {
+		Email?: string;
+		password?: string;
+	};
+
+	const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+		console.log("Success:", values);
+		handleLogin(values.Email!, values.password!);
+	};
+
+	const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+		console.log("Failed:", errorInfo);
+	};
+
+	return (
+		<div className='container'>
+			<img src={logo} alt='' className={"login-logo"} />
+			<Form
+				style={{ width: "40vw" }}
+				labelCol={{ span: 4 }}
+				name='basic'
+				initialValues={{ remember: true }}
+				onFinish={onFinish}
+				onFinishFailed={onFinishFailed}
+				autoComplete='off'>
+				<Form.Item<FieldType>
+					label='Email'
+					name='Email'
+					rules={[{ required: true, message: "Please input your username!" }]}>
+					<Input />
+				</Form.Item>
+
+				<Form.Item<FieldType>
+					label='Password'
+					name='password'
+					rules={[{ required: true, message: "Please input your password!" }]}>
+					<Input.Password />
+				</Form.Item>
+
+				<Form.Item wrapperCol={{ offset: 4 }}>
+					<Button type='primary' htmlType='submit' style={{ width: "100%" }}>
+						Sign In
+					</Button>
+				</Form.Item>
+			</Form>
+		</div>
+	);
 };
 
 export default Login;
