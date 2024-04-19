@@ -55,14 +55,14 @@ const Login: React.FC = () => {
 					label='Email'
 					name='Email'
 					rules={[{ required: true, message: "Please input your username!" }]}>
-					<Input />
+					<Input placeholder='Email' />
 				</Form.Item>
 
 				<Form.Item<FieldType>
 					label='Password'
 					name='password'
 					rules={[{ required: true, message: "Please input your password!" }]}>
-					<Input.Password />
+					<Input.Password placeholder='Password' />
 				</Form.Item>
 
 				<Form.Item wrapperCol={{ offset: 4 }}>
