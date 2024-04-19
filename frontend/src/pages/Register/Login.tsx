@@ -69,14 +69,18 @@ const Login: React.FC = () => {
 					<Button type='primary' htmlType='submit' style={{ width: "100%" }}>
 						Sign In
 					</Button>
+					<Button type='primary' style={{ width: "100%", marginTop: "16px" }} onClick={() => {}}>
+						{/* Sign Up */}
+						<a href='/signup'>Sign Up</a>
+					</Button>
 				</Form.Item>
-				<Row>
+				{/* <Row>
 					<Col offset={4}>
 						<a className='text-info' href='/signup'>
 							Sign Up
 						</a>
 					</Col>
-				</Row>
+				</Row> */}
 			</Form>
 		</div>
 	);
