@@ -1,41 +1,26 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Card, Layout, Menu, Pagination } from "antd";
+import { Button, Card, Layout, Menu, Pagination, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
+const {Option}  = Select;
 
-const ts = ["Specialization", "Region", "Ratings"];
-const ts_c = [
-	["Clinical", "Care", "Administrative", "Auxiliary"],
-	["Asia", "Europe", "America", "Australia"],
-	["A", "B", "C", "D"],
-];
-const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-	const key = ts[index];
-
-	return {
-		key: `sub${key}`,
-		icon: React.createElement(icon),
-		label: `${key}`,
-
-		children: new Array(4).fill(null).map((_, j) => {
-			const subKey = ts_c[index][j];
-			return {
-				key: subKey,
-				label: `${subKey}`,
-			};
-		}),
-	};
-});
 
 const SearchData: React.FC = () => {
 	const location = useLocation();
-
 	const Result = location.state;
     const navigate = useNavigate();
+
+    const [users, setUsers] = useState([]);
+    const [filterLocation, setFilterLocation] = useState('');
+    const [filterScore, setFilterScore] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
 	console.log("searchResult: ", Result);
 	console.log("First searchResult: ", Result.searchResult[0]);
     console.log("1st user id", Result.searchResult[0].id);
@@ -45,23 +30,41 @@ const SearchData: React.FC = () => {
         navigate(`/App_KOLprofile?profileID=${encodeURIComponent(userId)}`);
     };
     
-	// card_list.push(
-	// 	<Card
-	// 		hoverable
-	// 		style={{ width: 240, marginBottom: 16, marginInline: mt }}
-	// 		cover={
-	// 			<img
-	// 				alt='example'
-	// 				height={350}
-	// 				src='https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.doubanio.com%2Fview%2Fphoto%2Fm%2Fpublic%2Fp2292568076.jpg&refer=http%3A%2F%2Fimg9.doubanio.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1711504884&t=e0a39d1a707e371ae7290ccc4fd9f9f2'
-	// 			/>
-	// 		}
-	// 		key={0}>
-	// 		<Meta title='Roderic Guigo' description='Cancer Center' />
-	// 		<p>Score: 80</p>
-	// 	</Card>
-	// );
+    useEffect(() => {
+        // Initially load all data
+        setUsers(Result.searchResult);
+    }, [Result]);
 
+    const handleFilterApply = async () => {
+        setLoading(true);
+        console.log('filterLocation:', filterLocation);
+        console.log('filterScore:', filterScore);
+        console.log('Sending users:', Result.searchResult);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                location: filterLocation,
+                score: filterScore,
+                users: Result.searchResult
+            })
+        };
+        try {
+            const response = await fetch('/api/users', requestOptions);
+            const data = await response.json();
+            console.log('Filtered data:', data);
+            Result.searchResult = data;
+    
+            // Assuming the backend sends back filtered results directly:
+            setUsers(data);
+            setError('');
+        } catch (error) {
+            console.error('Failed to fetch filtered data:', error);
+            setError('Failed to fetch data. Please try again.');
+        }
+        setLoading(false);
+    };
 
 	return (
 		<Layout>
@@ -71,14 +74,36 @@ const SearchData: React.FC = () => {
 			</Header>
 			<Content style={{ padding: "0 48px" }}>
 				<Layout style={{ padding: "24px 0" }}>
-					<Sider width={200}>
-						<Menu
-							mode='inline'
-							defaultSelectedKeys={["1"]}
-							defaultOpenKeys={["sub1"]}
-							style={{ height: "100%" }}
-							items={Filter}
-						/>
+					<Sider width={200} style={{backgroundColor:'white'}}>
+                        {/* Filters Sidebar */}
+                        <div style={{ margin: '20px 0' }}>
+                            <h3>Filters</h3>
+                            <div>
+                                <div style={{ marginBottom: 16 }}>
+                                    <label>Location: </label>
+                                    <Select value={filterLocation} style={{ width: 180 }} onChange={setFilterLocation}>
+                                        <Option value="">Any</Option>
+                                        <Option value="Eastern">Eastern</Option>
+                                        <Option value="Central">Central</Option>
+                                        <Option value="Mountain">Mountain</Option>
+                                        <Option value="Pacific">Pacific</Option>
+                                    </Select>
+                                </div>
+                                <div style={{ marginBottom: 16 }}>
+                                    <label>Score: </label>
+                                    <Select value={filterScore} style={{ width: 180 }} onChange={setFilterScore}>
+                                        <Option value="">Any</Option>
+                                        <Option value="A">A ('&gt' 60)</Option>
+                                        <Option value="B">B (40 - 60)</Option>
+                                        <Option value="C">C ('&lt' 40)</Option>
+                                    </Select>
+                                </div>
+                                <Button type="primary" onClick={handleFilterApply} disabled={loading}>
+                                    Apply Filters
+                                </Button>
+                                {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
+                            </div>
+                        </div>
 					</Sider>
 					<Content style={{ padding: "0 24px", minHeight: 280 }}>
 						{/* 卡片内容 */}
