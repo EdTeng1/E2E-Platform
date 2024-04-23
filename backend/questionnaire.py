@@ -1,3 +1,4 @@
+from datetime import date
 import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
@@ -67,9 +68,10 @@ def submit_form():
         profile_id = cursor.lastrowid  # Retrieve the id of the newly inserted profile
 
         # Then, insert into KOL_PROFILE_ENGAGEMENT with the obtained profile_id
+        # Include the date in the engagement_data tuple
         engagement_query = (
-            "INSERT INTO KOL_PROFILE_ENGAGEMENT (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            "INSERT INTO KOL_PROFILE_ENGAGEMENT (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested, date) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         )
         engagement_data = (
             profile_id,
@@ -79,7 +81,9 @@ def submit_form():
             data["followUpRequested"],
             data["functionB"],
             data["informationRequested"],
+            data.get("date")
         )
+
         cursor.execute(engagement_query, engagement_data)
 
         conn.commit()

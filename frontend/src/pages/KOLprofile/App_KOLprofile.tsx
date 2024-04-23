@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input } from "antd";
+import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input, DatePicker } from "antd";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -50,6 +50,7 @@ interface Engagement {
 	followUpRequested: string;
 	functionB: string;
 	informationRequested: string;
+	date: string;
 }
 
 interface Profile {
@@ -181,6 +182,7 @@ const App: React.FC = () => {
 			followUpRequested: values.followUpRequested,
 			functionB: values.functionB,
 			informationRequested: values.informationRequested,
+			date: values.date.format('YYYY-MM-DD'),
 		};
 
 		setProfile((prevProfile) => ({
@@ -285,6 +287,10 @@ const App: React.FC = () => {
 										</Typography.Title>
 										<ul className='engagement-details'>
 											<li>
+												<Typography.Text strong>Date: </Typography.Text>
+												{engagement.date}
+											</li>
+											<li>
 												<Typography.Text strong>Engagement A: </Typography.Text>
 												{engagement.engagementA}
 											</li>
@@ -341,6 +347,12 @@ const App: React.FC = () => {
 							{showAddForm && (
 								<Card className='New-Engagement'>
 									<Form onFinish={handleAddEngagement} layout='vertical'>
+										<Form.Item
+											label="Date of Engagement"
+											name="date"
+											rules={[{ required: true, message: "Please select the date of the engagement!" }]}>
+											<DatePicker style={{ width: '100%' }} />
+										</Form.Item>
 										<Form.Item
 											label='Engagement (A)'
 											name='engagementA'
