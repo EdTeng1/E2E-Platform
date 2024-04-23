@@ -32,7 +32,7 @@ def submit_form():
         cursor = conn.cursor()
 
         # Check for existing entry
-        check_query = "SELECT * FROM KOL_PROFILE WHERE FirstName = %s AND LastName = %s AND Email = %s"
+        check_query = "SELECT * FROM kol_profile WHERE FirstName = %s AND LastName = %s AND Email = %s"
         check_data = (data["firstName"], data["lastName"], data["email"])
         cursor.execute(check_query, check_data)
         existing_entry = cursor.fetchone()
@@ -49,7 +49,7 @@ def submit_form():
 
         # Insert into KOL_PROFILE
         profile_query = (
-            "INSERT INTO KOL_PROFILE (Title, FirstName, LastName, Pronouns, Institute, State, City, Zip, PhoneNumber, Email) "
+            "INSERT INTO kol_profile (Title, FirstName, LastName, Pronouns, Institute, State, City, Zip, PhoneNumber, Email) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         profile_data = (
@@ -70,7 +70,7 @@ def submit_form():
         # Then, insert into KOL_PROFILE_ENGAGEMENT with the obtained profile_id
         # Include the date in the engagement_data tuple
         engagement_query = (
-            "INSERT INTO KOL_PROFILE_ENGAGEMENT (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested, date) "
+            "INSERT INTO kol_profile_engagement (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested, date) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         )
         engagement_data = (
