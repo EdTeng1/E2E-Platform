@@ -3,6 +3,7 @@ import { postData } from "../../service/http";
 import { Button, Form, FormProps, Input } from "antd";
 import logo from "../../assets/Genmab_Logo_Color_RGB.jpg";
 import "./index.css";
+import signupImg from "../../assets/signup.jpg";
 
 const Signup: React.FC = () => {
 	const handleSignup = async (email: string, password: string) => {
@@ -49,36 +50,41 @@ const Signup: React.FC = () => {
 	};
 
 	return (
-		<div className='container'>
-			<img src={logo} alt='' className={"login-logo"} />
-			<Form
-				style={{ width: "40vw" }}
-				labelCol={{ span: 4 }}
-				name='basic'
-				initialValues={{ remember: true }}
-				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}
-				autoComplete='off'>
-				<Form.Item<FieldType>
-					label='Email'
-					name='Email'
-					rules={[{ required: true, message: "Please input your username!" }]}>
-					<Input placeholder='Email' />
-				</Form.Item>
+		<div className='login-container'>
+			<div className='left'>
+				<img src={signupImg} alt='' />
+			</div>
+			<div className='right-container'>
+				<img src={logo} alt='' className={"login-logo"} style={{ height: "130px" }} />
+				<Form
+					style={{ width: "90%" }}
+					labelCol={{ span: 6 }}
+					name='basic'
+					initialValues={{ remember: true }}
+					onFinish={onFinish}
+					onFinishFailed={onFinishFailed}
+					autoComplete='off'>
+					<Form.Item<FieldType>
+						label='Email'
+						name='Email'
+						rules={[{ required: true, message: "Please input your username!" }]}>
+						<Input placeholder='Email' />
+					</Form.Item>
 
-				<Form.Item<FieldType>
-					label='Password'
-					name='password'
-					rules={[{ required: true, message: "Please input your password!" }]}>
-					<Input.Password placeholder='Password' />
-				</Form.Item>
+					<Form.Item<FieldType>
+						label='Password'
+						name='password'
+						rules={[{ required: true, message: "Please input your password!" }]}>
+						<Input.Password placeholder='Password' />
+					</Form.Item>
 
-				<Form.Item wrapperCol={{ offset: 4 }}>
-					<Button type='primary' htmlType='submit' style={{ width: "100%" }}>
-						Sign Up
-					</Button>
-				</Form.Item>
-			</Form>
+					<Form.Item wrapperCol={{ offset: 6 }}>
+						<Button type='primary' htmlType='submit' style={{ width: "100%" }}>
+							Sign In
+						</Button>
+					</Form.Item>
+				</Form>
+			</div>
 		</div>
 	);
 };
