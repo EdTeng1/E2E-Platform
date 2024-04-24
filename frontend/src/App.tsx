@@ -64,6 +64,10 @@ const items: MenuItem[] = [
 					},
 				],
 			},
+			{
+				label: <span>Logout</span>,
+				key: "log-out",
+			},
 		],
 	},
 ];
