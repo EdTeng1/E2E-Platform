@@ -1,6 +1,7 @@
 import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flask import Blueprint
 
@@ -21,6 +22,7 @@ def search_kol_profile_app(profileId):
     return search_kol_profile(profileId)
 
 @kol_profile_blueprint.route("/getProfile/<profileId>", methods=["POST"])
+@jwt_required()
 def search_kol_profile_blueprint(profileId):
     return search_kol_profile(profileId)
 
@@ -114,6 +116,7 @@ def update_profile_app():
     return update_profile()
 
 @kol_profile_blueprint.route('/updateProfile', methods=['POST'])
+@jwt_required()
 def update_profile_blueprint():
     return update_profile()
 
@@ -168,6 +171,7 @@ def update_history_app():
     return update_history()
 
 @kol_profile_blueprint.route('/updateHistory', methods=['POST'])
+@jwt_required()
 def update_history_blueprint():
     return update_history()
 

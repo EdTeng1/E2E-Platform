@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint
-import jwt
+from flask_jwt_extended import create_access_token
 import datetime
 
 loginSignup_blueprint = Blueprint("register", __name__)
@@ -67,12 +67,11 @@ def login():
     cursor.close()
     conn.close()
     if user and check_password_hash(user['password_hash'], data['password']):
-        access_token = jwt.encode({'id': user['id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, 'YOUR_SECRET_KEY', algorithm='HS256')
+        access_token = create_access_token(identity=user['id'], expires_delta=datetime.timedelta(hours=24))
         return jsonify(access_token=access_token, message="Sign In Successful")  # Directly return the token string
     else:
         return jsonify({"message": "Wrong Username or Password"}), 401
 
-    
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")

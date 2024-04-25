@@ -1,5 +1,6 @@
 import os
-
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from kol_profile_test import kol_profile_blueprint
@@ -15,6 +16,10 @@ app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
 app.register_blueprint(kol_profile_blueprint)
 app.register_blueprint(loginSignup_blueprint)
+
+# Configure the JWT Secret Key
+app.config['JWT_SECRET_KEY'] = 'SHA256'
+jwt = JWTManager(app)
 
 # for cors
 CORS(app)
@@ -129,6 +134,7 @@ def index():
 
 #     return queryKOLProfile.queryByName(name)
 @app.route("/search", methods=["POST"])
+@jwt_required()
 def search():
     print("Received search request")
     if not request.json or "query" not in request.json:
@@ -203,6 +209,14 @@ def get_users():
             users = [user for user in users if user["score"] < 40]
 
     return jsonify(users)
+
+@jwt.expired_token_loader
+def my_expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({
+        'status': 401,
+        'sub_status': 42,
+        'msg': 'The token has expired'
+    }), 401
 
 
 @app.route("/", defaults={"path": ""})

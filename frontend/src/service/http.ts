@@ -1,14 +1,17 @@
 import packageJson from "../../package.json";
 
-const commonUrl = packageJson.proxy;
+const commonUrl = packageJson.proxy; 
 
 async function postData(url = "", data = {}, headers = {}) {
+	const token = localStorage.getItem('token');
 	try {
 		console.log('commonUrl:', commonUrl+url);
+		console.log('token:', token);
 		const response = await fetch(commonUrl + url, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				'Authorization': `Bearer ${token}`,
 				// 'Content-Type': 'application/x-www-form-urlencoded',
 				...headers,
 			},

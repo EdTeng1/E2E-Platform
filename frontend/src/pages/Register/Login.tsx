@@ -25,6 +25,9 @@ const Login: React.FC = () => {
 			console.error("Login error:", error);
 			alert("An unexpected error occurred");
 		}
+
+		console.log("Login clicked");
+		console.log("token:", localStorage.getItem("token"));
 	};
 
 	type FieldType = {

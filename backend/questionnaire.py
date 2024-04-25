@@ -2,6 +2,7 @@ from datetime import date
 import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flask import Blueprint
 
@@ -22,6 +23,7 @@ def submit_form_app():
     return submit_form()
 
 @questionnaire_blueprint.route("/questionaire", methods=["POST"])
+@jwt_required()
 def submit_form_blueprint():
     return submit_form()
 
