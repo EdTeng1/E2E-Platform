@@ -80,7 +80,7 @@ const Signup: React.FC = () => {
 
 					<Form.Item wrapperCol={{ offset: 6 }}>
 						<Button type='primary' htmlType='submit' style={{ width: "100%" }}>
-							Sign In
+							Sign Up
 						</Button>
 					</Form.Item>
 				</Form>

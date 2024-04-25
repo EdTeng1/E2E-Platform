@@ -44,6 +44,7 @@ const Home: React.FC = () => {
 				});
 			}
 		} catch (error) {
+			
 			console.error('Error fetching search results:', error);
 			messageApi.error("Failed to fetch search results.");
 		}
