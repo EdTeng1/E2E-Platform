@@ -23,6 +23,10 @@ async function postData(url = "", data = {}, headers = {}) {
         //     throw new Error('Network response was not ok. Status: ' + response.status);
         // }
 
+		if (response.status === 422) {
+			alert("Please login")
+		}
+
 		return response;
 	} catch (error) {
 		console.error('Error in postData:', error);
