@@ -4,6 +4,7 @@ import { Button, Card, Layout, Menu, Pagination, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {start} from "repl";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -23,7 +24,9 @@ const SearchData: React.FC = () => {
     const [filterScore, setFilterScore] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+    const totalPages = Math.ceil(users.length / itemsPerPage);
 
     useEffect(() => {
         if (Result.searchResult.length > 0) {
@@ -43,6 +46,12 @@ const SearchData: React.FC = () => {
         // setTotalPages(Math.ceil(Result.searchResult.length / perPage));
     }, [Result]);
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const visibleUsers = users.slice(startIndex, startIndex + itemsPerPage);
 
     const handleFilterApply = async () => {
         setLoading(true);
@@ -74,8 +83,6 @@ const SearchData: React.FC = () => {
         }
         setLoading(false);
     };
-    // calculate the total number of pages
-    const totalPages = Math.ceil(users.length / itemsPerPage);
 
 	return (
 		<Layout>
@@ -119,7 +126,7 @@ const SearchData: React.FC = () => {
 					<Content style={{ padding: "0 24px", minHeight: 280 }}>
 						{/* 卡片内容 */}
 						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
-						{Result.searchResult.map((user:any, index:any) => (
+						{visibleUsers.map((user:any, index:any) => (
                                 <Card
                                     key={index}
                                     hoverable
@@ -134,21 +141,15 @@ const SearchData: React.FC = () => {
                                     <p>{`Score: ${user.score}`}</p>
                                 </Card>
                             ))}
+                            <Pagination
+                                defaultCurrent = {currentPage}
+                                total = {users.length}
+                                pageSize = {itemsPerPage}
+                                onChange = {handlePageChange}
+                            />
 						</div>
 
-						{/* 分页 */}
-                        {/*the original*/}
-						{/*<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />*/}
-                        <Pagination
-                            defaultCurrent = {1}
-                            total = {users.length}
-                            pageSize = {itemsPerPage}
-                            onChange = {(page) => {
-                                const startIndex = (page - 1) * itemsPerPage;
-                                const endIndex = startIndex + itemsPerPage;
-                                setUsers(users.slice(startIndex, endIndex));
-                            }}
-                        />
+
 					</Content>
 				</Layout>
 			</Content>
