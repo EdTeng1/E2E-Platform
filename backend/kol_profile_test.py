@@ -24,7 +24,6 @@ def search_kol_profile_app(profileId):
 def search_kol_profile_blueprint(profileId):
     return search_kol_profile(profileId)
 
-
 def search_kol_profile(profileId):
     data = request.json
     try:
@@ -53,7 +52,6 @@ def search_kol_profile(profileId):
                 "email": profile[9],
                 "engagements": [],
                 "scores":[]
-
                 # Add more fields as necessary
             }
 
@@ -91,9 +89,6 @@ def search_kol_profile(profileId):
                     "functionB": engagement[6],
                     "informationRequested": engagement[7],
                 })
-
-
-
         else:
             return jsonify({"message": "Profile not found"}), 404
 

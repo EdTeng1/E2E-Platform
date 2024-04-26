@@ -82,7 +82,7 @@ const App: React.FC = () => {
     const fetchProfile = async () => {
       try {
         // Replace 'profileId' with actual logic to retrieve or define the ID
-        const profileId = '80';
+        const profileId = '79';
         const response = await postData(`/getProfile/${profileId}`);
         const profileData = await response.json();
         console.log('Profile Data:', profileData);

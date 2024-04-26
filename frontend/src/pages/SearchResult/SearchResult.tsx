@@ -34,9 +34,13 @@ const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
 const SearchData: React.FC = () => {
 	const location = useLocation();
 
-	const Result = location.state;
-	console.log("searchResult: ", Result);
-	console.log("searchResult: ", Result.searchResult[0]);
+	const Result = location.state || {};
+    const searchResults = Result.searchResult || [];
+
+    console.log("searchResult: ", Result);
+    if (searchResults.length > 0) {
+        console.log("searchResult[0]: ", searchResults[0]);
+    }
 
 	let mt = 0;
 	// card_list.push(
@@ -57,50 +61,53 @@ const SearchData: React.FC = () => {
 	// );
 
 
-	return (
-		<Layout>
-			<Header>
-				{/* 菜单部分 */}
-				{/* <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/> */}
-			</Header>
-			<Content style={{ padding: "0 48px" }}>
-				<Layout style={{ padding: "24px 0" }}>
-					<Sider width={200}>
-						<Menu
-							mode='inline'
-							defaultSelectedKeys={["1"]}
-							defaultOpenKeys={["sub1"]}
-							style={{ height: "100%" }}
-							items={Filter}
-						/>
-					</Sider>
-					<Content style={{ padding: "0 24px", minHeight: 280 }}>
-						{/* 卡片内容 */}
-						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
-						{Result.searchResult.map((user:any, index:any) => (
-                                <Card
-                                    key={index}
-                                    hoverable
-                                    style={{
-                                        width: 240,
-                                        margin: '0 10px 20px 10px'
-                                    }}
-                                >
-                                    <Meta title={`${user.name}`} description={`Title: ${user.title}`} />
-                                    <p>{`Location: ${user.location}`}</p>
-                                    <p>{`Occupation: ${user.occupation}`}</p>
-                                </Card>
-                            ))}
-						</div>
+    return (
+        <Layout>
+            <Header>
+                {/* 菜單部分 */}
+            </Header>
+            <Content style={{ padding: "0 48px" }}>
+                <Layout style={{ padding: "24px 0" }}>
+                    <Sider width={200}>
+                        <Menu
+                            mode='inline'
+                            defaultSelectedKeys={["1"]}
+                            defaultOpenKeys={["sub1"]}
+                            style={{ height: "100%" }}
+                            items={Filter}
+                        />
+                    </Sider>
+                    <Content style={{ padding: "0 24px", minHeight: 280 }}>
+                        {/* 卡片內容 */}
+                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
+                            {searchResults.length > 0 ? (
+                                searchResults.map((user: any, index: any) => (
+                                    <Card
+                                        key={index}
+                                        hoverable
+                                        style={{
+                                            width: 240,
+                                            margin: '0 10px 20px 10px'
+                                        }}
+                                    >
+                                        <Meta title={`${user.name}`} description={`Title: ${user.title}`} />
+                                        <p>{`Location: ${user.location}`}</p>
+                                        <p>{`Occupation: ${user.occupation}`}</p>
+                                    </Card>
+                                ))
+                            ) : (
+                                <p>No results found.</p>
+                            )}
+                        </div>
 
-						{/* 分页 */}
-						<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />
-					</Content>
-				</Layout>
-			</Content>
-			<Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
-		</Layout>
-	);
+                        {/* 分頁 */}
+                        <Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />
+                    </Content>
+                </Layout>
+            </Content>
+            <Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+        </Layout>
+    );
 };
 
 export default SearchData;
