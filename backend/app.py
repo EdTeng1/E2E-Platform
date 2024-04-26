@@ -1,19 +1,25 @@
 import os
-
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from kol_profile_test import kol_profile_blueprint
 
 # from config import Config
 # from . import main
-from models import KOLProfile, db
-from sqlalchemy import or_
-
-from kol_profile_test import kol_profile_blueprint
+from models import KOLProfile, KOLScore, db
 from questionnaire import questionnaire_blueprint
+from register import loginSignup_blueprint
+from sqlalchemy import and_, or_
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
 app.register_blueprint(kol_profile_blueprint)
+app.register_blueprint(loginSignup_blueprint)
+
+# Configure the JWT Secret Key
+app.config['JWT_SECRET_KEY'] = 'SHA256'
+jwt = JWTManager(app)
 
 # for cors
 CORS(app)
@@ -22,12 +28,74 @@ CORS(app)
 #     app.root_path, "meetings.db"
 # )
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "mysql+pymysql://root:Peter12345@localhost/kolData"
+    "mysql+pymysql://admin:e2e_platform@genmab-e2e.cpkissg02fmv.us-west-2.rds.amazonaws.com:3306/genmab_e2e"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
+Pacific = ["California", "Washington", "Oregon", "Nevada"]
+Mountain = [
+    "Arizona",
+    "Colorado",
+    "Idaho",
+    "Montana",
+    "Nevada",
+    "New Mexico",
+    "Utah",
+    "Wyoming",
+]
+Central = [
+    "Alabama",
+    "Arkansas",
+    "Illinois",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Nebraska",
+    "North Dakota",
+    "Oklahoma",
+    "South Dakota",
+    "Texas",
+    "Tennessee",
+    "Wisconsin",
+]
+Eastern = [
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Indiana",
+    "Kentucky",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "New Hampshire",
+    "New Jersey",
+    "New York",
+    "North Carolina",
+    "Ohio",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "Tennessee",
+    "Vermont",
+    "Virginia",
+    "West Virginia",
+]
+
+# Map time zones to states
+time_zone_states = {
+    "Pacific": Pacific,
+    "Mountain": Mountain,
+    "Central": Central,
+    "Eastern": Eastern,
+}
 
 # # genetate database in local
 # @app.cli.command()
@@ -66,91 +134,89 @@ def index():
 
 #     return queryKOLProfile.queryByName(name)
 @app.route("/search", methods=["POST"])
+@jwt_required()
 def search():
+    print("Received search request")
     if not request.json or "query" not in request.json:
         return jsonify({"error": "Bad request, no query provided"}), 400
 
-    query = request.json["query"]
+    query = request.json["query"].strip()
 
     print(f"Received query: {query}")
     if query:
-        results = KOLProfile.query.filter(
-            or_(
-                KOLProfile.first_name.ilike(f"%{query}%"),
-                KOLProfile.last_name.ilike(f"%{query}%"),
+        results = (
+            db.session.query(
+                KOLProfile.id,
+                KOLProfile.Title,
+                KOLProfile.FirstName,
+                KOLProfile.LastName,
+                KOLProfile.State,
+                KOLScore.Total,
             )
-        ).all()
+            .join(
+                KOLScore,
+                and_(
+                    KOLProfile.FirstName == KOLScore.First,
+                    KOLProfile.LastName == KOLScore.Last,
+                ),
+            )
+            .filter(
+                or_(
+                    KOLProfile.FirstName.contains(query),
+                    KOLProfile.LastName.contains(query),
+                )
+            )
+            .all()
+        )
         print(f"Found {len(results)} results")
-        return jsonify([user.to_dict() for user in results])
+
+        # Formatting the results into a list of dicts
+        response = [
+            {
+                "id": result[0],
+                "title": result[1],
+                "name": f"{result[2]} {result[3]}",
+                "location": f"{result[4]}",
+                "score": int(result[5]),
+            }
+            for result in results
+        ]
+        print(response)
+        return jsonify(response)
         # Simulate a database search. Here, you'd typically query your database.
     else:
         return jsonify({"error": "Empty query"}), 400
 
 
-# @app.route("/testGetPost", methods=["GET", "POST"])
-# def testGetPost():
-#     # get all post data from database
-#     # find the nearest posts for start and end position
-#     # start, end = form_start, form_end
-#     # data1 = distance.match(start, end)
-#     # print("Print Matched Data", data1)
-#     data1 = {
-#         "post_id": 1,
-#         "start": [47.625168, -122.337751],
-#         "end": [47.625168, -122.3378],
-#     }
+@app.route("/api/users", methods=["POST"])
+def get_users():
 
-#     bodydata = request.json
-#     print(bodydata)
-#     if bodydata is None:
-#         print("no body data")
+    data = request.get_json()
+    location_filter = data.get("location")
+    score_filter = data.get("score")
+    users = data.get("users", [])
 
-#     return jsonify(data1)
-#     # return json.dumps(data)
+    if location_filter and location_filter in time_zone_states:
+        valid_states = time_zone_states[location_filter]
+        users = [user for user in users if user["location"] in valid_states]
 
+    if score_filter:
+        if score_filter == "A":
+            users = [user for user in users if user["score"] > 60]
+        elif score_filter == "B":
+            users = [user for user in users if 40 <= user["score"] <= 60]
+        elif score_filter == "C":
+            users = [user for user in users if user["score"] < 40]
 
-# @app.route("/json")
-# def send_json():
-#     data = {"name": "John", "age": 30, "city": "New York"}
-#     return json.dumps(data)
+    return jsonify(users)
 
-
-# @app.route("/SignUp", methods=["POST", "OPTIONS"])
-# @cross_origin()
-# def register():
-#     if request.method == "OPTIONS":
-#         return jsonify({"message": "Prelight check successful"})
-#     data = request.json
-
-#     try:
-#         new_user = User(
-#             name=data["name"],
-#             email=data["email"],
-#             password_hash=generate_password_hash(data["password"]),
-#             age=data["age"],
-#             gender=data["gender"],
-#             city=data["city"],
-#         )
-#         db.session.add(new_user)
-#         db.session.commit()
-#     except IntegrityError as e:
-#         db.session.rollback()
-#         return jsonify({"message": "Please Try Again"}), 401
-#     return jsonify({"message": "Sign Up Successful"}), 200
-
-
-# @app.route("/SignIn", methods=["POST", "OPTIONS"])
-# @cross_origin()
-# def login():
-#     data = request.json
-
-#     user = User.query.filter_by(email=data["email"]).first()
-#     if user:
-#         # 创建JWT令牌
-#         access_token = create_access_token(identity=user.id)
-#         return jsonify(access_token=access_token, message="Sign In Successful")
-#     else:
-#         return jsonify({"message": "Wrong Username or Password"}), 401
+@jwt.expired_token_loader
+def my_expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({
+        'status': 401,
+        'sub_status': 42,
+        'msg': 'The token has expired'
+    }), 401
 
 
 @app.route("/", defaults={"path": ""})

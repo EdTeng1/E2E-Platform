@@ -10,36 +10,51 @@ class Initialization:
         db.create_all()
 
 
-class KOL(db.Model):
-    __tablename__ = "KOL"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-
-    password_hash = db.Column(db.String(512))
-
-    gender = db.Column(db.String(20))
-    age = db.Column(db.Integer)
-    location = db.Column(db.String(100))
-    occupation = db.Column(db.String(100))
-
-
 class KOLProfile(db.Model):
-    __tablename__ = "KOLProfile"
+    __tablename__ = "kol_profile"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    occupation = db.Column(db.String(100))
-    location = db.Column(db.String(100))
+    Title = db.Column(
+        db.String(50), nullable=True
+    )  # Default is NULL as per your SQL table
+    FirstName = db.Column(db.String(100), nullable=True)
+    LastName = db.Column(db.String(100), nullable=True)
+    Pronouns = db.Column(db.String(50), nullable=True)
+    Institute = db.Column(db.String(255), nullable=True)
+    State = db.Column(db.String(100), nullable=True)
+    City = db.Column(db.String(100), nullable=True)
+    Zip = db.Column(db.String(20), nullable=True)
+    PhoneNumber = db.Column(db.String(20), nullable=True)
+    Email = db.Column(db.String(255), nullable=True)
+
+
+class KOLScore(db.Model):
+    __tablename__ = "kol_score"
+    # id = db.Column(db.Integer, primary_key=True)
+    Title = db.Column(db.String(50), nullable=False)
+    First = db.Column(db.String(100), nullable=False, primary_key=True)
+    Last = db.Column(db.String(100), nullable=False, primary_key=True)
+    Institution = db.Column(db.String(100))
+    City = db.Column(db.String(100))
+    State = db.Column(db.String(100))
+    Claims = db.Column(db.Float)
+    Patients = db.Column(db.Float)
+    Publications = db.Column(db.Float)
+    Guidelines = db.Column(db.Float)
+    Trials = db.Column(db.Float)
+    Grants = db.Column(db.Float)
+    Congress = db.Column(db.Float)
+    Digital_posts = db.Column(db.Float)
+    Speaker_payments = db.Column(db.Float)
+    Total = db.Column(db.Float)
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "name": self.first_name + " " + self.last_name,
-            "title": self.title,
-            "occupation": self.occupation,
-            "location": self.location,
+            # "id": self.id,
+            "name": self.First + " " + self.Last,
+            "title": self.Title,
+            "occupation": self.Institution,
+            "location": self.State + ", " + self.City,
+            "Score": self.Total,
         }
 
 

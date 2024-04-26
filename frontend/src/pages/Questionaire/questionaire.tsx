@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useHistory
-import { Typography, Input, Button, Row, Col, Form, Card, Select, Modal, Spin } from 'antd';
+import { Typography, Input, Button, Row, Col, Form, Card, Select, Modal, Spin, DatePicker } from 'antd';
 import { postData } from '../../service/http';
 import './questionaire.css';
 
@@ -193,6 +193,13 @@ export const App: React.FC = () => {
 
                     <div className="Engagement">
                         <Title level={3}>Engagement</Title>
+                        <Form.Item
+                            label="Date of Engagement"
+                            name="date"
+                            rules={[{ required: true, message: "Please select the date of the engagement!" }]}>
+                            <DatePicker style={{ width: '100%' }} />
+                        </Form.Item>
+
                         <Form.Item
                             label="Engagement (A)"
                             name="engagementA"

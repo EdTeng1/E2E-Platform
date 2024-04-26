@@ -1,6 +1,7 @@
 import os
 import mysql.connector
 from flask import Flask, jsonify, request, send_from_directory
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flask import Blueprint
 
@@ -21,6 +22,7 @@ def search_kol_profile_app(profileId):
     return search_kol_profile(profileId)
 
 @kol_profile_blueprint.route("/getProfile/<profileId>", methods=["POST"])
+@jwt_required()
 def search_kol_profile_blueprint(profileId):
     return search_kol_profile(profileId)
 
@@ -51,15 +53,15 @@ def search_kol_profile(profileId):
                 "phoneNumber": profile[8],
                 "email": profile[9],
                 "engagements": [],
-                "scores":[]
+                "scores":[],
                 # Add more fields as necessary
             }
 
-            profile_name = profile[1]
-
-            scoreinfo_query = "SELECT Claims, Patients, Publications, Guidelines, Trials, Grants, Congress, Digital_Posts FROM kol_score WHERE first = %s"
-            cursor.execute(scoreinfo_query, (profile_name,))
+            scoreinfo_query = "SELECT Claims, Patients, Publications, Guidelines, Trials, Grants, Congress, Digital_Posts FROM kol_score WHERE first = %s and last = %s"
+            cursor.execute(scoreinfo_query, (profile[1], profile[2],))
             scores = cursor.fetchone()  # 使用 fetchone() 因为我们假设每个 profileId 只有一条得分记录
+
+
 
             if scores:  # 确保有得分信息存在
                 profile_dict["scores"].append({"aspect": "Claims", "value": scores[0]})
@@ -73,7 +75,10 @@ def search_kol_profile(profileId):
 
 
             # Fetch related engagements from kol_profile_engagement
-            engagement_query = "SELECT profileID, engagementID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested FROM kol_profile_engagement WHERE profileID = %s"
+            engagement_query = """
+            SELECT profileID, engagementID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested, date
+            FROM kol_profile_engagement WHERE profileID = %s
+            """
             cursor.execute(engagement_query, (profileId,))
             engagements = cursor.fetchall()  # Fetch all matching rows
 
@@ -88,7 +93,10 @@ def search_kol_profile(profileId):
                     "followUpRequested": engagement[5],
                     "functionB": engagement[6],
                     "informationRequested": engagement[7],
+                    "date": engagement[8].strftime("%Y-%m-%d") if engagement[8] else None  # Format date as string
                 })
+
+
         else:
             return jsonify({"message": "Profile not found"}), 404
 
@@ -107,6 +115,7 @@ def update_profile_app():
     return update_profile()
 
 @kol_profile_blueprint.route('/updateProfile', methods=['POST'])
+@jwt_required()
 def update_profile_blueprint():
     return update_profile()
 
@@ -161,6 +170,7 @@ def update_history_app():
     return update_history()
 
 @kol_profile_blueprint.route('/updateHistory', methods=['POST'])
+@jwt_required()
 def update_history_blueprint():
     return update_history()
 
@@ -173,26 +183,28 @@ def update_history():
         cursor = conn.cursor()
 
         for engagement in data.get('history', []):
-            if 'engagementID' in engagement:
+            if engagement.get('engagementID') != '-1':
                 sql = """
                 UPDATE kol_profile_engagement
-                SET engagementA=%s, functionA=%s, notes=%s, followUpRequested=%s,
-                    functionB=%s, informationRequested=%s
+                SET engagementA=%s, functionA=%s, notes=%s, followUpRequested=%s, functionB=%s, informationRequested=%s, date=%s
                 WHERE engagementID=%s AND profileID=%s
                 """
                 params = (
                     engagement.get('engagementA'), engagement.get('functionA'), engagement.get('notes'),
                     engagement.get('followUpRequested'), engagement.get('functionB'), engagement.get('informationRequested'),
+                    engagement.get('date'),  # Assuming date is already in YYYY-MM-DD format
                     engagement.get('engagementID'), engagement.get('profileID')
                 )
+
             else:
                 sql = """
-                INSERT INTO kol_profile_engagement (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO kol_profile_engagement (profileID, engagementA, functionA, notes, followUpRequested, functionB, informationRequested, date)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 params = (
                     engagement.get("profileID"), engagement.get('engagementA'), engagement.get('functionA'), engagement.get('notes'),
-                    engagement.get('followUpRequested'), engagement.get('functionB'), engagement.get('informationRequested')
+                    engagement.get('followUpRequested'), engagement.get('functionB'), engagement.get('informationRequested'),
+                    engagement.get('date')  # Assuming date is already in YYYY-MM-DD format
                 )
             cursor.execute(sql, params)
             conn.commit()

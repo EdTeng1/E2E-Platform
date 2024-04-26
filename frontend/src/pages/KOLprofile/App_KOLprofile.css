@@ -1,0 +1,102 @@
+.layout {
+  min-height: 100vh;
+}
+
+.site-layout-content {
+  margin: 24px auto;
+  padding: 24px;
+  background: #ffffff;
+}
+
+.logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: #09ab90;
+}
+
+.profile-picture img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 50%;
+}
+
+.Engagement-History, .Profile-Details {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
+}
+
+.Engagement-History:hover, .Profile-Details:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
+}
+
+.Ratings {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
+}
+
+.Ratings:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
+}
+
+.Dimension-Scores {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.47);
+  transition: 0.3s;
+}
+
+.Dimension-Scores:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.321);
+}
+
+/* Customizing the Header bar height and background color */
+.ant-layout-header {
+  height: 80px; /* Set the height as needed */
+  line-height: 80px; /* Adjust line-height for vertical centering of inner content */
+  background-color: #ffffff !important; /* Set your desired color */
+}
+
+/* Style for labels in the Profile Details section */
+.profile-detail-label {
+  font-weight: bold; /* Makes text bold */
+  font-size: 16px; /* Increase font size */
+  color: #004d99; /* Change font color */
+  margin-bottom: 8px; /* Add some space below the label */
+  display: block; /* Ensures the label takes its own line */
+}
+
+/* Additional styling for editable fields for consistency */
+.editable-field {
+  margin-bottom: 20px; /* Adds more space between fields */
+}
+
+/* Enhancements for the Engagement History section */
+.engagement-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.engagement-title {
+  color: #004d99; /* Adjust the color as per your theme */
+}
+
+.engagement-details {
+  list-style-type: none;
+  padding: 0;
+}
+
+.engagement-details li {
+  margin-bottom: 10px;
+}
+
+.engagement-details li:last-child {
+  margin-bottom: 0;
+}
+
+/* Additional styling for editable fields for consistency */
+.editable-field {
+  margin-bottom: 20px; /* Adds more space between fields */
+}
+

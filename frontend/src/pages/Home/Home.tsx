@@ -1,6 +1,7 @@
 import { Button, Col, Input, Row, Select, message } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { postData } from '../../service/http';
 import axios from "axios";
 import { queryKOLProfileByName } from "../../service/KOLProfile";
 import "./index.css";
@@ -21,14 +22,16 @@ const Home: React.FC = () => {
 			return;
 		}
 		try {
-			const response = await axios.post("/search", { query }, {
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			const response = await postData('/search', { query });
 			console.log('query:', query);
 			console.log('response:', response);
-			if (response.data.length === 0) {
+	
+			if (!response.ok) {
+				throw new Error('Failed to fetch search results. Status: ' + response.status);
+			}
+	
+			const data = await response.json();
+			if (data.length === 0) {
 				messageApi.info("No Data!", 1).then(() => {
 					navigate("/questionaire");
 				});
@@ -36,16 +39,17 @@ const Home: React.FC = () => {
 				navigate("/SearchResult", {
 					state: {
 						searchValue: query,
-						searchResult: response.data,
+						searchResult: data,
 					},
 				});
 			}
 		} catch (error) {
+			
 			console.error('Error fetching search results:', error);
 			messageApi.error("Failed to fetch search results.");
 		}
 	};
-
+	
 	return (
 		<div className="container">
 			{contextHolder}

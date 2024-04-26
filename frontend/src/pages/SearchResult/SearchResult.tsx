@@ -1,113 +1,154 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Card, Layout, Menu, Pagination } from "antd";
+import { Button, Card, Layout, Menu, Pagination, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Meta } = Card;
+const {Option}  = Select;
 
-const ts = ["Specialization", "Region", "Ratings"];
-const ts_c = [
-	["Clinical", "Care", "Administrative", "Auxiliary"],
-	["Asia", "Europe", "America", "Australia"],
-	["A", "B", "C", "D"],
-];
-const Filter: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-	const key = ts[index];
-
-	return {
-		key: `sub${key}`,
-		icon: React.createElement(icon),
-		label: `${key}`,
-
-		children: new Array(4).fill(null).map((_, j) => {
-			const subKey = ts_c[index][j];
-			return {
-				key: subKey,
-				label: `${subKey}`,
-			};
-		}),
-	};
-});
 
 const SearchData: React.FC = () => {
 	const location = useLocation();
+	const Result = location.state;
+    const navigate = useNavigate();
 
-	const Result = location.state || {};
-    const searchResults = Result.searchResult || [];
+    const [users, setUsers] = useState([]);
+    const [filterLocation, setFilterLocation] = useState('');
+    const [filterScore, setFilterScore] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const itemsPerPage = 10;
 
-    console.log("searchResult: ", Result);
-    if (searchResults.length > 0) {
-        console.log("searchResult[0]: ", searchResults[0]);
-    }
+	console.log("searchResult: ", Result);
+	console.log("First searchResult: ", Result.searchResult[0]);
+    console.log("1st user id", Result.searchResult[0].id);
 
 	let mt = 0;
-	// card_list.push(
-	// 	<Card
-	// 		hoverable
-	// 		style={{ width: 240, marginBottom: 16, marginInline: mt }}
-	// 		cover={
-	// 			<img
-	// 				alt='example'
-	// 				height={350}
-	// 				src='https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg9.doubanio.com%2Fview%2Fphoto%2Fm%2Fpublic%2Fp2292568076.jpg&refer=http%3A%2F%2Fimg9.doubanio.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1711504884&t=e0a39d1a707e371ae7290ccc4fd9f9f2'
-	// 			/>
-	// 		}
-	// 		key={0}>
-	// 		<Meta title='Roderic Guigo' description='Cancer Center' />
-	// 		<p>Score: 80</p>
-	// 	</Card>
-	// );
+    const handleCardClick = (userId: number) => {
+        navigate(`/App_KOLprofile?profileID=${encodeURIComponent(userId)}`);
+    };
+    
+    useEffect(() => {
+        // Initially load all data
+        setUsers(Result.searchResult);
+        // setTotalPages(Math.ceil(Result.searchResult.length / perPage));
+    }, [Result]);
 
 
-    return (
-        <Layout>
-            <Header>
-                {/* 菜單部分 */}
-            </Header>
-            <Content style={{ padding: "0 48px" }}>
-                <Layout style={{ padding: "24px 0" }}>
-                    <Sider width={200}>
-                        <Menu
-                            mode='inline'
-                            defaultSelectedKeys={["1"]}
-                            defaultOpenKeys={["sub1"]}
-                            style={{ height: "100%" }}
-                            items={Filter}
-                        />
-                    </Sider>
-                    <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                        {/* 卡片內容 */}
-                        <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
-                            {searchResults.length > 0 ? (
-                                searchResults.map((user: any, index: any) => (
-                                    <Card
-                                        key={index}
-                                        hoverable
-                                        style={{
-                                            width: 240,
-                                            margin: '0 10px 20px 10px'
-                                        }}
-                                    >
-                                        <Meta title={`${user.name}`} description={`Title: ${user.title}`} />
-                                        <p>{`Location: ${user.location}`}</p>
-                                        <p>{`Occupation: ${user.occupation}`}</p>
-                                    </Card>
-                                ))
-                            ) : (
-                                <p>No results found.</p>
-                            )}
+    const handleFilterApply = async () => {
+        setLoading(true);
+        console.log('filterLocation:', filterLocation);
+        console.log('filterScore:', filterScore);
+        console.log('Sending users:', Result.searchResult);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                location: filterLocation,
+                score: filterScore,
+                users: Result.searchResult
+            })
+        };
+        try {
+            const response = await fetch('/api/users', requestOptions);
+            const data = await response.json();
+            console.log('Filtered data:', data);
+            Result.searchResult = data;
+    
+            // Assuming the backend sends back filtered results directly:
+            setUsers(data);
+            setError('');
+        } catch (error) {
+            console.error('Failed to fetch filtered data:', error);
+            setError('Failed to fetch data. Please try again.');
+        }
+        setLoading(false);
+    };
+    // calculate the total number of pages
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+
+	return (
+		<Layout>
+			<Header>
+				{/* 菜单部分 */}
+				{/* <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ display: 'flex', justifyContent: 'flex-end' }}/> */}
+			</Header>
+			<Content style={{ padding: "0 48px" }}>
+				<Layout style={{ padding: "24px 0" }}>
+					<Sider width={200} style={{backgroundColor:'white'}}>
+                        {/* Filters Sidebar */}
+                        <div style={{ margin: '20px 0' }}>
+                            <h3>Filters</h3>
+                            <div>
+                                <div style={{ marginBottom: 16 }}>
+                                    <label>Location: </label>
+                                    <Select value={filterLocation} style={{ width: 180 }} onChange={setFilterLocation}>
+                                        <Option value="">Any</Option>
+                                        <Option value="Eastern">Eastern</Option>
+                                        <Option value="Central">Central</Option>
+                                        <Option value="Mountain">Mountain</Option>
+                                        <Option value="Pacific">Pacific</Option>
+                                    </Select>
+                                </div>
+                                <div style={{ marginBottom: 16 }}>
+                                    <label>Score: </label>
+                                    <Select value={filterScore} style={{ width: 180 }} onChange={setFilterScore}>
+                                        <Option value="">Any</Option>
+                                        <Option value="A">A ('&gt' 60)</Option>
+                                        <Option value="B">B (40 - 60)</Option>
+                                        <Option value="C">C ('&lt' 40)</Option>
+                                    </Select>
+                                </div>
+                                <Button type="primary" onClick={handleFilterApply} disabled={loading}>
+                                    Apply Filters
+                                </Button>
+                                {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
+                            </div>
                         </div>
+					</Sider>
+					<Content style={{ padding: "0 24px", minHeight: 280 }}>
+						{/* 卡片内容 */}
+						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
+						{Result.searchResult.map((user:any, index:any) => (
+                                <Card
+                                    key={index}
+                                    hoverable
+                                    style={{
+                                        width: 240,
+                                        margin: '0 10px 20px 10px'
+                                    }}
+                                    onClick={() => handleCardClick(user.id)}
+                                >
+                                    <Meta title={`${user.name}`} />
+                                    <p>{`Location: ${user.location}`}</p>
+                                    <p>{`Score: ${user.score}`}</p>
+                                </Card>
+                            ))}
+						</div>
 
-                        {/* 分頁 */}
-                        <Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />
-                    </Content>
-                </Layout>
-            </Content>
-            <Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
-        </Layout>
-    );
+						{/* 分页 */}
+                        {/*the original*/}
+						{/*<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />*/}
+                        <Pagination
+                            defaultCurrent = {1}
+                            total = {users.length}
+                            pageSize = {itemsPerPage}
+                            onChange = {(page) => {
+                                const startIndex = (page - 1) * itemsPerPage;
+                                const endIndex = startIndex + itemsPerPage;
+                                setUsers(users.slice(startIndex, endIndex));
+                            }}
+                        />
+					</Content>
+				</Layout>
+			</Content>
+			<Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Our Amazing Team</Footer>
+		</Layout>
+	);
 };
 
 export default SearchData;

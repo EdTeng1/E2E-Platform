@@ -1,5 +1,5 @@
 from flask import jsonify
-from models import KOLProfile, db
+from models import KOLScore, db
 from sqlalchemy import or_
 
 
@@ -32,7 +32,7 @@ def generateData():
     ]
 
     for item in data:
-        kol = KOLProfile(
+        kol = KOLScore(
             title=item["title"],
             first_name=item["first_name"],
             last_name=item["last_name"],
@@ -50,7 +50,7 @@ def generateData():
 
 def queryAll():
     allData = []
-    for item in KOLProfile.query.all():
+    for item in KOLScore.query.all():
         temp = {
             "title": item.title,
             "first_name": item.first_name,
@@ -69,9 +69,9 @@ def queryAll():
 
 def queryByName(name):
     allData = []
-    for item in KOLProfile.query.filter(
+    for item in KOLScore.query.filter(
         # 或者
-        or_(KOLProfile.first_name == name, KOLProfile.last_name == name)
+        or_(KOLScore.first_name == name, KOLScore.last_name == name)
     ).all():
         temp = {
             "title": item.title,
