@@ -20,6 +20,7 @@ const SearchData: React.FC = () => {
     const [filterScore, setFilterScore] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const itemsPerPage = 10;
 
 	console.log("searchResult: ", Result);
 	console.log("First searchResult: ", Result.searchResult[0]);
@@ -33,7 +34,9 @@ const SearchData: React.FC = () => {
     useEffect(() => {
         // Initially load all data
         setUsers(Result.searchResult);
+        // setTotalPages(Math.ceil(Result.searchResult.length / perPage));
     }, [Result]);
+
 
     const handleFilterApply = async () => {
         setLoading(true);
@@ -65,6 +68,8 @@ const SearchData: React.FC = () => {
         }
         setLoading(false);
     };
+    // calculate the total number of pages
+    const totalPages = Math.ceil(users.length / itemsPerPage);
 
 	return (
 		<Layout>
@@ -126,7 +131,18 @@ const SearchData: React.FC = () => {
 						</div>
 
 						{/* 分页 */}
-						<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />
+                        {/*the original*/}
+						{/*<Pagination defaultCurrent={1} total={50} style={{ textAlign: "center", margin: "20px 0" }} />*/}
+                        <Pagination
+                            defaultCurrent = {1}
+                            total = {users.length}
+                            pageSize = {itemsPerPage}
+                            onChange = {(page) => {
+                                const startIndex = (page - 1) * itemsPerPage;
+                                const endIndex = startIndex + itemsPerPage;
+                                setUsers(users.slice(startIndex, endIndex));
+                            }}
+                        />
 					</Content>
 				</Layout>
 			</Content>
