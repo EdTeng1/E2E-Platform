@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes, Link, useLocation } from "react-router-dom";
 import App_KOLprofile from "./pages/KOLprofile/App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
+import AboutUs from './pages/AboutUs/AboutUs';
 import Home from "./pages/Home/Home";
 import Questionaire from "./pages/Questionaire/questionaire";
 import Signup from "./pages/Register/Signup";
@@ -70,6 +71,11 @@ const items: MenuItem[] = [
 			},
 		],
 	},
+	{
+		label: <Link to='/about-us'>About Us</Link>,
+		key: "about-us",
+		icon: <UserOutlined />,
+	},
 ];
 
 const App: React.FC = () => {
@@ -107,6 +113,7 @@ const App: React.FC = () => {
 				<Route path='/signup' element={<Signup />} />
 				<Route path='/login' element={<Login />} />
 				<Route path='/App_KOLprofile' element={<App_KOLprofile />} />
+				<Route path='/about-us' element={<AboutUs />} />
 			</Routes>
 		</div>
 	);
