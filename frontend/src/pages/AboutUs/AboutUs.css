@@ -1,0 +1,46 @@
+/* About Us Page Styles */
+.about-us {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.about-us h1 {
+    color: #333;
+    text-align: center;
+}
+
+.about-us p {
+    text-align: justify;
+    line-height: 1.6;
+    font-size: 16px;
+    color: #666;
+}/* Our Team section styles */
+
+
+.our-team {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.our-team h2 {
+    text-align: center;
+    color: #333;
+}
+
+.our-team ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.our-team li {
+    padding: 8px;
+    font-size: 16px;
+    color: #666;
+}
