@@ -11,21 +11,27 @@ const {Option}  = Select;
 
 
 const SearchData: React.FC = () => {
-	const location = useLocation();
-	const Result = location.state;
+    const location = useLocation();
     const navigate = useNavigate();
 
-    const [users, setUsers] = useState([]);
+    // Safe fallback for missing location.state
+    const Result = location.state ? location.state : { searchResult: [] };
+
+    // State hooks for component state management
+    const [users, setUsers] = useState(Result.searchResult);
     const [filterLocation, setFilterLocation] = useState('');
     const [filterScore, setFilterScore] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const itemsPerPage = 10;
 
-	console.log("searchResult: ", Result);
-	console.log("First searchResult: ", Result.searchResult[0]);
-    console.log("1st user id", Result.searchResult[0].id);
-
+    useEffect(() => {
+        if (Result.searchResult.length > 0) {
+            setUsers(Result.searchResult);
+        } else {
+            setError('No search results available. Please try a new search.');
+        }
+    }, [Result]);
 	let mt = 0;
     const handleCardClick = (userId: number) => {
         navigate(`/App_KOLprofile?profileID=${encodeURIComponent(userId)}`);
