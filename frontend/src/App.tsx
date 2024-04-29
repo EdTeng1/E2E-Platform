@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes, Link, useLocation } from "react-router-dom";
 import App_KOLprofile from "./pages/KOLprofile/App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
-import AboutUs from './pages/AboutUs/AboutUs';
+import AboutUs from "./pages/AboutUs/AboutUs";
 import Home from "./pages/Home/Home";
 import Questionaire from "./pages/Questionaire/questionaire";
 import Signup from "./pages/Register/Signup";
@@ -66,7 +66,15 @@ const items: MenuItem[] = [
 				],
 			},
 			{
-				label: <span>Logout</span>,
+				label: (
+					<div
+						onClick={() => {
+							localStorage.removeItem("email");
+							localStorage.removeItem("password");
+						}}>
+						<Link to='/login'>Login</Link>
+					</div>
+				),
 				key: "log-out",
 			},
 		],

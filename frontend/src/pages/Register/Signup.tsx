@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { postData } from "../../service/http";
-import { Button, Form, FormProps, Input } from "antd";
+import { Button, Form, FormProps, Input, message } from "antd";
 import logo from "../../assets/Genmab_Logo_Color_RGB.jpg";
 import "./index.css";
 import signupImg from "../../assets/signup.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+
 	const handleSignup = async (email: string, password: string) => {
 		try {
 			const response = await postData("/SignUp", { email, password });
@@ -18,12 +22,22 @@ const Signup: React.FC = () => {
 
 			if (response.headers.get("Content-Type")?.includes("application/json")) {
 				const result = await response.json(); // Converts the response to JSON
-				alert(result.message); // Assuming the message is part of the JSON response
+				// alert(result.message); // Assuming the message is part of the JSON response
+				messageApi.open({
+					type: "success",
+					content: "sign up successful",
+				});
+
+				setTimeout(() => {
+					navigate("/login");
+				}, 2000);
+				localStorage.setItem("username", email);
+				localStorage.setItem("password", password);
 			} else {
 				// If not JSON, handle or show error differently
 				const text = await response.text(); // Reading response as text to check what it is
 				console.error("Non-JSON response:", text);
-				alert("Received non-JSON response from the server.");
+				alert("sign up failed");
 			}
 		} catch (error) {
 			console.error("Signup Error:", error);
@@ -51,6 +65,7 @@ const Signup: React.FC = () => {
 
 	return (
 		<div className='login-container'>
+			{contextHolder}
 			<div className='left'>
 				<img src={signupImg} alt='' />
 			</div>

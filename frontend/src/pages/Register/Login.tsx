@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { postData } from "../../service/http";
-import { Button, Checkbox, Col, Form, FormProps, Input, Row } from "antd";
+import { Button, Checkbox, Col, Form, FormProps, Input, Row, message } from "antd";
 import logo from "../../assets/Genmab_Logo_Color_RGB.jpg";
 import "./index.css";
 import loginImg from "../../assets/login.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
 	const handleLogin = async (email: string, password: string) => {
 		try {
 			const response = await postData("/SignIn", { email, password });
@@ -19,8 +22,15 @@ const Login: React.FC = () => {
 
 			const result = await response.json();
 			localStorage.setItem("token", result.access_token); // Assuming the token is stored in result.access_token
-			alert(result.message);
+			// alert(result.message);
 			// Optionally redirect the user or update global state here
+			messageApi.open({
+				type: "success",
+				content: "login successful",
+			});
+			setTimeout(() => {
+				navigate("/Home");
+			}, 2000);
 		} catch (error) {
 			console.error("Login error:", error);
 			alert("An unexpected error occurred");
@@ -46,6 +56,7 @@ const Login: React.FC = () => {
 
 	return (
 		<div className='login-container'>
+			{contextHolder}
 			<div className='left'>
 				<img src={loginImg} alt='' />
 			</div>
