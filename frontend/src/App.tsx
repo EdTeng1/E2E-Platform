@@ -27,11 +27,6 @@ const items: MenuItem[] = [
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: <Link to='/SearchResult'>Search Result</Link>,
-		key: "SearchResult",
-		icon: <AppstoreOutlined />,
-	},
-	{
 		label: <Link to='/questionaire'>Questionaire</Link>,
 		key: "questionaire",
 		icon: <AppstoreOutlined />,
@@ -42,9 +37,9 @@ const items: MenuItem[] = [
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: <span>Contact</span>,
-		key: "mail",
-		icon: <MailOutlined />,
+		label: <Link to='/about-us'>About Us</Link>,
+		key: "about-us",
+		icon: <UserOutlined />,
 	},
 	{
 		label: <span>Profile</span>,
@@ -78,11 +73,6 @@ const items: MenuItem[] = [
 				key: "log-out",
 			},
 		],
-	},
-	{
-		label: <Link to='/about-us'>About Us</Link>,
-		key: "about-us",
-		icon: <UserOutlined />,
 	},
 ];
 
