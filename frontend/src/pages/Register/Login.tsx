@@ -55,52 +55,54 @@ const Login: React.FC = () => {
 	};
 
 	return (
-		<div className='login-container'>
-			{contextHolder}
-			<div className='left'>
-				<img src={loginImg} alt='' />
-			</div>
-			<div className='right-container'>
-				<img src={logo} alt='' className={"login-logo"} style={{ height: "130px" }} />
-				<Form
-					style={{ width: "90%" }}
-					labelCol={{ span: 6 }}
-					name='basic'
-					initialValues={{ remember: true }}
-					onFinish={onFinish}
-					onFinishFailed={onFinishFailed}
-					autoComplete='off'>
-					<Form.Item<FieldType>
-						label='Email'
-						name='Email'
-						rules={[{ required: true, message: "Please input your username!" }]}>
-						<Input placeholder='Email' />
-					</Form.Item>
+		<div className='page-wrapper'>
+			<div className='login-container'>
+				{contextHolder}
+				<div className='left'>
+					<img src={loginImg} alt='' />
+				</div>
+				<div className='right-container'>
+					<img src={logo} alt='' className={"login-logo"} style={{ height: "130px" }} />
+					<Form
+						style={{ width: "90%" }}
+						labelCol={{ span: 6 }}
+						name='basic'
+						initialValues={{ remember: true }}
+						onFinish={onFinish}
+						onFinishFailed={onFinishFailed}
+						autoComplete='off'>
+						<Form.Item<FieldType>
+							label='Email'
+							name='Email'
+							rules={[{ required: true, message: "Please input your username!" }]}>
+							<Input placeholder='Email' />
+						</Form.Item>
 
-					<Form.Item<FieldType>
-						label='Password'
-						name='password'
-						rules={[{ required: true, message: "Please input your password!" }]}>
-						<Input.Password placeholder='Password' />
-					</Form.Item>
+						<Form.Item<FieldType>
+							label='Password'
+							name='password'
+							rules={[{ required: true, message: "Please input your password!" }]}>
+							<Input.Password placeholder='Password' />
+						</Form.Item>
 
-					<Form.Item wrapperCol={{ offset: 6 }}>
-						<Button type='primary' htmlType='submit' style={{ width: "45%" }}>
-							Sign In
-						</Button>
-						<Button onClick={() => {}} style={{ width: "45%", marginLeft: "20px" }}>
-							{/* Sign Up */}
-							<a href='/signup'>Sign Up</a>
-						</Button>
-					</Form.Item>
-					{/* <Row>
+						<Form.Item wrapperCol={{ offset: 6 }}>
+							<Button type='primary' htmlType='submit' style={{ width: "45%" }}>
+								Sign In
+							</Button>
+							<Button onClick={() => {}} style={{ width: "45%", marginLeft: "20px" }}>
+								{/* Sign Up */}
+								<a href='/signup'>Sign Up</a>
+							</Button>
+						</Form.Item>
+						{/* <Row>
 					<Col offset={4}>
 						<a className='text-info' href='/signup'>
 							Sign Up
 						</a>
 					</Col>
 				</Row> */}
-				</Form>
+					</Form>
+				</div>
 			</div>
 		</div>
 	);

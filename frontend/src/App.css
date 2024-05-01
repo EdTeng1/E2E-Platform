@@ -5,7 +5,8 @@
   /* Align the top edge of the menu bar with the top of the viewport */
   left: 0;
   /* Align the left edge of the menu bar with the left of the viewport */
-  width: 99%;
+  /* width: 100vw; */
+  overflow: hidden;
   /* Ensure the menu bar stretches across the full viewport width */
   z-index: 1000;
   /* Ensure the menu bar sits above other content */
@@ -16,4 +17,5 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   padding: 0 20px;
+  box-sizing: border-box;
 }

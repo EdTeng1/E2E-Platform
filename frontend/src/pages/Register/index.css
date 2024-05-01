@@ -1,19 +1,24 @@
+.page-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+}
+
 .login-container {
   border-radius: 20px;
   box-shadow: 0px 0px 15px 5px #f2efef;
   width: 80vw;
-  margin: 10vh auto 0;
+  margin: 10vh auto;
 
   display: flex;
   width: 80vw;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  padding: 100px 0;
 
 }
 
 .login-container .left img {
-  height: 460px;
+  height: 25vw;
 }
 
 .right-container {

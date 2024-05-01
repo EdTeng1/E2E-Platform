@@ -1,8 +1,8 @@
 import { AppstoreOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Menu } from "antd";
-import React, { useState, useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes, Link, useLocation } from "react-router-dom";
+import { Menu, message } from "antd";
+import React, { useState, useEffect, useMemo } from "react";
+import { Route, BrowserRouter as Router, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import App_KOLprofile from "./pages/KOLprofile/App_KOLprofile";
 import SearchResult from "./pages/SearchResult/SearchResult";
 import AboutUs from "./pages/AboutUs/AboutUs";
@@ -36,6 +36,7 @@ const items: MenuItem[] = [
 		key: "App_KOLprofile",
 		icon: <AppstoreOutlined />,
 	},
+
 	{
 		label: <Link to='/about-us'>About Us</Link>,
 		key: "about-us",
@@ -64,10 +65,9 @@ const items: MenuItem[] = [
 				label: (
 					<div
 						onClick={() => {
-							localStorage.removeItem("email");
-							localStorage.removeItem("password");
+							localStorage.removeItem("token");
 						}}>
-						<Link to='/login'>Login</Link>
+						<Link to='/login'>Logout</Link>
 					</div>
 				),
 				key: "log-out",
@@ -78,6 +78,9 @@ const items: MenuItem[] = [
 
 const App: React.FC = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+
 	const [current, setCurrent] = useState<string>("home");
 
 	useEffect(() => {
@@ -92,8 +95,26 @@ const App: React.FC = () => {
 		setCurrent(e.key);
 	};
 
+	const hasLogin = useMemo(() => {
+		return !!localStorage.getItem("token");
+	}, [location.pathname]);
+
+	useEffect(() => {
+		console.log(location.pathname);
+		if (location.pathname.includes("login") || location.pathname.includes("signup")) return;
+		if (!hasLogin) {
+			messageApi.error("not login!!");
+
+			// 还没登录，直接跳转登录页面
+			setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+		}
+	}, [location.pathname]);
+
 	return (
 		<div>
+			{contextHolder}
 			{/* Menu part */}
 			<div className='menu-bar-container'>
 				{/* Logo part */}
@@ -101,7 +122,15 @@ const App: React.FC = () => {
 					<img src={logo} alt='Logo' style={{ width: "120px", height: "auto" }} />
 				</a>
 				{/* Menu part */}
-				<Menu onClick={onClick} selectedKeys={[current]} mode='horizontal' items={items} />
+				{hasLogin && (
+					<Menu
+						inlineCollapsed={false}
+						onClick={onClick}
+						selectedKeys={[current]}
+						mode='horizontal'
+						items={items}
+					/>
+				)}
 			</div>
 			<Routes>
 				<Route path='/' element={<Home />} />
