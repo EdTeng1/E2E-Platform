@@ -35,6 +35,8 @@ const SearchData: React.FC = () => {
             setError('No search results available. Please try a new search.');
         }
     }, [Result]);
+    console.log('Result:', Result);
+    console.log('users:', users);
 	let mt = 0;
     const handleCardClick = (userId: number) => {
         navigate(`/App_KOLprofile?profileID=${encodeURIComponent(userId)}`);
@@ -111,9 +113,9 @@ const SearchData: React.FC = () => {
                                     <label>Score: </label>
                                     <Select value={filterScore} style={{ width: 180 }} onChange={setFilterScore}>
                                         <Option value="">Any</Option>
-                                        <Option value="A">A ('&gt' 60)</Option>
-                                        <Option value="B">B (40 - 60)</Option>
-                                        <Option value="C">C ('&lt' 40)</Option>
+                                        <Option value="A">A (more than 600)</Option>
+                                        <Option value="B">B (400 - 600)</Option>
+                                        <Option value="C">C (less than 400)</Option>
                                     </Select>
                                 </div>
                                 <Button type="primary" onClick={handleFilterApply} disabled={loading}>
@@ -138,6 +140,7 @@ const SearchData: React.FC = () => {
                                 >
                                     <Meta title={`${user.name}`} />
                                     <p>{`Location: ${user.location}`}</p>
+                                    <p>{`Institution: ${user.institution}`}</p>
                                     <p>{`Score: ${user.score}`}</p>
                                 </Card>
                             ))}
