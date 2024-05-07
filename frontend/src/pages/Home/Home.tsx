@@ -14,6 +14,7 @@ const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const [messageApi, contextHolder] = message.useMessage();
 	const [query, setQuery] = React.useState("");
+	const [searchType, setSearchType] = React.useState("name");
 
 	const clickSearch = async () => {
 		if (!query.trim()) {
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
 			return;
 		}
 		try {
-			const response = await postData("/search", { query });
+			const response = await postData("/search", { query, searchType});
 			console.log("query:", query);
 			console.log("response:", response);
 
@@ -51,7 +52,6 @@ const Home: React.FC = () => {
 			messageApi.error("Failed to fetch search results.");
 		}
 	};
-
 	return (
 		<div className='container'>
 			{contextHolder}
@@ -61,12 +61,16 @@ const Home: React.FC = () => {
 				className='logo'
 			/>
 			<div className='search-container'>
+			<Select defaultValue="name" style={{ width: 120 }} onChange={setSearchType}>
+					<Option value="name">Name</Option>
+					<Option value="institution">Institution</Option>
+				</Select>
 				<Input
 					className='search-input'
 					type='text'
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
-					placeholder='Search for users...'
+				placeholder='Search for users by name or institution...'
 				/>
 				<Button onClick={clickSearch} type='primary' className='search-button'>
 					Search
