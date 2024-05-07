@@ -436,18 +436,6 @@ const App: React.FC = () => {
 								<DemoRadar />
 							</Card>
 						</Col>
-						<Col span={12}>
-							<Card
-								className='Ratings'
-								title={
-									<Title level={4} style={{ marginBottom: 0 }}>
-										Ratings
-									</Title>
-								}
-								bordered={false}>
-								{/* Ratings content here... */}
-							</Card>
-						</Col>
 					</Row>
 				</div>
 			</Content>
