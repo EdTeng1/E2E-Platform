@@ -19,6 +19,7 @@ const SearchData: React.FC = () => {
     const Result = location.state ? location.state : { searchResult: [] };
 
     // State hooks for component state management
+    const [OriginResult, setOriginResult] = useState(Result.searchResult);
     const [users, setUsers] = useState(Result.searchResult);
     const [filterLocation, setFilterLocation] = useState('');
     const [filterScore, setFilterScore] = useState('');
@@ -67,7 +68,7 @@ const SearchData: React.FC = () => {
             body: JSON.stringify({
                 location: filterLocation,
                 score: filterScore,
-                users: Result.searchResult
+                users: OriginResult
             })
         };
         try {
