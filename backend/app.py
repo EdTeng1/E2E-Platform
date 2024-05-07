@@ -197,7 +197,7 @@ def search():
                     KOLProfile.LastName,
                     KOLProfile.State,
                     KOLScore.Institution,
-                    KOLScore.Total,
+                    func.coalesce(KOLScore.Total, -1).label('Total')
                 )
                 .join(
                     KOLScore,
@@ -221,7 +221,7 @@ def search():
                     KOLProfile.LastName,
                     KOLProfile.State,
                     KOLScore.Institution,
-                    KOLScore.Total,
+                    func.coalesce(KOLScore.Total, -1).label('Total')
                 )
                 .join(
                     KOLScore,
