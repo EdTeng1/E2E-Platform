@@ -66,6 +66,7 @@ const items: MenuItem[] = [
 					<div
 						onClick={() => {
 							localStorage.removeItem("token");
+							localStorage.removeItem("userEmail");
 						}}>
 						<Link to='/login'>Logout</Link>
 					</div>
@@ -83,12 +84,46 @@ const App: React.FC = () => {
 
 	const [current, setCurrent] = useState<string>("home");
 
+	const [userEmail, setUserEmail] = useState<string | null>(null);
+
+	const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+
 	useEffect(() => {
 		const path = location.pathname.substring(1) || "home"; // handle root path
 		const matchingItem = items.find((item) => item.key === path);
 		const key: string = matchingItem ? (matchingItem.key as string) : "home"; // Ensure the key is always valid and a string, cast as string for safety
 		setCurrent(key);
 	}, [location]);
+
+	useEffect(() => {
+		setUserEmail(localStorage.getItem("userEmail")); // Fetch the user's email from local storage
+	}, []);
+
+	useEffect(() => {
+		console.log(location.pathname);
+		if (location.pathname.includes("login") || location.pathname.includes("signup")) return;
+		if (!localStorage.getItem("token")) {
+			messageApi.error("not login!!");
+
+			// Redirect to login page if not logged in
+			setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+		}
+	}, [location.pathname]);
+
+	useEffect(() => {
+		// Update menu items based on login state
+		const updatedItems = [...items]; // start with the static items
+		if (localStorage.getItem("token")) {
+			updatedItems.push({
+				label: <>Logged in as: {userEmail}</>,
+				key: "userEmail",
+				icon: <MailOutlined />,
+			});
+		}
+		setMenuItems(updatedItems);
+	}, [userEmail]);
 
 	const onClick: MenuProps["onClick"] = (e) => {
 		console.log("click ", e);
@@ -122,13 +157,13 @@ const App: React.FC = () => {
 					<img src={logo} alt='Logo' style={{ width: "120px", height: "auto" }} />
 				</a>
 				{/* Menu part */}
-				{hasLogin && (
+				{localStorage.getItem("token") && (
 					<Menu
 						inlineCollapsed={false}
 						onClick={onClick}
 						selectedKeys={[current]}
 						mode='horizontal'
-						items={items}
+						items={menuItems}
 					/>
 				)}
 			</div>

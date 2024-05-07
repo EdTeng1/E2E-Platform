@@ -21,7 +21,6 @@ const Login: React.FC = () => {
 			}
 
 			const result = await response.json();
-			localStorage.setItem("token", result.access_token); // Assuming the token is stored in result.access_token
 			// alert(result.message);
 			// Optionally redirect the user or update global state here
 			messageApi.open({
@@ -31,6 +30,10 @@ const Login: React.FC = () => {
 			setTimeout(() => {
 				navigate("/Home");
 			}, 2000);
+
+			localStorage.setItem("token", result.access_token); // Assuming the token is stored in result.access_token
+			localStorage.setItem("userEmail", email); // Save email in local storage
+			console.log("email", email);
 		} catch (error) {
 			console.error("Login error:", error);
 			alert("An unexpected error occurred");
