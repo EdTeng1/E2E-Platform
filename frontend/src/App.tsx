@@ -97,7 +97,7 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		setUserEmail(localStorage.getItem("userEmail")); // Fetch the user's email from local storage
-	}, []);
+	});
 
 	useEffect(() => {
 		console.log(location.pathname);
