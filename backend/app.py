@@ -199,7 +199,7 @@ def search():
                     KOLScore.Institution,
                     func.coalesce(KOLScore.Total, -1).label('Total')
                 )
-                .join(
+                .outerjoin(
                     KOLScore,
                     and_(
                         KOLProfile.FirstName == KOLScore.First,
@@ -223,7 +223,7 @@ def search():
                     KOLScore.Institution,
                     func.coalesce(KOLScore.Total, -1).label('Total')
                 )
-                .join(
+                .outerjoin(
                     KOLScore,
                     and_(
                         KOLProfile.FirstName == KOLScore.First,
