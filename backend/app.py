@@ -11,6 +11,7 @@ from models import KOLProfile, KOLScore, db
 from questionnaire import questionnaire_blueprint
 from register import loginSignup_blueprint
 from sqlalchemy import and_, or_
+from sqlalchemy.sql import func
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
@@ -151,9 +152,9 @@ def search():
                 KOLProfile.FirstName,
                 KOLProfile.LastName,
                 KOLProfile.State,
-                KOLScore.Total,
+                func.coalesce(KOLScore.Total, -1).label('Total')  # Use 50 as default score
             )
-            .join(
+            .outerjoin(
                 KOLScore,
                 and_(
                     KOLProfile.FirstName == KOLScore.First,
