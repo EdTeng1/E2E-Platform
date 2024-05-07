@@ -11,6 +11,7 @@ from models import KOLProfile, KOLScore, db
 from questionnaire import questionnaire_blueprint
 from register import loginSignup_blueprint
 from sqlalchemy import and_, or_
+from sqlalchemy.sql import func
 
 app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
 app.register_blueprint(questionnaire_blueprint)
