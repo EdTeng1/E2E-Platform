@@ -126,7 +126,6 @@ const SearchData: React.FC = () => {
                         </div>
 					</Sider>
 					<Content style={{ padding: "0 24px", minHeight: 280 }}>
-						{/* 卡片内容 */}
 						<div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
 						{visibleUsers.map((user:any, index:any) => (
                                 <Card
@@ -145,14 +144,22 @@ const SearchData: React.FC = () => {
                                 </Card>
                             ))}
                             <Pagination
+                                style = {{
+                                    position: "fixed",
+                                    left: "0",
+                                    bottom: "0",
+                                    width: "100%",
+                                    background: "#fff",
+                                    padding: "10px 0",
+                                    textAlign: "center",
+                                    borderTop: "1px solid #e8e8e8"
+                                }}
                                 defaultCurrent = {currentPage}
                                 total = {users.length}
                                 pageSize = {itemsPerPage}
                                 onChange = {handlePageChange}
                             />
 						</div>
-
-
 					</Content>
 				</Layout>
 			</Content>
