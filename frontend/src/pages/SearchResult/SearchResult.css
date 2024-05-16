@@ -1,0 +1,70 @@
+.layout {
+    min-height: 100vh;
+}
+
+.header-title {
+    color: teal;
+    line-height: 64px;
+    margin-left: 20px;
+}
+
+.content {
+    padding: 0 50px;
+}
+
+.inner-layout {
+    padding: 24px 0;
+    background: #fff;
+}
+
+.sider {
+    background-color: #f0f2f5;
+    padding: 20px;
+    border-right: 1px solid #e8e8e8;
+}
+
+.filters-container {
+    margin: 20px 0;
+}
+
+.filter-item {
+    margin-bottom: 16px;
+}
+
+.filter-button {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.cards-content {
+    padding: 0 24px;
+    min-height: 280px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    width: 240px;
+    margin: 0 10px 20px 10px;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    background: #f0f2f5;
+    padding: 10px 0;
+}

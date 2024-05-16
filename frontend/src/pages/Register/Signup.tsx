@@ -82,7 +82,16 @@ const Signup: React.FC = () => {
 					<Form.Item<FieldType>
 						label='Email'
 						name='Email'
-						rules={[{ required: true, message: "Please input your username!" }]}>
+						rules={[
+							{ required: true, message: "Please input your email!" },
+							{ type: "email", message: "Please enter a valid email!" },
+							{
+								validator: (_, value) =>
+									value && value.endsWith("@genmab.com")
+										? Promise.resolve()
+										: Promise.reject(new Error("Email must end with @genmab.com")),
+							},
+						]}>
 						<Input placeholder='Email' />
 					</Form.Item>
 

@@ -175,7 +175,7 @@ export const App: React.FC = () => {
                     <Form.Item
                         label="Phone Number"
                         name="phoneNumber"
-                        rules={[{ required: true, message: 'Please input your phone number!' }]}
+                        rules={[{ required: false, message: 'Please input your phone number!' }]}
                     >
                         <Input placeholder="Phone number" />
                     </Form.Item>

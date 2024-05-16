@@ -1,14 +1,11 @@
-import { Button, Col, Input, Row, Select, message } from "antd";
-import React from "react";
+import { Button, Input, Select, message } from "antd";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../service/http";
-import axios from "axios";
-import { queryKOLProfileByName } from "../../service/KOLProfile";
 import "./index.css";
 
 // Select组件需要的选项
 const { Option } = Select;
-const { Search } = Input;
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
@@ -22,7 +19,7 @@ const Home: React.FC = () => {
 			return;
 		}
 		try {
-			const response = await postData("/search", { query, searchType});
+			const response = await postData("/search", { query, searchType });
 			console.log("query:", query);
 			console.log("response:", response);
 
@@ -52,6 +49,22 @@ const Home: React.FC = () => {
 			messageApi.error("Failed to fetch search results.");
 		}
 	};
+
+	// Add event listener for Enter key
+	useEffect(() => {
+		const handleKeyPress = (event: KeyboardEvent) => {
+			if (event.key === 'Enter') {
+				clickSearch();
+			}
+		};
+
+		window.addEventListener('keypress', handleKeyPress);
+
+		return () => {
+			window.removeEventListener('keypress', handleKeyPress);
+		};
+	}, [query, searchType]);
+
 	return (
 		<div className='container'>
 			{contextHolder}
@@ -61,7 +74,7 @@ const Home: React.FC = () => {
 				className='logo'
 			/>
 			<div className='search-container'>
-			<Select defaultValue="name" style={{ width: 120 }} onChange={setSearchType}>
+				<Select defaultValue="name" style={{ width: 120 }} onChange={(value) => setSearchType(value)}>
 					<Option value="name">Name</Option>
 					<Option value="institution">Institution</Option>
 				</Select>
@@ -70,7 +83,7 @@ const Home: React.FC = () => {
 					type='text'
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
-				placeholder='Search for users by name or institution...'
+					placeholder='Search for users by name or institution...'
 				/>
 				<Button onClick={clickSearch} type='primary' className='search-button'>
 					Search

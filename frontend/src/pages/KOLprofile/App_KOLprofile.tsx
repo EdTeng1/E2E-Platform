@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input, DatePicker } from "antd";
+import { Typography, Card, Layout, Row, Col, Button, Form, Select, Input, DatePicker, Modal } from "antd";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-import axios from "axios";
 import "./App_KOLprofile.css";
-import ProfilePicture from "./components/ProfilePicture";
-import ProfileInfo from "./components/ProfileInfo";
-import EngagementHistory from "./components/EngagementHistory";
 import DemoRadar from "./components/DimensionScore";
 import Rating from "./components/Rating";
-import EditableText from "./components/EditableText";
 import { postData } from "../../service/http";
-import logo from "./assets/Genmab_Logo_Color_RGB.jpg";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -69,7 +63,7 @@ interface Profile {
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const profileId = searchParams.get("profileID") ?? "100";
+	const profileId = searchParams.get("profileID") ?? "-1";
 
 	const [profile, setProfile] = useState<Profile>({
 		// Initialize with empty or placeholder values
@@ -85,10 +79,15 @@ const App: React.FC = () => {
 		ratings: [],
 	});
 
+	const [showWarning, setShowWarning] = useState(profileId === "-1");
+
 	useEffect(() => {
+		if (profileId === "-1") {
+			return;
+		}
+
 		const fetchProfile = async () => {
 			try {
-				// Replace 'profileId' with actual logic to retrieve or define the ID
 				const response = await postData(`/getProfile/${profileId}`);
 				const profileData = await response.json();
 				console.log("Profile Data:", profileData);
@@ -113,9 +112,9 @@ const App: React.FC = () => {
 			}
 		};
 		fetchProfile();
-	}, []); // Empty dependency array means this effect runs once on mount
+	}, [profileId]);
 
-	//處理個人profile的變化
+	// Handle profile changes
 	const handleProfileChange = (field: keyof Profile, value: string | string[]) => {
 		setProfile((prevProfile) => ({
 			...prevProfile,
@@ -123,7 +122,7 @@ const App: React.FC = () => {
 		}));
 	};
 
-	//處理engagement history的變化
+	// Handle engagement history changes
 	const handleHistoryChange = (index: number, field: keyof Engagement, newValue: string) => {
 		const updatedHistory = profile.history.map((engagement, idx) =>
 			idx === index ? { ...engagement, [field]: newValue } : engagement
@@ -204,11 +203,20 @@ const App: React.FC = () => {
 				</Typography.Title>
 			</Header>
 			<Content style={{ padding: "0 50px" }}>
+				{showWarning && (
+					<Modal
+						title="Warning"
+						visible={showWarning}
+						onOk={() => navigate("/home")}
+						onCancel={() => setShowWarning(false)}
+						okText="Go to Home"
+						cancelText="Cancel"
+					>
+						<p>No profile ID provided. Please go back to the home page and select a profile.</p>
+					</Modal>
+				)}
 				<div className='site-layout-content'>
 					<Row gutter={[16, 16]}>
-						<Col span={24}>
-							<ProfilePicture imageUrl={profile.imageUrl} />
-						</Col>
 						<Col span={12}>
 							<Card
 								className='Profile-Details'
@@ -263,7 +271,7 @@ const App: React.FC = () => {
 										{profile.email}
 									</Typography.Text>
 								</div>
-								{/* 在 App 组件的 return 方法中添加保存按钮 */}
+								{/* Save Profile Button */}
 								<div className='profile-save-button'>
 									<Button type='primary' onClick={saveProfile}>
 										Save Profile
@@ -332,7 +340,7 @@ const App: React.FC = () => {
 									</Card>
 								))}
 
-								{/* 在 App 组件的 return 方法中添加保存按钮 */}
+								{/* Save History Button */}
 								<div className='history-save-button'>
 									<Button type='primary' onClick={saveHistory}>
 										Save History
@@ -439,7 +447,7 @@ const App: React.FC = () => {
 					</Row>
 				</div>
 			</Content>
-			<Footer style={{ textAlign: "center" }}>KOL Profile ©2024 Created by YourName</Footer>
+			<Footer style={{ textAlign: "center" }}>KOL Profile ©2024 Created by Our Amazing Team</Footer>
 		</Layout>
 	);
 };
